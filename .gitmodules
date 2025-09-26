@@ -1,3 +1,4 @@
-[submodule "BMAD-Method"]
-	path = BMAD-Method
-	url = https://github.com/bmad-code-org/BMAD-METHOD.git
+
+[submodule "BMAD-METHOD"]
+	path = BMAD-METHOD
+	url = https://github.com/zsutxz/BMAD-METHOD.git/
