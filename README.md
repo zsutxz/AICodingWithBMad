@@ -16,6 +16,7 @@ When you fork this repository, CI/CD workflows are **disabled by default** to sa
 
 ### Development Setup
 
+
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Run validation checks: `npm run pre-release`
