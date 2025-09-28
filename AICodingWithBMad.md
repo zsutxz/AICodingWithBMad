@@ -1,4 +1,4 @@
-# Work With Bmad-Method
+# AI Coding With Bmad-Method
 
 ## 一 项目介绍
 
