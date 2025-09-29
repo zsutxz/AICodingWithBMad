@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This repository contains the BMAD-METHOD™ (Breakthrough Method of Agile AI-driven Development), a framework for AI-assisted development using specialized agents. The project provides a structured approach to software development with dedicated AI agents for different roles (Analyst, PM, Architect, Developer, QA, etc.).
 
+The key innovations of BMAD-METHOD are:
+1. **Agentic Planning**: Dedicated agents collaborate to create detailed, consistent PRDs and Architecture documents
+2. **Context-Engineered Development**: Scrum Master transforms plans into detailed development stories with full context
+
 ## Repository Structure
 
 - `BMAD-METHOD/` - Main framework code
@@ -16,23 +20,32 @@ This repository contains the BMAD-METHOD™ (Breakthrough Method of Agile AI-dri
     - `templates/` - Document templates (PRDs, architecture docs, etc.)
     - `checklists/` - Quality assurance checklists
     - `data/` - Knowledge base and domain-specific information
+    - `workflows/` - Prescribed sequences of agent interactions
   - `tools/` - Build tools and utilities
+    - `builders/` - Agent and team building scripts
+    - `installer/` - Installation utilities
+    - `cli.js` - Main command-line interface
   - `dist/` - Built output for web deployment
+    - `agents/` - Packaged individual agents
+    - `teams/` - Packaged agent teams
   - `docs/` - Documentation files
-- `Docs/` - Project documentation
-- `CH01/` - Chapter directories (content organization)
+- `BMAD_ZH/` - Chinese translations of agents and documentation
+  - `agents/` - Chinese versions of agent definitions
+- `AICodingWithBMad.md` - Main project documentation in Chinese
 
 ## Development Commands
 
 - Install dependencies: `npm install`
 - Build the project: `npm run build`
+- Build agents only: `npm run build:agents`
+- Build teams only: `npm run build:teams`
 - Validate configurations: `npm run validate`
 - Format code: `npm run format`
 - Lint code: `npm run lint`
 - Run pre-release checks: `npm run pre-release`
 - List available agents: `npm run list:agents`
-- Build agents only: `npm run build:agents`
-- Build teams only: `npm run build:teams`
+- Run tests: `npm test`
+- Fix formatting and linting issues: `npm run fix`
 
 ## Architecture Overview
 
@@ -68,3 +81,19 @@ The system uses a build process that packages agent definitions and their depend
 - Templates: Markdown with embedded processing directives
 - Tasks: Markdown files with step-by-step instructions
 - Dependencies: Defined in YAML headers of agent files
+
+## Testing
+
+- Run all tests: `npm test`
+- Run a single test file: `npx jest path/to/test-file.test.js`
+- Run tests matching a pattern: `npx jest -t "pattern"`
+- The project uses Jest for testing
+- Tests are located alongside the code they test
+- Test files have the `.test.js` extension
+
+## Contributing
+
+- Follow the existing code style
+- Run `npm run pre-release` before submitting pull requests
+- Ensure all tests pass
+- Update documentation as needed
