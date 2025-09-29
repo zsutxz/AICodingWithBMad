@@ -1,0 +1,652 @@
+﻿# <!-- Powered by BMAD™ Core -->
+template:
+  id: architecture-template-v2
+  name: 架构文档
+  version: 2.0
+  output:
+    format: markdown
+    filename: docs/architecture.md
+    title: "{{project_name}} 架构文档"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: 介绍
+    title: 介绍
+    instruction: |
+      如果可用，请在开始之前审阅所有相关文档以收集上下文。如果至少无法找到 docs/prd.md，请询问用户哪些文档将作为架构基础。
+    sections:
+      - id: intro-content
+        content: |
+          本文档概述了 {{project_name}} 的整体项目架构，包括后端系统、共享服务和非 UI 特定的关注点。其主要目标是作为 AI 驱动开发的架构蓝图，确保架构模式与技术选择的一致性和遵循。
+
+          **与前端架构的关系:**
+          If the project includes a significant user interface, a separate Frontend 架构文档 will detail the frontend-specific design and MUST be used in conjunction with this document. Core technology stack choices documented herein (see "Tech Stack") are definitive for the entire project, including any frontend components.
+      - id: starter-template
+        title: 启动模板或现有项目
+        instruction: |
+          在继续架构设计之前，请检查项目是否基于某个启动模板或现有代码库：
+
+          1. 审阅 PRD 和头脑风暴简报，查看是否提及：
+          - Starter templates (e.g., Create React App, Next.js, Vue CLI, Angular CLI, etc.)
+          - Existing projects or codebases being used as a foundation
+          - Boilerplate projects or scaffolding tools
+          - Previous projects to be cloned or adapted
+
+          2. If a 启动模板或现有项目 is mentioned:
+          - 请用户通过以下任一方式提供访问：
+            - Link to the starter template documentation
+            - Upload/attach the project files (for small projects)
+            - Share a link to the project repository (GitHub, GitLab, etc.)
+          - 分析启动模板/现有项目以了解：
+            - Pre-configured technology stack and versions
+            - Project structure and organization patterns
+            - Built-in scripts and tooling
+            - Existing architectural patterns and conventions
+            - Any limitations or constraints imposed by the starter
+          - 使用该分析来指导并对齐你的架构决策
+
+          3. 如果未提及启动模板且这是一个全新项目：
+          - 根据技术栈偏好建议合适的启动模板
+          - Explain the benefits (faster setup, best practices, community support)
+          - Let the user decide whether to use one
+
+          4. If the user confirms no starter template will be used:
+          - Proceed with architecture design from scratch
+          - Note that manual setup will be required for all tooling and configuration
+
+          在继续架构设计之前在此处记录决策。如果没有则写 N/A
+        elicit: true
+      - id: changelog
+        title: 变更日志
+        type: table
+        columns: [Date, Version, Description, Author]
+        instruction: 跟踪文档版本与变更
+
+  - id: high-level-architecture
+    title: 高级架构概述
+    instruction: |
+      本节包含多个子部分，用于建立架构基础。请一次性呈现所有子部分。
+    elicit: true
+    sections:
+      - id: technical-summary
+        title: 技术摘要
+        instruction: |
+          提供一段简要概述（3-5 句），包括：
+          - The system's overall architecture style
+          - Key components and their relationships
+          - Primary technology choices
+          - Core architectural patterns being used
+          - Reference back to the PRD goals and how this architecture supports them
+      - id: high-level-overview
+        title: 高层概述
+        instruction: |
+          基于 PRD 的技术假设部分，描述：
+
+          1. The main architectural style (e.g., Monolith, Microservices, Serverless, Event-Driven)
+          2. Repository structure decision from PRD (Monorepo/Polyrepo)
+          3. Service architecture decision from PRD
+          4. Primary user interaction flow or data flow at a conceptual level
+          5. Key architectural decisions and their rationale
+      - id: project-diagram
+        title: 高层项目图
+        type: mermaid
+        mermaid_type: graph
+        instruction: |
+          创建一个 Mermaid 图以可视化高层架构。请考虑：
+          - 系统边界
+          - 主要组件/服务
+          - 数据流方向
+          - 外部集成
+          - 用户入口点
+
+      - id: architectural-patterns
+        title: 架构与设计模式
+        instruction: |
+          列出将指导架构的关键高层模式。对于每种模式：
+
+          1. 在存在多种选项时，提出 2-3 个可行方案
+          2. 给出推荐并说明理由
+          3. 在最终确定前获取用户确认
+          4. 这些模式应与 PRD 的技术假设和项目目标保持一致
+
+          建议考虑的常见模式：
+          - 架构风格模式（Serverless、事件驱动、微服务、CQRS、六边形架构）
+          - 代码组织模式（依赖注入、仓储模式、模块、工厂）
+          - 数据模式（事件溯源、Saga、每服务数据库）
+          - 通信模式（REST、GraphQL、消息队列、Pub/Sub）
+        template: "- **{{pattern_name}}:** {{pattern_description}} - _Rationale:_ {{rationale}}"
+        examples:
+          - "**Serverless Architecture:** Using AWS Lambda for compute - _Rationale:_ Aligns with PRD requirement for cost optimization and automatic scaling"
+          - "**Repository Pattern:** Abstract data access logic - _Rationale:_ Enables testing and future database migration flexibility"
+          - "**Event-Driven Communication:** Using SNS/SQS for service decoupling - _Rationale:_ Supports async processing and system resilience"
+
+  - id: tech-stack
+    title: Tech Stack
+    instruction: |
+      This is the DEFINITIVE technology selection section. Work with the user to make specific choices:
+
+      1. Review PRD technical assumptions and any preferences from {root}/data/technical-preferences.yaml or an attached technical-preferences
+      2. For each category, present 2-3 viable options with pros/cons
+      3. Make a clear recommendation based on project needs
+      4. Get explicit user approval for each selection
+      5. Document exact versions (avoid "latest" - pin specific versions)
+      6. This table is the single source of truth - all other docs must reference these choices
+
+      Key decisions to finalize - before displaying the table, ensure you are aware of or ask the user about - let the user know if they are not sure on any that you can also provide suggestions with rationale:
+
+      - Starter templates (if any)
+      - Languages and runtimes with exact versions
+      - Frameworks and libraries / packages
+      - Cloud provider and key services choices
+      - Database and storage solutions - if unclear suggest sql or nosql or other types depending on the project and depending on cloud provider offer a suggestion
+      - Development tools
+
+      Upon render of the table, ensure the user is aware of the importance of this sections choices, should also look for gaps or disagreements with anything, ask for any clarifications if something is unclear why its in the list, and also right away elicit feedback - this statement and the options should be rendered and then prompt right all before allowing user input.
+    elicit: true
+    sections:
+      - id: cloud-infrastructure
+        title: Cloud Infrastructure
+        template: |
+          - **Provider:** {{cloud_provider}}
+          - **Key Services:** {{core_services_list}}
+          - **Deployment Regions:** {{regions}}
+      - id: technology-stack-table
+        title: Technology Stack Table
+        type: table
+        columns: [Category, Technology, Version, Purpose, Rationale]
+        instruction: Populate the technology stack table with all relevant technologies
+        examples:
+          - "| **Language** | TypeScript | 5.3.3 | Primary development language | Strong typing, excellent tooling, team expertise |"
+          - "| **Runtime** | Node.js | 20.11.0 | JavaScript runtime | LTS version, stable performance, wide ecosystem |"
+          - "| **Framework** | NestJS | 10.3.2 | Backend framework | Enterprise-ready, good DI, matches team patterns |"
+
+  - id: data-models
+    title: 数据模型s
+    instruction: |
+      Define the core 数据模型s/entities:
+
+      1. Review PRD requirements and identify key business entities
+      2. For each model, explain its purpose and relationships
+      3. Include key attributes and data types
+      4. Show relationships between models
+      5. Discuss design decisions with user
+
+      Create a clear conceptual model before moving to database schema.
+    elicit: true
+    repeatable: true
+    sections:
+      - id: model
+        title: "{{model_name}}"
+        template: |
+          **Purpose:** {{model_purpose}}
+
+          **Key Attributes:**
+          - {{attribute_1}}: {{type_1}} - {{description_1}}
+          - {{attribute_2}}: {{type_2}} - {{description_2}}
+
+          **Relationships:**
+          - {{relationship_1}}
+          - {{relationship_2}}
+
+  - id: components
+    title: Components
+    instruction: |
+      Based on the architectural patterns, tech stack, and 数据模型s from above:
+
+      1. Identify major logical components/services and their responsibilities
+      2. Consider the repository structure (monorepo/polyrepo) from PRD
+      3. Define clear boundaries and interfaces between components
+      4. For each component, specify:
+      - Primary responsibility
+      - Key interfaces/API exposed
+      - Dependencies on other components
+      - Technology specifics based on tech stack choices
+
+      5. Create component diagrams where helpful
+    elicit: true
+    sections:
+      - id: component-list
+        repeatable: true
+        title: "{{component_name}}"
+        template: |
+          **Responsibility:** {{component_description}}
+
+          **Key Interfaces:**
+          - {{interface_1}}
+          - {{interface_2}}
+
+          **Dependencies:** {{dependencies}}
+
+          **Technology Stack:** {{component_tech_details}}
+      - id: component-diagrams
+        title: Component Diagrams
+        type: mermaid
+        instruction: |
+          Create Mermaid diagrams to visualize component relationships. Options:
+          - C4 Container diagram for high-level view
+          - Component diagram for detailed internal structure
+          - Sequence diagrams for complex interactions
+          Choose the most appropriate for clarity
+
+  - id: external-API
+    title: External API
+    condition: Project requires external API integrations
+    instruction: |
+      For each external service integration:
+
+      1. Identify API needed based on PRD requirements and component design
+      2. If documentation URLs are unknown, ask user for specifics
+      3. Document authentication methods and 安全 considerations
+      4. List specific endpoints that will be used
+      5. Note any rate limits or usage constraints
+
+      If no external API are needed, state this explicitly and skip to next section.
+    elicit: true
+    repeatable: true
+    sections:
+      - id: api
+        title: "{{api_name}} API"
+        template: |
+          - **Purpose:** {{api_purpose}}
+          - **Documentation:** {{api_docs_url}}
+          - **Base URL(s):** {{api_base_url}}
+          - **Authentication:** {{auth_method}}
+          - **Rate Limits:** {{rate_limits}}
+
+          **Key Endpoints Used:**
+          - `{{method}} {{endpoint_path}}` - {{endpoint_purpose}}
+
+          **Integration Notes:** {{integration_considerations}}
+
+  - id: core-workflows
+    title: Core Workflows
+    type: mermaid
+    mermaid_type: sequence
+    instruction: |
+      Illustrate key system workflows using sequence diagrams:
+
+      1. Identify critical user journeys from PRD
+      2. Show component interactions including external API
+      3. Include error handling paths
+      4. Document async operations
+      5. Create both high-level and detailed diagrams as needed
+
+      Focus on workflows that clarify architecture decisions or complex interactions.
+    elicit: true
+
+  - id: rest-api-spec
+    title: REST API Spec
+    condition: Project includes REST API
+    type: code
+    language: yaml
+    instruction: |
+      If the project includes a REST API:
+
+      1. Create an OpenAPI 3.0 specification
+      2. Include all endpoints from epics/stories
+      3. Define request/response schemas based on 数据模型s
+      4. Document authentication requirements
+      5. Include example requests/responses
+
+      Use YAML format for better readability. If no REST API, skip this section.
+    elicit: true
+    template: |
+      openapi: 3.0.0
+      info:
+        title: {{api_title}}
+        version: {{api_version}}
+        description: {{api_description}}
+      servers:
+        - url: {{server_url}}
+          description: {{server_description}}
+
+  - id: database-schema
+    title: Database Schema
+    instruction: |
+      Transform the conceptual 数据模型s into concrete database schemas:
+
+      1. Use the database type(s) selected in Tech Stack
+      2. Create schema definitions using appropriate notation
+      3. Include indexes, constraints, and relationships
+      4. Consider performance and scalability
+      5. For NoSQL, show document structures
+
+      Present schema in format appropriate to database type (SQL DDL, JSON schema, etc.)
+    elicit: true
+
+  - id: source-tree
+    title: Source Tree
+    type: code
+    language: plaintext
+    instruction: |
+      Create a project folder structure that reflects:
+
+      1. The chosen repository structure (monorepo/polyrepo)
+      2. The service architecture (monolith/microservices/serverless)
+      3. The selected tech stack and languages
+      4. Component organization from above
+      5. Best practices for the chosen frameworks
+      6. Clear separation of concerns
+
+      Adapt the structure based on project needs. For monorepos, show service separation. For serverless, show function organization. Include language-specific conventions.
+    elicit: true
+    examples:
+      - |
+        project-root/
+        ├── packages/
+        │   ├── api/                    # Backend API service
+        │   ├── web/                    # Frontend application
+        │   ├── shared/                 # Shared utilities/types
+        │   └── infrastructure/         # IaC definitions
+        ├── scripts/                    # Monorepo management scripts
+        └── package.json                # Root package.json with workspaces
+
+  - id: infrastructure-deployment
+    title: 基础设施与部署
+    instruction: |
+      Define the deployment architecture and practices:
+
+      1. Use IaC tool selected in Tech Stack
+      2. Choose deployment strategy appropriate for the architecture
+      3. Define environments and promotion flow
+      4. Establish rollback procedures
+      5. Consider 安全, monitoring, and cost optimization
+
+      Get user input on deployment preferences and CI/CD tool choices.
+    elicit: true
+    sections:
+      - id: infrastructure-as-code
+        title: Infrastructure as Code
+        template: |
+          - **Tool:** {{iac_tool}} {{version}}
+          - **Location:** `{{iac_directory}}`
+          - **Approach:** {{iac_approach}}
+      - id: deployment-strategy
+        title: Deployment Strategy
+        template: |
+          - **Strategy:** {{deployment_strategy}}
+          - **CI/CD Platform:** {{cicd_platform}}
+          - **Pipeline Configuration:** `{{pipeline_config_location}}`
+      - id: environments
+        title: Environments
+        repeatable: true
+        template: "- **{{env_name}}:** {{env_purpose}} - {{env_details}}"
+      - id: promotion-flow
+        title: Environment Promotion Flow
+        type: code
+        language: text
+        template: "{{promotion_flow_diagram}}"
+      - id: rollback-strategy
+        title: Rollback Strategy
+        template: |
+          - **Primary Method:** {{rollback_method}}
+          - **Trigger Conditions:** {{rollback_triggers}}
+          - **Recovery Time Objective:** {{rto}}
+
+  - id: error-handling-strategy
+    title: Error Handling Strategy
+    instruction: |
+      Define comprehensive error handling approach:
+
+      1. Choose appropriate patterns for the language/framework from Tech Stack
+      2. Define logging standards and tools
+      3. Establish error categories and handling rules
+      4. Consider observability and debugging needs
+      5. Ensure 安全 (no sensitive data in logs)
+
+      This section guides both AI and human developers in consistent error handling.
+    elicit: true
+    sections:
+      - id: general-approach
+        title: General Approach
+        template: |
+          - **Error Model:** {{error_model}}
+          - **Exception Hierarchy:** {{exception_structure}}
+          - **Error Propagation:** {{propagation_rules}}
+      - id: logging-standards
+        title: Logging Standards
+        template: |
+          - **Library:** {{logging_library}} {{version}}
+          - **Format:** {{log_format}}
+          - **Levels:** {{log_levels_definition}}
+          - **Required Context:**
+            - Correlation ID: {{correlation_id_format}}
+            - Service Context: {{service_context}}
+            - User Context: {{user_context_rules}}
+      - id: error-patterns
+        title: Error Handling Patterns
+        sections:
+          - id: external-api-errors
+            title: External API Errors
+            template: |
+              - **Retry Policy:** {{retry_strategy}}
+              - **Circuit Breaker:** {{circuit_breaker_config}}
+              - **Timeout Configuration:** {{timeout_settings}}
+              - **Error Translation:** {{error_mapping_rules}}
+          - id: business-logic-errors
+            title: Business Logic Errors
+            template: |
+              - **Custom Exceptions:** {{business_exception_types}}
+              - **User-Facing Errors:** {{user_error_format}}
+              - **Error Codes:** {{error_code_system}}
+          - id: data-consistency
+            title: Data Consistency
+            template: |
+              - **Transaction Strategy:** {{transaction_approach}}
+              - **Compensation Logic:** {{compensation_patterns}}
+              - **Idempotency:** {{idempotency_approach}}
+
+  - id: coding-standards
+    title: Coding Standards
+    instruction: |
+      These standards are MANDATORY for AI agents. Work with user to define ONLY the critical rules needed to prevent bad code. Explain that:
+
+      1. This section directly controls AI developer behavior
+      2. Keep it minimal - assume AI knows general best practices
+      3. Focus on project-specific conventions and gotchas
+      4. Overly detailed standards bloat context and slow development
+      5. Standards will be extracted to separate file for dev agent use
+
+      For each standard, get explicit user confirmation it's necessary.
+    elicit: true
+    sections:
+      - id: core-standards
+        title: Core Standards
+        template: |
+          - **Languages & Runtimes:** {{languages_and_versions}}
+          - **Style & Linting:** {{linter_config}}
+          - **Test Organization:** {{test_file_convention}}
+      - id: naming-conventions
+        title: Naming Conventions
+        type: table
+        columns: [Element, Convention, Example]
+        instruction: Only include if deviating from language defaults
+      - id: critical-rules
+        title: Critical Rules
+        instruction: |
+          List ONLY rules that AI might violate or project-specific requirements. Examples:
+          - "Never use console.log in production code - use logger"
+          - "All API responses must use ApiResponse wrapper type"
+          - "Database queries must use repository pattern, never direct ORM"
+
+          Avoid obvious rules like "use SOLID principles" or "write clean code"
+        repeatable: true
+        template: "- **{{rule_name}}:** {{rule_description}}"
+      - id: language-specifics
+        title: Language-Specific Guidelines
+        condition: Critical language-specific rules needed
+        instruction: Add ONLY if critical for preventing AI mistakes. Most teams don't need this section.
+        sections:
+          - id: language-rules
+            title: "{{language_name}} Specifics"
+            repeatable: true
+            template: "- **{{rule_topic}}:** {{rule_detail}}"
+
+  - id: test-strategy
+    title: Test Strategy and Standards
+    instruction: |
+      Work with user to define comprehensive test strategy:
+
+      1. Use test frameworks from Tech Stack
+      2. Decide on TDD vs test-after approach
+      3. Define test organization and naming
+      4. Establish coverage goals
+      5. Determine integration test infrastructure
+      6. Plan for test data and external dependencies
+
+      Note: Basic info goes in Coding Standards for dev agent. This detailed section is for QA agent and team reference.
+    elicit: true
+    sections:
+      - id: testing-philosophy
+        title: Testing Philosophy
+        template: |
+          - **Approach:** {{test_approach}}
+          - **Coverage Goals:** {{coverage_targets}}
+          - **Test Pyramid:** {{test_distribution}}
+      - id: test-types
+        title: Test Types and Organization
+        sections:
+          - id: unit-tests
+            title: Unit Tests
+            template: |
+              - **Framework:** {{unit_test_framework}} {{version}}
+              - **File Convention:** {{unit_test_naming}}
+              - **Location:** {{unit_test_location}}
+              - **Mocking Library:** {{mocking_library}}
+              - **Coverage Requirement:** {{unit_coverage}}
+
+              **AI Agent Requirements:**
+              - Generate tests for all public methods
+              - Cover edge cases and error conditions
+              - Follow AAA pattern (Arrange, Act, Assert)
+              - Mock all external dependencies
+          - id: integration-tests
+            title: Integration Tests
+            template: |
+              - **Scope:** {{integration_scope}}
+              - **Location:** {{integration_test_location}}
+              - **Test Infrastructure:**
+                - **{{dependency_name}}:** {{test_approach}} ({{test_tool}})
+            examples:
+              - "**Database:** In-memory H2 for unit tests, Testcontainers PostgreSQL for integration"
+              - "**Message Queue:** Embedded Kafka for tests"
+              - "**External API:** WireMock for stubbing"
+          - id: e2e-tests
+            title: End-to-End Tests
+            template: |
+              - **Framework:** {{e2e_framework}} {{version}}
+              - **Scope:** {{e2e_scope}}
+              - **Environment:** {{e2e_environment}}
+              - **Test Data:** {{e2e_data_strategy}}
+      - id: test-data-management
+        title: Test Data Management
+        template: |
+          - **Strategy:** {{test_data_approach}}
+          - **Fixtures:** {{fixture_location}}
+          - **Factories:** {{factory_pattern}}
+          - **Cleanup:** {{cleanup_strategy}}
+      - id: continuous-testing
+        title: Continuous Testing
+        template: |
+          - **CI Integration:** {{ci_test_stages}}
+          - **Performance Tests:** {{perf_test_approach}}
+          - **安全 Tests:** {{安全_test_approach}}
+
+  - id: 安全
+    title: 安全
+    instruction: |
+      Define MANDATORY 安全 requirements for AI and human developers:
+
+      1. Focus on implementation-specific rules
+      2. Reference 安全 tools from Tech Stack
+      3. Define clear patterns for common scenarios
+      4. These rules directly impact code generation
+      5. Work with user to ensure completeness without redundancy
+    elicit: true
+    sections:
+      - id: input-validation
+        title: Input Validation
+        template: |
+          - **Validation Library:** {{validation_library}}
+          - **Validation Location:** {{where_to_validate}}
+          - **Required Rules:**
+            - All external inputs MUST be validated
+            - Validation at API boundary before processing
+            - Whitelist approach preferred over blacklist
+      - id: auth-authorization
+        title: Authentication & Authorization
+        template: |
+          - **Auth Method:** {{auth_implementation}}
+          - **Session Management:** {{session_approach}}
+          - **Required Patterns:**
+            - {{auth_pattern_1}}
+            - {{auth_pattern_2}}
+      - id: secrets-management
+        title: Secrets Management
+        template: |
+          - **Development:** {{dev_secrets_approach}}
+          - **Production:** {{prod_secrets_service}}
+          - **Code Requirements:**
+            - NEVER hardcode secrets
+            - Access via configuration service only
+            - No secrets in logs or error messages
+      - id: api-安全
+        title: API 安全
+        template: |
+          - **Rate Limiting:** {{rate_limit_implementation}}
+          - **CORS Policy:** {{cors_configuration}}
+          - **安全 Headers:** {{required_headers}}
+          - **HTTPS Enforcement:** {{https_approach}}
+      - id: data-protection
+        title: Data Protection
+        template: |
+          - **Encryption at Rest:** {{encryption_at_rest}}
+          - **Encryption in Transit:** {{encryption_in_transit}}
+          - **PII Handling:** {{pii_rules}}
+          - **Logging Restrictions:** {{what_not_to_log}}
+      - id: dependency-安全
+        title: Dependency 安全
+        template: |
+          - **Scanning Tool:** {{dependency_scanner}}
+          - **Update Policy:** {{update_frequency}}
+          - **Approval Process:** {{new_dep_process}}
+      - id: 安全-testing
+        title: 安全 Testing
+        template: |
+          - **SAST Tool:** {{static_analysis}}
+          - **DAST Tool:** {{dynamic_analysis}}
+          - **Penetration Testing:** {{pentest_schedule}}
+
+  - id: checklist-results
+    title: 清单结果报告
+    instruction: Before running the checklist, offer to output the full 架构文档. Once user confirms, execute the architect-checklist and populate results here.
+
+  - id: next-steps
+    title: 后续步骤
+    instruction: |
+      完成架构后：
+
+      1. 如果项目包含 UI 组件：
+      - 使用 "前端架构模式"
+      - 将此文档作为输入提供
+
+      2. 针对所有项目：
+      - 与产品负责人审阅
+      - 与开发代理开始实现故事
+      - 与 DevOps 代理一起设置基础设施
+
+      3. Include specific prompts for next agents if needed
+    sections:
+      - id: architect-prompt
+        title: 架构师提示
+        condition: Project has UI components
+        instruction: |
+          创建一个简短的提示，用于交接给架构师以创建前端架构。包含：
+          - Reference to this 架构文档
+          - PRD 中的关键 UI 要求
+          - 在此处做出的任何前端特定决策
+          - 请求详细的前端架构
+
