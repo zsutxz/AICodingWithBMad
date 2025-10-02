@@ -44,6 +44,65 @@
 
 - `/Analyst` 的识别首先依赖 IDE 的前缀/映射配置；映射到 agent 后，BMAD 的解析/构建逻辑（或预构建的 bundle）会把 agent + 依赖装入 prompt，随后 LLM 执行并返回结果；IDE/运行时负责将结果展示或基于权限执行副作用（写文件、运行命令）。
 
+## 将解析过的prompt传给LLM的详细过程
+
+### 1. IDE/CLI捕获命令并映射到代理文件
+
+当用户在IDE或CLI中输入命令（如`/Analyst create-competitor-analysis`）时：
+- IDE/CLI首先根据预定义的前缀规则（如`/`或`@`）识别这是一个BMAD命令
+- 系统根据命令中的agent名称（如`Analyst`）在配置中查找对应的代理文件路径
+- 对于不同的IDE，配置方式不同：
+  - 在OpenCode中，配置存储在`opencode.jsonc`文件中，将agent名称映射到`.bmad-core/agents/analyst.md`文件
+  - 在Claude Code中，代理文件存储在`.claude/commands/BMad/`目录下
+  - 在Cursor中，代理文件存储在`.cursor/rules/bmad/`目录下
+- 系统定位到代理文件后，准备加载该代理及其依赖项
+
+### 2. 依赖解析器加载代理及其所有依赖项
+
+依赖解析过程由`DependencyResolver`类处理（位于`BMAD-METHOD/tools/lib/dependency-resolver.js`）：
+- 系统读取代理文件（如`analyst.md`）并解析其中的YAML配置部分
+- YAML配置中包含`dependencies`字段，定义了该代理需要的所有依赖资源，包括：
+  - `tasks`：代理可以执行的任务文件
+  - `templates`：文档模板文件
+  - `checklists`：检查清单文件
+  - `data`：数据文件
+  - `utils`：工具文件
+- 依赖解析器递归加载所有依赖项：
+  - 首先从`bmad-core`目录查找资源
+  - 如果未找到，则从`common`目录查找
+  - 所有找到的资源都被缓存以避免重复加载
+- 系统构建一个完整的依赖树，包含代理本身和所有相关资源
+
+### 3. 系统构建包含角色、任务、模板和上下文的超级提示
+
+超级提示的构建过程是BMAD-METHOD的核心创新之一：
+- 系统将代理的角色定义（Persona）作为提示的核心部分，包括：
+  - 代理的名称、角色和个性特征
+  - 核心原则和行为准则
+  - 可用命令列表
+- 将用户请求的具体任务指令添加到提示中：
+  - 如果用户指定了任务（如`create-competitor-analysis`），系统会加载相应的任务文件
+  - 任务文件包含详细的执行步骤和指导原则
+- 将相关的模板内容整合到提示中：
+  - 根据任务要求加载相应的模板文件
+  - 模板定义了输出文档的结构和格式
+- 添加上下文信息：
+  - 用户提供的输入材料（如项目简介、需求文档等）
+  - 前一个代理生成的输出文档
+  - 系统配置信息
+
+### 4. 将超级提示发送给LLM进行处理
+
+构建好的超级提示通过以下方式发送给LLM：
+- 在IDE集成环境中，系统将整个超级提示作为用户输入发送给LLM
+- 在Web环境中，系统使用`web-builder.js`将代理和依赖项打包成带有START/END标签的bundle
+- 提示中包含明确的指令，指导LLM如何解析和使用各种资源：
+  - 代理角色定义指导LLM如何扮演特定角色
+  - 任务指令告诉LLM需要执行什么操作
+  - 模板结构确保输出格式的一致性
+  - 上下文信息为LLM提供必要的背景知识
+- 系统还包含错误处理和重试机制，确保LLM能够成功处理提示
+
 后续我可以：
 - 直接展示 `dependency-resolver.js` 如何解析并返回资源对象；或
 - 演示 `ide-setup.js` 怎样把 agent 写入某个 IDE 配置（例如 `opencode.json`）。
@@ -63,16 +122,6 @@ installation-options:
     description: Select and install a single agent with its dependencies
     action: copy-agent
 ide-configurations:
-  cursor:
-    name: Cursor
-    rule-dir: .cursor/rules/bmad/
-    format: multi-file
-    command-suffix: .mdc
-    instructions: |
-      # To use BMad agents in Cursor:
-      # 1. Press Ctrl+L (Cmd+L on Mac) to open the chat
-      # 2. Type @agent-name (e.g., "@dev", "@pm", "@architect")
-      # 3. The agent will adopt that persona for the conversation
   claude-code:
     name: Claude Code
     rule-dir: .claude/commands/BMad/
@@ -82,63 +131,6 @@ ide-configurations:
       # To use BMad agents in Claude Code:
       # 1. Type /agent-name (e.g., "/dev", "/pm", "/architect")
       # 2. Claude will switch to that agent's persona
-  iflow-cli:
-    name: iFlow CLI
-    rule-dir: .iflow/commands/BMad/
-    format: multi-file
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents in iFlow CLI:
-      # 1. Type /agent-name (e.g., "/dev", "/pm", "/architect")
-      # 2. iFlow will switch to that agent's persona
-  crush:
-    name: Crush
-    rule-dir: .crush/commands/BMad/
-    format: multi-file
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents in Crush:
-      # 1. Press CTRL + P and press TAB
-      # 2. Select agent or task
-      # 3. Crush will switch to that agent's persona / task
-  windsurf:
-    name: Windsurf
-    rule-dir: .windsurf/workflows/
-    format: multi-file
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents in Windsurf:
-      # 1. Type /agent-name (e.g., "/dev", "/pm")
-      # 2. Windsurf will adopt that agent's persona
-  trae:
-    name: Trae
-    rule-dir: .trae/rules/
-    format: multi-file
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents in Trae:
-      # 1. Type @agent-name (e.g., "@dev", "@pm", "@architect")
-      # 2. Trae will adopt that agent's persona
-  roo:
-    name: Roo Code
-    format: custom-modes
-    file: .roomodes
-    instructions: |
-      # To use BMad agents in Roo Code:
-      # 1. Open the mode selector (usually in the status bar)
-      # 2. Select any bmad-{agent} mode (e.g., "bmad-dev", "bmad-pm")
-      # 3. The AI will adopt that agent's full personality and capabilities
-  cline:
-    name: Cline
-    rule-dir: .clinerules/
-    format: multi-file
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents in Cline:
-      # 1. Open the Cline chat panel in VS Code
-      # 2. Type @agent-name (e.g., "@dev", "@pm", "@architect")
-      # 3. The agent will adopt that persona for the conversation
-      # 4. Rules are stored in .clinerules/ directory in your project
   gemini:
     name: Gemini CLI
     rule-dir: .gemini/commands/BMad/
@@ -150,29 +142,6 @@ ide-configurations:
       # 2. This adds custom commands for each agent and task.
       # 3. Type /BMad:agents:<agent-name> (e.g., "/BMad:agents:dev", "/BMad:agents:pm") or /BMad:tasks:<task-name> (e.g., "/BMad:tasks:create-doc").
       # 4. The agent will adopt that persona for the conversation or preform the task.
-  github-copilot:
-    name: Github Copilot
-    rule-dir: .github/chatmodes/
-    format: multi-file
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents with Github Copilot:
-      # 1. The installer creates a .github/chatmodes/ directory in your project
-      # 2. Open the Chat view (`鈱冣寴I` on Mac, `Ctrl+Alt+I` on Windows/Linux) and select **Agent** from the chat mode selector.
-      # 3. The agent will adopt that persona for the conversation
-      # 4. Requires VS Code 1.101+ with `chat.agent.enabled: true` in settings
-      # 5. Agent files are stored in .github/chatmodes/
-      # 6. Use `*help` to see available commands and agents
-  kilo:
-    name: Kilo Code
-    format: custom-modes
-    file: .kilocodemodes
-    instructions: |
-      # To use BMAD鈩?agents in Kilo Code:
-      # 1. Open the mode selector in VSCode
-      # 2. Select a bmad-{agent} mode (e.g. "bmad-dev")
-      # 3. The AI adopts that agent's persona and capabilities
-
   qwen-code:
     name: Qwen Code
     rule-dir: .qwen/bmad-method/
@@ -184,25 +153,6 @@ ide-configurations:
       # 2. It concatenates all agent files into a single QWEN.md file.
       # 3. Simply mention the agent in your prompt (e.g., "As *dev, ...").
       # 4. The Qwen Code CLI will automatically have the context for that agent.
-
-  auggie-cli:
-    name: Auggie CLI (Augment Code)
-    format: multi-location
-    locations:
-      user:
-        name: User Commands (Global)
-        rule-dir: ~/.augment/commands/bmad/
-        description: Available across all your projects (user-wide)
-      workspace:
-        name: Workspace Commands (Project)
-        rule-dir: ./.augment/commands/bmad/
-        description: Stored in your repository and shared with your team
-    command-suffix: .md
-    instructions: |
-      # To use BMad agents in Auggie CLI (Augment Code):
-      # 1. Type /bmad:agent-name (e.g., "/bmad:dev", "/bmad:pm", "/bmad:architect")
-      # 2. The agent will adopt that persona for the conversation
-      # 3. Commands are available based on your selected location(s)
 
   codex:
     name: Codex CLI
@@ -225,15 +175,3 @@ ide-configurations:
       # 2. Commit `.bmad-core/` and `AGENTS.md` to your repository.
       # 3. Open the repo in Codex Web and reference agents naturally (e.g., "As dev, ...").
       # 4. Re-run this installer to refresh agent sections when the core changes.
-
-  opencode:
-    name: OpenCode CLI
-    format: jsonc-config
-    file: opencode.jsonc
-    instructions: |
-      # To use BMAD agents with OpenCode CLI:
-      # 1. The installer creates/updates `opencode.jsonc` at your project root.
-      # 2. It ensures the BMAD core instructions file is referenced: `./.bmad-core/core-config.yaml`.
-      # 3. If an existing `opencode.json` or `opencode.jsonc` is present, it is preserved and only `instructions` are minimally merged.
-      # 4. Run `opencode` in this project to use your configured agents and commands.
-
