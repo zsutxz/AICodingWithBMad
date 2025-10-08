@@ -34,7 +34,7 @@
 关键文件参考
 
 - 命令与示例：`BMAD_ZH/docs/commands.md`
-- agent 定义示例：`BMAD-METHOD/bmad-core/agents/analyst.md` 或 `BMAD_ZH/agents/analyst.md`
+- agent 定义示例：`BMAD_ZH/agents/analyst.md`
 - IDE 安装/配置逻辑：`BMAD-METHOD/tools/installer/lib/ide-setup.js`
 - 依赖解析器：`BMAD-METHOD/tools/lib/dependency-resolver.js`
 - Web bundle / prompt 生成：`BMAD-METHOD/tools/builders/web-builder.js`
@@ -175,3 +175,73 @@ ide-configurations:
       # 2. Commit `.bmad-core/` and `AGENTS.md` to your repository.
       # 3. Open the repo in Codex Web and reference agents naturally (e.g., "As dev, ...").
       # 4. Re-run this installer to refresh agent sections when the core changes.
+
+      
+## 六 软件架构
+
+AI Coding With Bmad-Method 遵循模块化架构，包含以下关键组件：
+
+1. **代理(Agents)**：专门的AI角色，每个都有定义的角色（分析师、项目经理、架构师、开发人员、QA等）。
+
+2. **代理团队(Agent Teams)**：为特定用例捆绑的代理集合。
+
+3. **工作流(Workflows)**：预定义的代理交互序列。
+
+4. **模板(Templates)**：具有嵌入式AI指令的可重用文档结构。
+
+5. **任务(Tasks)**：代理可以执行的特定操作。
+
+6. **检查清单(Checklists)**：质量保证程序。
+
+核心架构特点：
+
+- **敏捷规划**：专用代理协作创建详细的PRD和架构文档。
+- **上下文工程开发**：Scrum Master将计划转换为详细的故事。
+- **两阶段方法**：将规划（不一致）与执行（上下文丢失）分离。
+- **Web UI与IDE工作流**：规划可以在Web UI中完成以节省成本，然后切换到IDE进行开发。
+
+该系统使用构建过程将代理定义及其依赖项打包成适用于不同环境（IDE、Web UI）的可分发包。
+
+
+## 七 你的贡献
+
+我们欢迎社区对 AI Coding With Bmad-Method 项目的贡献！您可以通过以下方式参与：
+
+### 贡献方式
+
+1. **报告问题**：如果您发现bug或有改进建议，请在GitHub上提交issue。
+
+2. **提交代码**：如果您想贡献代码，请：
+   - Fork本项目
+   - 创建功能分支
+   - 提交您的更改
+   - 发起Pull Request
+
+3. **改进文档**：帮助我们完善文档，使其更清晰易懂。
+
+4. **添加新代理**：开发新的AI代理以扩展BMAD-METHOD的功能。
+
+5. **创建模板**：为常见任务创建新的模板。
+
+### 开发环境设置
+
+1. 克隆项目仓库
+2. 安装必要的依赖
+3. 配置AI工具和API密钥
+4. 运行测试确保一切正常工作
+
+### 代码规范
+
+- 遵循项目现有的代码风格
+- 为新功能添加适当的测试
+- 更新相关文档
+- 确保所有测试通过后再提交
+
+### 社区准则
+
+- 保持尊重和专业
+- 提供有建设性的反馈
+- 遵循项目的代码规范
+- 保持开放的心态接受反馈
+
+感谢您对本项目的贡献！
