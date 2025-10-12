@@ -4,21 +4,41 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This repository contains the BMAD-METHOD™ (Breakthrough Method of Agile AI-driven Development), a universal AI agent framework for any domain. The framework provides specialized AI agents for software development, creative writing, business strategy, and more.
+This repository is a documentation and educational wrapper around the BMAD-METHOD™ (Breakthrough Method of Agile AI-driven Development), a universal AI agent framework. The actual framework code lives in the `BMAD-METHOD/` submodule (https://github.com/bmadcode/BMAD-METHOD), while this repository provides Chinese documentation, examples, and usage guides.
+
+## Repository Structure
+
+- `BMAD-METHOD/` - Git submodule containing the core framework
+  - `bmad-core/` - Core framework components
+    - `agents/` - Agent definitions (analyst.md, pm.md, architect.md, dev.md, qa.md, etc.)
+    - `tasks/` - Task definitions (create-doc.md, shard-doc.md, etc.)
+    - `templates/` - Document templates (prd-tmpl.yaml, architecture-tmpl.yaml, etc.)
+    - `checklists/` - Quality assurance checklists
+    - `data/` - Knowledge base files
+  - `expansion-packs/` - Domain-specific extensions
+  - `tools/` - Build tools, installer, and CLI utilities
+  - `dist/` - Built web bundles for agents
+- Root level documentation (Chinese):
+  - `AICodingWithBMad.md` - Comprehensive guide
+  - `BMAD_Commands.md` - Command reference
+  - `BMAD_FrameWork.md` - Framework architecture details
+  - `AGENTS.md` - Agent listing
 
 ## High-Level Architecture
 
-The BMAD-METHOD follows a modular architecture with these core components:
+The BMAD-METHOD follows a modular, dependency-driven architecture:
 
-1. **Agents**: Specialized AI personas with defined roles (Analyst, PM, Architect, Scrum Master, Developer, QA, etc.)
-2. **Agent Teams**: Collections of agents bundled for specific use cases
-3. **Workflows**: Prescribed sequences of agent interactions for complex tasks
-4. **Templates**: Reusable document structures with embedded AI instructions
-5. **Tasks**: Specific actions that agents can perform
-6. **Checklists**: Quality assurance and validation procedures
-7. **Data**: Knowledge base and domain-specific information
+1. **Agents**: AI personas defined in Markdown+YAML files with role definitions, personalities, and available commands
+2. **Tasks**: Specific executable instructions that agents can perform
+3. **Templates**: YAML-based document structures ensuring consistent outputs
+4. **Dependencies**: Each agent declares dependencies (tasks, templates, data) that are dynamically loaded
+5. **Dependency Resolution**: The system (in `tools/lib/dependency-resolver.js`) recursively loads all dependencies and constructs a "super prompt" combining agent persona, task instructions, templates, and context
 
-The system uses a dependency resolution system where each agent declares its dependencies (templates, tasks, etc.) in YAML configuration files.
+**Key Innovation**: When you invoke an agent (e.g., `/pm create-prd`), the system doesn't just send the command to the LLM. Instead, it:
+1. Loads the agent definition from `bmad-core/agents/pm.md`
+2. Resolves all dependencies (tasks, templates, checklists)
+3. Combines them into a context-rich "super prompt"
+4. Sends this enriched prompt to the LLM for consistent, high-quality output
 
 ## Common Development Commands
 
