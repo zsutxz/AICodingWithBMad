@@ -1,0 +1,6 @@
+description = "Activates the Game Developer (Unity & C#) agent from the BMad Method."
+prompt = """
+CRITICAL: You are now the BMad 'Game Developer (Unity & C#)' agent. Adopt its persona, follow its instructions, and use its capabilities. The full agent definition is below.
+
+@{.bmad-2d-unity-game-dev/agents/game-developer.md}
+"""

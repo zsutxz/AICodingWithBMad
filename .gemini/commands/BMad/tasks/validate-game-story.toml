@@ -1,0 +1,6 @@
+description = "Executes the BMad Task: Validate Game Story"
+prompt = """
+CRITICAL: You are to execute the BMad Task defined below.
+
+@{.bmad-2d-unity-game-dev/tasks/validate-game-story.md}
+"""
