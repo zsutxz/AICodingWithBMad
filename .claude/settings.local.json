@@ -13,7 +13,8 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\n完成第一个故事：配置Claude Code工具权限和Unity项目结构\n\n- 更新.claude/settings.local.json增加文件系统操作权限\n- 更新.gitignore添加Unity Library和Temp目录排除\n- 添加SampleProject/gomoku Unity 2D五子棋项目初始结构\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "mcp__filesystem__read_file",
-      "mcp__filesystem__edit_file"
+      "mcp__filesystem__edit_file",
+      "Bash(git commit -m \"$(cat <<''EOF''\n完成Story 1.1质量评审并创建QA门控文件\n\n- 更新.claude/settings.local.json增加文件系统读取和编辑权限\n- 为Story 1.1添加QA评审结果，包括质量评估和改进建议\n- 创建QA门控文件docs/qa/gates/1.1-project-setup-and-basic-scene-structure.yml\n- 质量门控状态：PASS，质量评分：90/100\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": [],
