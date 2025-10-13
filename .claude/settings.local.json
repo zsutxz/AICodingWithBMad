@@ -10,7 +10,8 @@
       "mcp__filesystem__write_file",
       "Bash(echo $APPDATA)",
       "Read(//c/Users/tanxz/AppData/Roaming/**)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\n完成第一个故事：配置Claude Code工具权限和Unity项目结构\n\n- 更新.claude/settings.local.json增加文件系统操作权限\n- 更新.gitignore添加Unity Library和Temp目录排除\n- 添加SampleProject/gomoku Unity 2D五子棋项目初始结构\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
