@@ -15,7 +15,11 @@
       "mcp__filesystem__read_file",
       "mcp__filesystem__edit_file",
       "Bash(git commit -m \"$(cat <<''EOF''\n完成Story 1.1质量评审并创建QA门控文件\n\n- 更新.claude/settings.local.json增加文件系统读取和编辑权限\n- 为Story 1.1添加QA评审结果，包括质量评估和改进建议\n- 创建QA门控文件docs/qa/gates/1.1-project-setup-and-basic-scene-structure.yml\n- 质量门控状态：PASS，质量评分：90/100\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git commit -m \"$(cat <<''EOF''\n更新Claude Code权限配置以支持QA评审流程\n\n- 添加mcp__filesystem__read_file和mcp__filesystem__edit_file权限\n- 配置additionalDirectories以允许访问项目根目录\n- 完善git commit权限配置\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\n更新Claude Code权限配置以支持QA评审流程\n\n- 添加mcp__filesystem__read_file和mcp__filesystem__edit_file权限\n- 配置additionalDirectories以允许访问项目根目录\n- 完善git commit权限配置\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "mcp__filesystem__search_files",
+      "Bash(dir:*)",
+      "mcp__filesystem__read_multiple_files",
+      "Bash(git commit -m \"$(cat <<''EOF''\n添加Story 1.2测试基础设施文件\n\n- 添加测试元数据文件(.meta)用于Unity项目结构\n- 添加测试报告文档TestReport.md\n- 完善测试目录结构\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": [],
