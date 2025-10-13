@@ -1,0 +1,14 @@
+{
+    "name": "Gomoku.Tests",
+    "references": [
+        "Gomoku",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
