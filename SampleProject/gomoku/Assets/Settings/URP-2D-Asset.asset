@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf40a4e22c2b37b4eb2b144704782749, type: 3}
+  m_Name: URP-2D-Asset
+  m_EditorClassIdentifier:
+  m_RendererType: 1
+  m_RendererData: {fileID: 11400000, guid: 88582139753175c4187789f789930a1b, type: 2}
+  m_RendererDataList:
+  - {fileID: 11400000, guid: 88582139753175c4187789f789930a1b, type: 2}
+  m_DefaultRendererIndex: 0
+  m_PresetDirty: 0
+  m_PresetToUse: 0
+  m_VolumeFrameworkUpdateMode: 0
+  m_FixedTimeStep: 0.02
+  m_MaxDeltaTime: 0.05
+  m_AssetVersion: 10
+  m_AllowShaderVariantStripping: 1
+  m_StripDebugVariants: 1
+  m_ShaderVariantLogLevel: 0
+  m_ShadowCascades: 0
+  m_ShadowDepthBias: 1
+  m_ShadowNormalBias: 1
+  m_ShadowPancaking: 1
+  m_NumIterations: 1
+  m_LightLoopSettings:
+    m_SupportsDeferredRendering: 0
+    m_SupportsMixedLighting: 1
+    m_SupportsLTC: 1
+    m_UseBranching: 0
+  m_ColorGradingMode: 0
+  m_ColorGradingLutSize: 32
+  m_UseAdaptivePerformance: 1
+  m_MainLightRenderingMode: 1
+  m_MainLightShadowCascades: 0
+  m_MainLightShadowCascadeSplit: 0.07
+  m_AdditionalLightsRenderingMode: 1
+  m_AdditionalLightsShadowCastingMode: 0
+  m_AdditionalLightShadowResolutionTier: 2
+  m_AdditionalLightsPerObjectLimit: 4
+  m_ReflectionProbeBlending: 1
+  m_ReflectionProbeBoxProjection: 1
+  m_ShadowDistance: 50
+  m_ShadowCascades: 0
+  m_ShadowDistanceFade: 1
+  m_UseSRPBatcher: 1
+  m_SupportRuntimeDebugDisplay: 1
+  m_PrototypeRenderPipelineResources: {fileID: 0}
+  m_OpaqueDownsampling: 1
+  m_SupportsTerrainHoles: 1
+  m_SupportsTransparency: 1
+  m_TransparencySortMode: 1
+  m_TransparencySortAxis: {x: 0, y: 0, z: 1}
+  m_DebugLevel: 0
+  m_UseDebugUIForCameraStacking: 1
+  m_CameraStacking: 1
+  m_PostProcessingData: {fileID: 11400000, guid: 414398f8336d86b438a0b22995976ee4, type: 2}
+  m_HDRAutoExposure: {fileID: 0}
+  m_HDRColorBufferPrecision: 0
+  m_VolumeBufferPrecision: 0
+  m_ShadowType: 1
+  m_LocalShadowsAtlasResolution: 256
+  m_MaxPixelLights: 0
+  m_ShadowAtlasResolution: 256
+  m_ShaderDepthBias: 1
+  m_ShaderNormalBias: 1
+  m_AdditionalLightsCookieAtlasResolution: 2048
+  m_AdditionalLightsMaxCookieSize: 2048
+  m_ShadowCascades: 0
+  m_ShadowCascade2Split: 0.25
+  m_ShadowCascade4Split: {x: 0.067, y: 0.2, z: 0.467}
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsPerObjectLimit: 4
+  m_LightCookieAtlasResolution: 2048
+  m_LightCookieMaxSize: 2048
+  m_UseSRPBatcher: 1
+  m_SupportsCameraDepthTexture: 1
+  m_SupportsCameraOpaqueTexture: 1
+  m_SupportsHDR: 1
+  m_HDRColorBufferPrecision: 0
+  m_MSAA: 1
+  m_RenderScale: 1
+  m_UseDynamicResolution: 0
+  m_AutoResolution: 1
+  m_minScaling: 0.5
+  m_maxScaling: 1
+  m_DLSS: 0
+  m_NvidiaDLSS: {fileID: 0}
+  m_FSR: 0
+  m_XRRendering: 1
+  m_RenderingPathCustomRenderPass: 0
+  m_TileSize: 32
+  m_UpscalingFilter: 0
+  m_FoveatedRendering: 0
+  m_FoveatedRenderingLevel: 0
+  m_FoveatedRenderingRings: 4
+  m_FoveatedRenderingRatio: {x: 1, y: 1, z: 1, w: 1}
+  m_UseAdaptivePerformance: 1
+  m_QualitySettings:
+    m_OpaqueLayerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    m_TransparentLayerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    m_DefaultVolumeLayerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    m_VolumeLayerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    m_VolumeTriggerLayerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    m_RendererType: 1
+    m_RendererData: {fileID: 0}
+    m_RendererDataList:
+    - {fileID: 11400000, guid: 756a1548702772c47839583938924484, type: 2}
+    m_DefaultRendererIndex: 0
+    m_MaxLevel: 3
+    m_Level: 0
+    m_RendererDataList:
+    - {fileID: 11400000, guid: 756a1548702772c47839583938924484, type: 2}
+    m_RendererDataList:
+    - {fileID: 11400000, guid: 756a1548702772c47839583938924484, type: 2}
+    m_RendererDataList:
+    - {fileID: 11400000, guid: 756a1548702772c47839583938924484, type: 2}

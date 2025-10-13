@@ -1,0 +1,8 @@
+This is a placeholder file for the GameManager prefab.
+
+In the Unity Editor, create a prefab by:
+1. Creating an empty GameObject in the scene named "GameManager"
+2. Adding the GameManager.cs component to it
+3. Dragging the GameObject from the hierarchy to this folder to create the prefab
+
+The prefab will be used to instantiate the GameManager in scenes.

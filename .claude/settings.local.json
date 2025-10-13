@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__filesystem__list_directory",
+      "Bash(cat:*)",
+      "mcp__filesystem__list_allowed_directories",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "mcp__filesystem__create_directory",
+      "mcp__filesystem__write_file",
+      "Bash(echo $APPDATA)",
+      "Read(//c/Users/tanxz/AppData/Roaming/**)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

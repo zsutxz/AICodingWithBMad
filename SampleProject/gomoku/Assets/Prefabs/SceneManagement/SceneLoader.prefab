@@ -1,0 +1,9 @@
+This is a placeholder file for the SceneLoader prefab.
+
+In the Unity Editor, create a prefab by:
+1. Creating an empty GameObject in the scene named "SceneLoader"
+2. Adding the SceneLoader.cs component to it
+3. Configuring the component with references to loading screen and progress bar
+4. Dragging the GameObject from the hierarchy to this folder to create the prefab
+
+The prefab will be used to instantiate the SceneLoader in scenes.
