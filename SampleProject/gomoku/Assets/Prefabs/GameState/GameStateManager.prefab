@@ -1,9 +1,0 @@
-This is a placeholder file for the GameStateManager prefab.
-
-In the Unity Editor, create a prefab by:
-1. Creating an empty GameObject in the scene named "GameStateManager"
-2. Adding the GameStateManager.cs component to it
-3. Dragging the GameObject from the hierarchy to this folder to create the prefab
-4. Setting up the prefab with appropriate references to UI Manager and Audio Manager
-
-The prefab will be used to instantiate the GameStateManager in scenes.
