@@ -1,0 +1,17 @@
+prefab:
+  name: Piece
+  components:
+    - component: 
+        name: Piece
+        properties:
+          pieceType: None
+    - component:
+        name: SpriteRenderer
+    - component:
+        name: Rigidbody2D
+        properties:
+          bodyType: Kinematic
+    - component:
+        name: CircleCollider2D
+        properties:
+          isTrigger: true

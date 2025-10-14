@@ -178,6 +178,28 @@ namespace Gomoku
             }
         }
 
+        /// <summary>
+        /// Initializes the game board for testing purposes with default configuration
+        /// </summary>
+        /// <param name="size">Size of the board</param>
+        public void InitializeForTest(int size)
+        {
+            boardSize = size;
+
+            // Initialize visual components
+            if (boardRenderer != null)
+            {
+                boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+            }
+
+            if (intersectionDetector != null)
+            {
+                intersectionDetector.Initialize(boardSize, cellSize, boardOffset);
+            }
+
+            Debug.Log($"GameBoard initialized for test with size {boardSize}x{boardSize}");
+        }
+
         #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {

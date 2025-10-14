@@ -20,12 +20,19 @@
       "Bash(dir:*)",
       "mcp__filesystem__read_multiple_files",
       "Bash(git commit -m \"$(cat <<''EOF''\n添加Story 1.2测试基础设施文件\n\n- 添加测试元数据文件(.meta)用于Unity项目结构\n- 添加测试报告文档TestReport.md\n- 完善测试目录结构\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git commit -m \"$(cat <<''EOF''\n清理项目文件\n\n- 删除过时的解决方案文件gomoku.sln\n- 清理项目结构\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\n清理项目文件\n\n- 删除过时的解决方案文件gomoku.sln\n- 清理项目结构\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "mcp__filesystem__directory_tree",
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "WebSearch",
+      "Bash(npm run validate)",
+      "Bash(findstr:*)",
+      "mcp__filesystem__move_file"
     ],
     "deny": [],
     "ask": [],
     "additionalDirectories": [
-      "D:\\work\\AI\\AICodingWithBMad\\**"
+      "D:\\work\\AI\\AICodingWithBMad\\"
     ]
   }
 }

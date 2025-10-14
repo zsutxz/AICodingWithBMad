@@ -1,0 +1,13 @@
+prefab:
+  name: HoverIndicator
+  components:
+    - component:
+        name: SpriteRenderer
+        properties:
+          color: [0.5, 1.0, 0.5, 0.5]
+          sortingOrder: 1
+    - component:
+        name: CircleCollider2D
+        properties:
+          isTrigger: true
+          radius: 0.4
