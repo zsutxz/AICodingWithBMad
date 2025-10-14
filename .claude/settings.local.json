@@ -27,7 +27,9 @@
       "WebSearch",
       "Bash(npm run validate)",
       "Bash(findstr:*)",
-      "mcp__filesystem__move_file"
+      "mcp__filesystem__move_file",
+      "mcp__filesystem__get_file_info",
+      "Bash(git commit -m \"$(cat <<''EOF''\n修复所有预制体，包括 GameManager.prefab、SceneLoader.prefab、HoverIndicator.prefab 和 Piece.prefab\n\n- 为 GameManager.prefab 更新了正确的脚本引用\n- 为 SceneLoader.prefab 创建了完整的 prefab 定义\n- 为 HoverIndicator.prefab 创建了完整的 prefab 定义\n- 为 Piece.prefab 创建了完整的 prefab 定义\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": [],
