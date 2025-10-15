@@ -10,7 +10,6 @@ namespace Gomoku.UI
     public class MoveCounter : MonoBehaviour
     {
         [Header("Component References")]
-        [SerializeField] private GameBoardModel gameBoardModel;
         [SerializeField] private TextMeshProUGUI moveText;
 
         [Header("Text Settings")]
@@ -40,19 +39,8 @@ namespace Gomoku.UI
         /// </summary>
         private void InitializeMoveCounter()
         {
-            // Auto-find references
-            if (gameBoardModel == null)
-                gameBoardModel = FindObjectOfType<GameBoardModel>();
-
             if (moveText == null)
                 moveText = GetComponentInChildren<TextMeshProUGUI>();
-
-            if (gameBoardModel == null)
-            {
-                Debug.LogError("GameBoardModel reference not found for MoveCounter");
-                enabled = false;
-                return;
-            }
 
             // Set initial display
             UpdateMoveDisplay(gameBoardModel.GetMoveCount(), false);

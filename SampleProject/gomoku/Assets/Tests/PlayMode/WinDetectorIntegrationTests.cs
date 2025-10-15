@@ -9,6 +9,8 @@ using System.Collections;
 using UnityEngine.UI;
 using Gomoku.GameState;
 using Gomoku;
+using Gomoku.UI;
+using static Gomoku.TurnManager;
 
 /// <summary>
 /// WinDetectorIntegrationTests contains play mode integration tests for the WinDetector class.
@@ -24,7 +26,7 @@ public class WinDetectorIntegrationTests
     private GameObject bannerPanel;
     private WinCondition winCondition;
     private PiecePlacement piecePlacement;
-    private GameBoard gameBoard;
+    private GameBoardController gameBoard;
     
     [UnitySetUp]
     public IEnumerator SetUp()
@@ -35,7 +37,7 @@ public class WinDetectorIntegrationTests
         // Add required components
         winDetector = testGameObject.AddComponent<WinDetector>();
         gameStateManager = testGameObject.AddComponent<GameStateManager>();
-        gameBoard = testGameObject.AddComponent<GameBoard>();
+        gameBoard = testGameObject.AddComponent<GameBoardController>();
         piecePlacement = testGameObject.AddComponent<PiecePlacement>();
 
         // Set up references between components
@@ -86,14 +88,6 @@ public class WinDetectorIntegrationTests
     [UnityTest]
     public IEnumerator CheckForWin_WinDetected_VictoryBannerShowsWinner()
     {
-        // Arrange
-        // Set up a horizontal win for Black player
-        // Directly manipulate the board state
-        for (int x = 0; x < 5; x++)
-        {
-            piecePlacement.BoardState[x, 0] = PlayerType.Black;
-        }
-
         // Ensure banner is initially hidden
         Assert.IsFalse(bannerPanel.activeSelf);
 

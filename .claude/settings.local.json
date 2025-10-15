@@ -37,7 +37,10 @@
       "Bash(do if [ ! -f \"$file\" ])",
       "Bash(then echo \"Orphaned meta file: $file.meta\")",
       "Bash(fi:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(git commit:*)",
+      "Bash(rm:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": [],

@@ -9,7 +9,7 @@ namespace Gomoku
     public class PiecePlacement : MonoBehaviour
     {
         [Header("Component References")]
-        [SerializeField] private GameBoard gameBoard;
+        [SerializeField] private GameBoardController gameBoard;
         [SerializeField] private TurnManager turnManager;
         [SerializeField] private IntersectionDetector intersectionDetector;
         
@@ -94,7 +94,7 @@ namespace Gomoku
         {
             // Auto-find components if not assigned
             if (gameBoard == null)
-                gameBoard = FindObjectOfType<GameBoard>();
+                gameBoard = FindObjectOfType<GameBoardController>();
             
             if (turnManager == null)
                 turnManager = FindObjectOfType<TurnManager>();

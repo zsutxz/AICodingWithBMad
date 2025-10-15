@@ -18,7 +18,6 @@ namespace Gomoku.UI
         [Header("Game System References")]
         [SerializeField] private GameStateManager gameStateManager;
         [SerializeField] private TurnManager turnManager;
-        [SerializeField] private GameBoardModel gameBoardModel;
 
         [Header("Integration Settings")]
         [SerializeField] private bool autoInitialize = true;
@@ -62,9 +61,6 @@ namespace Gomoku.UI
             if (turnManager == null)
                 turnManager = FindObjectOfType<TurnManager>();
 
-            // Find game board model
-            if (gameBoardModel == null)
-                gameBoardModel = FindObjectOfType<GameBoardModel>();
 
             // Find UI components
             if (turnIndicator == null)
@@ -343,12 +339,6 @@ namespace Gomoku.UI
             if (turnManager == null)
             {
                 Debug.LogError("UIGameStateIntegrator: TurnManager reference is missing");
-                isValid = false;
-            }
-
-            if (gameBoardModel == null)
-            {
-                Debug.LogError("UIGameStateIntegrator: GameBoardModel reference is missing");
                 isValid = false;
             }
 

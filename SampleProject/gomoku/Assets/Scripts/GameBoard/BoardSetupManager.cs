@@ -8,7 +8,7 @@ namespace Gomoku
     public class BoardSetupManager : MonoBehaviour
     {
         [Header("Board Components")]
-        [SerializeField] private GameBoard gameBoard;
+        [SerializeField] private GameBoardController gameBoard;
         [SerializeField] private BoardRenderer boardRenderer;
         [SerializeField] private BoardScaler boardScaler;
         [SerializeField] private Canvas canvas;
@@ -39,7 +39,7 @@ namespace Gomoku
         {
             // Find components if not assigned
             if (gameBoard == null)
-                gameBoard = GetComponentInChildren<GameBoard>();
+                gameBoard = GetComponentInChildren<GameBoardController>();
             
             if (boardRenderer == null)
                 boardRenderer = GetComponentInChildren<BoardRenderer>();
@@ -283,7 +283,7 @@ namespace Gomoku
         {
             // Auto-assign components in editor
             if (gameBoard == null)
-                gameBoard = GetComponentInChildren<GameBoard>();
+                gameBoard = GetComponentInChildren<GameBoardController>();
             
             if (boardRenderer == null)
                 boardRenderer = GetComponentInChildren<BoardRenderer>();

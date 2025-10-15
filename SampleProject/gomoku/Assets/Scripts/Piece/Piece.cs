@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Gomoku.TurnManager;
 
 namespace Gomoku
 {

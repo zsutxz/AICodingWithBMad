@@ -5,7 +5,7 @@ namespace Gomoku
     /// <summary>
     /// Main component responsible for managing the 15x15 game board logic
     /// </summary>
-    public class GameBoard : MonoBehaviour
+    public class GameBoardController : MonoBehaviour
     {
         [Header("Board Configuration")]
         [SerializeField] private int boardSize = 15;

@@ -7,7 +7,7 @@ namespace Gomoku.Tests
     public class PiecePlacementTests
     {
         private PiecePlacement piecePlacement;
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
         private TurnManager turnManager;
         private IntersectionDetector intersectionDetector;
 
@@ -15,7 +15,7 @@ namespace Gomoku.Tests
         public void SetUp()
         {
             GameObject go = new GameObject("TestSetup");
-            gameBoard = go.AddComponent<GameBoard>();
+            gameBoard = go.AddComponent<GameBoardController>();
             turnManager = go.AddComponent<TurnManager>();
             intersectionDetector = go.AddComponent<IntersectionDetector>();
             piecePlacement = go.AddComponent<PiecePlacement>();

@@ -20,7 +20,7 @@ public class WinDetectorTests
     public GameStateManager gameStateManager;
     public WinCondition winCondition;
     public PiecePlacement piecePlacement;
-    public GameBoard gameBoard;
+    public GameBoardController gameBoard;
     private object gameBoardModel;
 
     [SetUp]
@@ -32,7 +32,7 @@ public class WinDetectorTests
         // Add the required components
         winDetector = testGameObject.AddComponent<WinDetector>();
         gameStateManager = testGameObject.AddComponent<GameStateManager>();
-        gameBoard = testGameObject.AddComponent<GameBoard>();
+        gameBoard = testGameObject.AddComponent<GameBoardController>();
         piecePlacement = testGameObject.AddComponent<PiecePlacement>();
 
         //// Set up references between components

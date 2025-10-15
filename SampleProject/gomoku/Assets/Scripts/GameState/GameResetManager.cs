@@ -8,10 +8,6 @@ namespace Gomoku.GameState
     /// </summary>
     public class GameResetManager : MonoBehaviour
     {
-        [Header("References")]
-        [Tooltip("Reference to the GameBoardModel to reset board state")]
-        [SerializeField] private GameBoardModel gameBoardModel;
-
         [Tooltip("Reference to the TurnManager to reset player turns")]
         [SerializeField] private TurnManager turnManager;
 

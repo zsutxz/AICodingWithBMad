@@ -8,7 +8,7 @@ namespace Gomoku
     public class PieceVisualizer : MonoBehaviour
     {
         [Header("Component References")]
-        [SerializeField] private GameBoard gameBoard;
+        [SerializeField] private GameBoardController gameBoard;
         [SerializeField] private IntersectionDetector intersectionDetector;
         [SerializeField] private PiecePlacement piecePlacement;
 
@@ -47,7 +47,7 @@ namespace Gomoku
         private void InitializeVisualizer()
         {
             // Auto-find references
-            if (gameBoard == null) gameBoard = FindObjectOfType<GameBoard>();
+            if (gameBoard == null) gameBoard = FindObjectOfType<GameBoardController>();
             if (intersectionDetector == null) intersectionDetector = FindObjectOfType<IntersectionDetector>();
             if (piecePlacement == null) piecePlacement = FindObjectOfType<PiecePlacement>();
 

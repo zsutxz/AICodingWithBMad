@@ -7,7 +7,7 @@ namespace Gomoku.Tests
     [TestFixture]
     public class GameBoardTests
     {
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
         private GameObject gameBoardObject;
 
         [SetUp]
@@ -15,7 +15,7 @@ namespace Gomoku.Tests
         {
             // Create a test GameBoard object
             gameBoardObject = new GameObject("TestGameBoard");
-            gameBoard = gameBoardObject.AddComponent<GameBoard>();
+            gameBoard = gameBoardObject.AddComponent<GameBoardController>();
         }
 
         [TearDown]

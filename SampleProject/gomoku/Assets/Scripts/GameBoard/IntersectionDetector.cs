@@ -20,7 +20,7 @@ namespace Gomoku
         private int boardSize;
         private float cellSize;
         private Vector2 boardOffset;
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
 
         // Events
         public System.Action<int, int> OnIntersectionClicked;
@@ -39,10 +39,10 @@ namespace Gomoku
             this.boardOffset = boardOffset;
 
             // Get reference to parent GameBoard
-            gameBoard = GetComponentInParent<GameBoard>();
+            gameBoard = GetComponentInParent<GameBoardController>();
             if (gameBoard == null)
             {
-                Debug.LogError("IntersectionDetector must be a child of a GameBoard component.");
+                Debug.LogError("IntersectionDetector must be a child of a GameBoardController component.");
             }
 
             // Ensure we have a collider for detection

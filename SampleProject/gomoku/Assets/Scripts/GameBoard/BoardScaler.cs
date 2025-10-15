@@ -10,7 +10,7 @@ namespace Gomoku
         [Header("Scaling Configuration")]
         [SerializeField] private Canvas canvas;
         [SerializeField] private RectTransform boardContainer;
-        [SerializeField] private GameBoard gameBoard;
+        [SerializeField] private GameBoardController gameBoard;
         
         [Header("Screen Size Settings")]
         [SerializeField] private Vector2 referenceResolution = new Vector2(1920, 1080);
@@ -74,7 +74,7 @@ namespace Gomoku
 
             if (gameBoard == null)
             {
-                gameBoard = GetComponentInChildren<GameBoard>();
+                gameBoard = GetComponentInChildren<GameBoardController>();
             }
 
             mainCamera = Camera.main;

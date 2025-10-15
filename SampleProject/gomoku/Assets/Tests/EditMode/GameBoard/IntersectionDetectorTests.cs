@@ -9,7 +9,7 @@ namespace Gomoku.Tests
     {
         private IntersectionDetector intersectionDetector;
         private GameObject detectorObject;
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
         private GameObject gameBoardObject;
 
         [SetUp]
@@ -17,7 +17,7 @@ namespace Gomoku.Tests
         {
             // Create a test GameBoard hierarchy
             gameBoardObject = new GameObject("TestGameBoard");
-            gameBoard = gameBoardObject.AddComponent<GameBoard>();
+            gameBoard = gameBoardObject.AddComponent<GameBoardController>();
 
             // Create IntersectionDetector as a child of GameBoard
             detectorObject = new GameObject("TestIntersectionDetector");
