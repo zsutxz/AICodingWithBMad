@@ -6,19 +6,19 @@ using Gomoku.Audio;
 using Gomoku.UI;
 using System;
 
-namespace Gomoku.GameState
+/// <summary>
+/// Enum representing the different game states
+/// </summary>
+public enum GameState
 {
-    /// <summary>
-    /// Enum representing the different game states
-    /// </summary>
-    public enum GameState
-    {
-        MainMenu,
-        Playing,
-        Paused,
-        GameOver
-    }
+    MainMenu,
+    Playing,
+    Paused,
+    GameOver
+}
 
+namespace Gomoku
+{
     /// <summary>
     /// Manages the overall game state and transitions between states
     /// </summary>
@@ -312,17 +312,17 @@ namespace Gomoku.GameState
             // Show the victory banner with winner information
             if (gameOverScreen != null)
             {
-                //// Get the winner from the WinDetector
-                //if (winDetector != null && winDetector.HasWinner())
-                //{
-                //    var winner = winDetector.GetWinner();
-                //    gameOverScreen.ShowGameOver(winner);
-                //}
-                //else
-                //{
-                //    // Fallback: if no winner is detected, default to black
-                //    gameOverScreen.ShowGameOver(PlayerType.Black);
-                //}
+                // Get the winner from the WinDetector
+                if (winDetector != null && winDetector.HasWinner())
+                {
+                    var winner = winDetector.GetWinner();
+                    gameOverScreen.ShowGameOver(winner);
+                }
+                else
+                {
+                    // Fallback: if no winner is detected, default to black
+                    gameOverScreen.ShowGameOver(PlayerType.Black);
+                }
             }
 
             // Pause game time

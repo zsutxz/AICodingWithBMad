@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Gomoku.GameState
+namespace Gomoku
 {
     /// <summary>
     /// Manages game state persistence and reset functionality
@@ -51,7 +51,7 @@ namespace Gomoku.GameState
             // Notify the game state manager that we're starting a new game
             if (gameStateManager != null)
             {
-                gameStateManager.SetState(Gomoku.GameState.GameState.Playing);
+                gameStateManager.SetState(GameState.Playing);
                 Debug.Log("Game state transitioned to Playing");
             }
 

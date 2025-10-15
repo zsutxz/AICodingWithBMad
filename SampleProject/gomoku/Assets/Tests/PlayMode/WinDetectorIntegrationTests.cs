@@ -7,10 +7,8 @@ using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine.UI;
-using Gomoku.GameState;
 using Gomoku;
 using Gomoku.UI;
-using static Gomoku.TurnManager;
 
 /// <summary>
 /// WinDetectorIntegrationTests contains play mode integration tests for the WinDetector class.

@@ -1,8 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
+
 using Gomoku.UI;
-using Gomoku.GameState;
+
 
 namespace Gomoku.Tests.EditMode
 {

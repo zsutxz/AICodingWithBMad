@@ -62,8 +62,11 @@
   <ItemGroup>
     <Compile Include="Assets\Tests\EditMode\Piece\TurnManagerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIManagementTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\GameState\GameStateManagerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\BoardRendererTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIMoveCounterTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\GameState\GameOverScreenTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\GameState\ScreenManagerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\WinDetectorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIPauseButtonTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\IntersectionDetectorTests.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Assets\Tests\PlayMode\WinDetectorIntegrationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UITurnIndicatorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\PiecePlacementTests.cs" />
+    <Compile Include="Assets\Tests\PlayMode\GameFlowIntegrationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>

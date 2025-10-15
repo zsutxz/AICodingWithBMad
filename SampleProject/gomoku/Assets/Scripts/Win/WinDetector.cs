@@ -5,7 +5,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Gomoku;
-using Gomoku.GameState;
+using System;
 
 /// <summary>
 /// WinDetector is responsible for detecting when a player has won by connecting five pieces in a row.
@@ -339,6 +339,11 @@ public class WinDetector : MonoBehaviour
     {
         winner = PlayerType.None;
         gameWon = false;
+    }
+
+    internal bool HasWinner()
+    {
+        throw new NotImplementedException();
     }
 }
 

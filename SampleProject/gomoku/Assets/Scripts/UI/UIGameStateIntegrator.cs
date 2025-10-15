@@ -1,6 +1,5 @@
 using UnityEngine;
-using Gomoku.GameState;
-using Gomoku.GameBoard;
+
 using System;
 
 namespace Gomoku.UI
@@ -102,7 +101,7 @@ namespace Gomoku.UI
             // Note: GameBoardModel may need to be extended to include move events
         }
 
-        private void HandleGameStateChange(GameState.GameState arg0)
+        private void HandleGameStateChange(GameState arg0)
         {
             throw new NotImplementedException();
         }
@@ -114,7 +113,7 @@ namespace Gomoku.UI
         {
             if (gameStateManager != null)
             {
-                HandleGameStateChange(Gomoku.GameState.GameState.MainMenu, gameStateManager.GetCurrentState());
+                HandleGameStateChange(GameState.MainMenu, gameStateManager.GetCurrentState());
             }
 
             if (turnManager != null && turnIndicator != null)
@@ -135,22 +134,22 @@ namespace Gomoku.UI
         /// </summary>
         /// <param name="oldState">Previous game state</param>
         /// <param name="newState">New game state</param>
-        private void HandleGameStateChange(Gomoku.GameState.GameState oldState, Gomoku.GameState.GameState newState)
+        private void HandleGameStateChange(GameState oldState, GameState newState)
         {
             Debug.Log($"Game state changed from {oldState} to {newState}");
 
             switch (newState)
             {
-                case Gomoku.GameState.GameState.MainMenu:
+                case GameState.MainMenu:
                     HandleMainMenuState();
                     break;
-                case Gomoku.GameState.GameState.Playing:
+                case GameState.Playing:
                     HandlePlayingState();
                     break;
-                case Gomoku.GameState.GameState.Paused:
+                case GameState.Paused:
                     HandlePausedState();
                     break;
-                case Gomoku.GameState.GameState.GameOver:
+                case GameState.GameOver:
                     HandleGameOverState();
                     break;
             }
@@ -317,7 +316,7 @@ namespace Gomoku.UI
         {
             if (gameStateManager != null)
             {
-                HandleGameStateChange(Gomoku.GameState.GameState.MainMenu, gameStateManager.GetCurrentState());
+                HandleGameStateChange(GameState.MainMenu, gameStateManager.GetCurrentState());
             }
 
             if (turnManager != null && turnIndicator != null)

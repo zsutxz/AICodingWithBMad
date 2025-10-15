@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Gomoku.GameState;
 
 namespace Gomoku.UI
 {
