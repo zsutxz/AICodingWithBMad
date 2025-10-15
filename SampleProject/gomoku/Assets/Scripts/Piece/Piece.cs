@@ -8,7 +8,7 @@ namespace Gomoku
     public class Piece : MonoBehaviour
     {
         [Header("Piece Settings")]
-        [SerializeField] private TurnManager.PlayerType pieceType = TurnManager.PlayerType.None;
+        [SerializeField] private PlayerType pieceType = PlayerType.None;
         [SerializeField] private float placementAnimationDuration = 0.2f;
         [SerializeField] private AnimationCurve placementCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         
@@ -31,10 +31,10 @@ namespace Gomoku
         public System.Action<Piece> OnPieceAnimationComplete;
         
         // Properties
-        public TurnManager.PlayerType PieceType => pieceType;
+        public PlayerType PieceType => pieceType;
         public Vector2Int BoardPosition => boardPosition;
-        public bool IsBlackPiece => pieceType == TurnManager.PlayerType.Black;
-        public bool IsWhitePiece => pieceType == TurnManager.PlayerType.White;
+        public bool IsBlackPiece => pieceType == PlayerType.Black;
+        public bool IsWhitePiece => pieceType == PlayerType.White;
         public bool IsAnimating => isAnimating;
         
         private void Awake()
@@ -82,7 +82,7 @@ namespace Gomoku
         /// <param name="boardPos">Position on the board</param>
         /// <param name="worldPos">World position to place the piece</param>
         /// <param name="animate">Whether to animate the placement</param>
-        public void SetupPiece(TurnManager.PlayerType type, Vector2Int boardPos, Vector3 worldPos, bool animate = true)
+        public void SetupPiece(PlayerType type, Vector2Int boardPos, Vector3 worldPos, bool animate = true)
         {
             if (!TurnManager.IsValidPlayer(type))
             {
@@ -119,12 +119,12 @@ namespace Gomoku
             
             switch (pieceType)
             {
-                case TurnManager.PlayerType.Black:
+                case PlayerType.Black:
                     spriteRenderer.sprite = blackPieceSprite;
                     spriteRenderer.color = blackPieceColor;
                     break;
                     
-                case TurnManager.PlayerType.White:
+                case PlayerType.White:
                     spriteRenderer.sprite = whitePieceSprite;
                     spriteRenderer.color = whitePieceColor;
                     break;
@@ -208,7 +208,7 @@ namespace Gomoku
             }
             
             isAnimating = false;
-            pieceType = TurnManager.PlayerType.None;
+            pieceType = PlayerType.None;
             boardPosition = Vector2Int.zero;
             
             // Reset transform
@@ -235,9 +235,9 @@ namespace Gomoku
         {
             blackPieceSprite = blackSprite;
             whitePieceSprite = whiteSprite;
-            
+
             // Update current appearance if already set
-            if (pieceType != TurnManager.PlayerType.None)
+            if (pieceType != PlayerType.None)
             {
                 UpdateVisualAppearance();
             }
@@ -252,9 +252,9 @@ namespace Gomoku
         {
             blackPieceColor = blackColor;
             whitePieceColor = whiteColor;
-            
+
             // Update current appearance if already set
-            if (pieceType != TurnManager.PlayerType.None)
+            if (pieceType != PlayerType.None)
             {
                 UpdateVisualAppearance();
             }

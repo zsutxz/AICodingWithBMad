@@ -22,10 +22,10 @@ public class WinDetector : MonoBehaviour
     [SerializeField] private GameStateManager gameStateManager;
     
     // Unity Event that is triggered when a win is detected, passing the winning player
-    [SerializeField] public UnityEvent<TurnManager.PlayerType> onWinDetected;
+    [SerializeField] public UnityEvent<PlayerType> onWinDetected;
     
     // The player who won the game (None if no winner yet)
-    private TurnManager.PlayerType winner;
+    private PlayerType winner;
     
     // Flag to indicate if the game has been won
     private bool gameWon = false;
@@ -74,7 +74,7 @@ public class WinDetector : MonoBehaviour
         }
         
         // Get the player who made the last move
-        TurnManager.PlayerType lastPlayer = piecePlacement.GetPieceAt(lastMovePosition.x, lastMovePosition.y);
+        PlayerType lastPlayer = piecePlacement.GetPieceAt(lastMovePosition.x, lastMovePosition.y);
         
         // Don't check for win if WinCondition is not set
         if (winCondition == null)
@@ -137,7 +137,7 @@ public class WinDetector : MonoBehaviour
     /// <param name="position">The position of the last move</param>
     /// <param name="player">The player who made the last move</param>
     /// <returns>True if a horizontal win is detected</returns>
-    private bool CheckHorizontalWin(Vector2Int position, TurnManager.PlayerType player)
+    private bool CheckHorizontalWin(Vector2Int position, PlayerType player)
     {
         // Get the row of the last move
         int row = position.y;
@@ -181,7 +181,7 @@ public class WinDetector : MonoBehaviour
     /// <param name="position">The position of the last move</param>
     /// <param name="player">The player who made the last move</param>
     /// <returns>True if a vertical win is detected</returns>
-    private bool CheckVerticalWin(Vector2Int position, TurnManager.PlayerType player)
+    private bool CheckVerticalWin(Vector2Int position, PlayerType player)
     {
         // Get the column of the last move
         int col = position.x;
@@ -225,7 +225,7 @@ public class WinDetector : MonoBehaviour
     /// <param name="position">The position of the last move</param>
     /// <param name="player">The player who made the last move</param>
     /// <returns>True if a diagonal win is detected</returns>
-    private bool CheckDiagonalWin(Vector2Int position, TurnManager.PlayerType player)
+    private bool CheckDiagonalWin(Vector2Int position, PlayerType player)
     {
         // Get the number of pieces needed to win from WinCondition
         int piecesNeeded = winCondition.GetPiecesToWin();
@@ -273,7 +273,7 @@ public class WinDetector : MonoBehaviour
     /// <param name="position">The position of the last move</param>
     /// <param name="player">The player who made the last move</param>
     /// <returns>True if an anti-diagonal win is detected</returns>
-    private bool CheckAntiDiagonalWin(Vector2Int position, TurnManager.PlayerType player)
+    private bool CheckAntiDiagonalWin(Vector2Int position, PlayerType player)
     {
         // Get the number of pieces needed to win from WinCondition
         int piecesNeeded = winCondition.GetPiecesToWin();
@@ -318,7 +318,7 @@ public class WinDetector : MonoBehaviour
     /// Gets the winner of the game.
     /// </summary>
     /// <returns>The winning player, or None if no winner yet</returns>
-    public TurnManager.PlayerType GetWinner()
+    public PlayerType GetWinner()
     {
         return winner;
     }
@@ -337,7 +337,7 @@ public class WinDetector : MonoBehaviour
     /// </summary>
     public void Reset()
     {
-        winner = TurnManager.PlayerType.None;
+        winner = PlayerType.None;
         gameWon = false;
     }
 }

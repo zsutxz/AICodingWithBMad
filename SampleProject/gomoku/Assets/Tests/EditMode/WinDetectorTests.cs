@@ -66,7 +66,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int x = 0; x < 5; x++)
         {
-            piecePlacement.BoardState[x, 0] = TurnManager.PlayerType.Black;
+            piecePlacement.BoardState[x, 0] = PlayerType.Black;
         }
 
         // Act
@@ -74,7 +74,7 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.Black, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
     }
     
@@ -86,7 +86,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int y = 0; y < 5; y++)
         {
-            piecePlacement.BoardState[0, y] = TurnManager.PlayerType.White;
+            piecePlacement.BoardState[0, y] = PlayerType.White;
         }
 
         // Act
@@ -94,7 +94,7 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.White, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.White, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
     }
     
@@ -106,7 +106,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int i = 0; i < 5; i++)
         {
-            piecePlacement.BoardState[i, i] = TurnManager.PlayerType.Black;
+            piecePlacement.BoardState[i, i] = PlayerType.Black;
         }
 
         // Act
@@ -114,7 +114,7 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.Black, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
     }
     
@@ -126,7 +126,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int i = 0; i < 5; i++)
         {
-            piecePlacement.BoardState[4 - i, i] = TurnManager.PlayerType.White;
+            piecePlacement.BoardState[4 - i, i] = PlayerType.White;
         }
 
         // Act
@@ -134,7 +134,7 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.White, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.White, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
     }
     
@@ -143,10 +143,10 @@ public class WinDetectorTests
     {
         // Arrange
         // Set up a board with no winning pattern
-        piecePlacement.BoardState[0, 0] = TurnManager.PlayerType.Black;
-        piecePlacement.BoardState[1, 0] = TurnManager.PlayerType.White;
-        piecePlacement.BoardState[0, 1] = TurnManager.PlayerType.White;
-        piecePlacement.BoardState[1, 1] = TurnManager.PlayerType.Black;
+        piecePlacement.BoardState[0, 0] = PlayerType.Black;
+        piecePlacement.BoardState[1, 0] = PlayerType.White;
+        piecePlacement.BoardState[0, 1] = PlayerType.White;
+        piecePlacement.BoardState[1, 1] = PlayerType.Black;
 
         // Act
         bool winDetected = winDetector.CheckForWin(new Vector2Int(1, 1));
@@ -194,7 +194,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int x = 0; x < 3; x++)
         {
-            piecePlacement.BoardState[x, 0] = TurnManager.PlayerType.Black;
+            piecePlacement.BoardState[x, 0] = PlayerType.Black;
         }
 
         // Act
@@ -202,7 +202,7 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.Black, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
     }
     

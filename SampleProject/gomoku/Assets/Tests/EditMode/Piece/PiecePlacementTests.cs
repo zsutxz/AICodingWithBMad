@@ -35,33 +35,33 @@ namespace Gomoku.Tests
         [Test]
         public void TryPlacePiece_Places_Piece_On_Empty_Intersection()
         {
-            bool placed = piecePlacement.TryPlacePiece(0, 0, TurnManager.PlayerType.Black);
+            bool placed = piecePlacement.TryPlacePiece(0, 0, PlayerType.Black);
             Assert.IsTrue(placed);
-            Assert.AreEqual(TurnManager.PlayerType.Black, piecePlacement.BoardState[0, 0]);
+            Assert.AreEqual(PlayerType.Black, piecePlacement.BoardState[0, 0]);
         }
 
         [Test]
         public void TryPlacePiece_Does_Not_Place_Piece_On_Occupied_Intersection()
         {
-            piecePlacement.TryPlacePiece(0, 0, TurnManager.PlayerType.Black);
-            bool placed = piecePlacement.TryPlacePiece(0, 0, TurnManager.PlayerType.White);
+            piecePlacement.TryPlacePiece(0, 0, PlayerType.Black);
+            bool placed = piecePlacement.TryPlacePiece(0, 0, PlayerType.White);
             Assert.IsFalse(placed);
-            Assert.AreEqual(TurnManager.PlayerType.Black, piecePlacement.BoardState[0, 0]);
+            Assert.AreEqual(PlayerType.Black, piecePlacement.BoardState[0, 0]);
         }
 
         [Test]
         public void TryPlacePiece_Does_Not_Place_Piece_On_Invalid_Coordinates()
         {
-            bool placed = piecePlacement.TryPlacePiece(-1, 15, TurnManager.PlayerType.Black);
+            bool placed = piecePlacement.TryPlacePiece(-1, 15, PlayerType.Black);
             Assert.IsFalse(placed);
         }
 
         [Test]
         public void PlacePiece_Switches_Turn()
         {
-            turnManager.StartGame();
+            // TurnManager starts with Black by default
             piecePlacement.TryPlacePiece(0, 0, turnManager.CurrentPlayer);
-            Assert.AreEqual(TurnManager.PlayerType.White, turnManager.CurrentPlayer);
+            Assert.AreEqual(PlayerType.White, turnManager.CurrentPlayer);
         }
     }
 }

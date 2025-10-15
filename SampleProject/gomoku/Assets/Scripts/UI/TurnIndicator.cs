@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Gomoku
+namespace Gomoku.UI
 {
     /// <summary>
     /// Displays the current player's turn with animated feedback
@@ -72,7 +72,7 @@ namespace Gomoku
         /// <summary>
         /// Handles the turn changed event
         /// </summary>
-        private void Handle_OnPlayerTurnChanged(TurnManager.PlayerType newPlayer)
+        private void Handle_OnPlayerTurnChanged(PlayerType newPlayer)
         {
             UpdateTurnDisplay(newPlayer, true);
         }
@@ -82,7 +82,7 @@ namespace Gomoku
         /// </summary>
         /// <param name="player">Current player</param>
         /// <param name="animate">Whether to animate the change</param>
-        private void UpdateTurnDisplay(TurnManager.PlayerType player, bool animate)
+        private void UpdateTurnDisplay(PlayerType player, bool animate)
         {
             string textToShow = "";
             Sprite iconToShow = null;
@@ -90,13 +90,13 @@ namespace Gomoku
 
             switch (player)
             {
-                case TurnManager.PlayerType.Black:
+                case PlayerType.Black:
                     textToShow = blackTurnText;
                     iconToShow = blackPlayerSprite;
                     textColor = blackPlayerColor;
                     break;
 
-                case TurnManager.PlayerType.White:
+                case PlayerType.White:
                     textToShow = whiteTurnText;
                     iconToShow = whitePlayerSprite;
                     textColor = whitePlayerColor;

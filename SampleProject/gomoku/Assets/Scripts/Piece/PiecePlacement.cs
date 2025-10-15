@@ -24,7 +24,7 @@ namespace Gomoku
         [SerializeField] private AudioClip invalidPlacementSound;
         
         // Game state
-        private TurnManager.PlayerType[,] boardState;
+        private PlayerType[,] boardState;
         private List<Piece> placedPieces;
         private List<Vector2Int> moveHistory;
         private bool gameActive;
@@ -34,14 +34,14 @@ namespace Gomoku
         private const int initialPoolSize = 50;
         
         // Events
-        public System.Action<Vector2Int, TurnManager.PlayerType> OnPiecePlaced;
-        public System.Action<Vector2Int, TurnManager.PlayerType> OnInvalidPlacement;
+        public System.Action<Vector2Int, PlayerType> OnPiecePlaced;
+        public System.Action<Vector2Int, PlayerType> OnInvalidPlacement;
         public System.Action<List<Vector2Int>> OnMoveHistoryChanged;
         
         // Properties
         public bool GameActive => gameActive;
         public int MoveCount => moveHistory?.Count ?? 0;
-        public TurnManager.PlayerType[,] BoardState => boardState;
+        public PlayerType[,] BoardState => boardState;
         public List<Vector2Int> MoveHistory => new List<Vector2Int>(moveHistory);
         
         private void Awake()
@@ -136,14 +136,14 @@ namespace Gomoku
             
             // Initialize board state
             int boardSize = gameBoard.BoardSize;
-            boardState = new TurnManager.PlayerType[boardSize, boardSize];
+            boardState = new PlayerType[boardSize, boardSize];
             
             // Clear board state
             for (int x = 0; x < boardSize; x++)
             {
                 for (int y = 0; y < boardSize; y++)
                 {
-                    boardState[x, y] = TurnManager.PlayerType.None;
+                    boardState[x, y] = PlayerType.None;
                 }
             }
             
@@ -267,7 +267,7 @@ namespace Gomoku
         /// <param name="y">Y coordinate</param>
         /// <param name="playerType">Type of piece to place</param>
         /// <returns>True if piece was placed successfully</returns>
-        public bool TryPlacePiece(int x, int y, TurnManager.PlayerType playerType)
+        public bool TryPlacePiece(int x, int y, PlayerType playerType)
         {
             // Validate coordinates
             if (!IsValidCoordinate(x, y))
@@ -278,7 +278,7 @@ namespace Gomoku
             }
             
             // Check if position is occupied
-            if (boardState[x, y] != TurnManager.PlayerType.None)
+            if (boardState[x, y] != PlayerType.None)
             {
                 Debug.Log($"Position ({x}, {y}) is already occupied by {boardState[x, y]}");
                 PlayInvalidPlacementFeedback(x, y, playerType);
@@ -303,7 +303,7 @@ namespace Gomoku
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <param name="playerType">Type of piece to place</param>
-        private void PlacePiece(int x, int y, TurnManager.PlayerType playerType)
+        private void PlacePiece(int x, int y, PlayerType playerType)
         {
             // Update board state
             boardState[x, y] = playerType;
@@ -325,7 +325,7 @@ namespace Gomoku
             // Switch turns
             if (turnManager != null)
             {
-                turnManager.NextTurn();
+                turnManager.EndTurn();
             }
             
             Debug.Log($"Placed {playerType} piece at ({x}, {y}). Move #{moveHistory.Count}");
@@ -337,7 +337,7 @@ namespace Gomoku
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <param name="playerType">Type of piece</param>
-        private void CreateVisualPiece(int x, int y, TurnManager.PlayerType playerType)
+        private void CreateVisualPiece(int x, int y, PlayerType playerType)
         {
             if (gameBoard == null) return;
             
@@ -376,7 +376,7 @@ namespace Gomoku
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <param name="playerType">Type of piece placed</param>
-        private void PlayPlacementFeedback(int x, int y, TurnManager.PlayerType playerType)
+        private void PlayPlacementFeedback(int x, int y, PlayerType playerType)
         {
             // Play placement sound
             if (audioSource != null && placementSound != null)
@@ -397,7 +397,7 @@ namespace Gomoku
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <param name="playerType">Type of piece attempted</param>
-        private void PlayInvalidPlacementFeedback(int x, int y, TurnManager.PlayerType playerType)
+        private void PlayInvalidPlacementFeedback(int x, int y, PlayerType playerType)
         {
             // Play invalid sound
             if (audioSource != null && invalidPlacementSound != null)
@@ -448,7 +448,7 @@ namespace Gomoku
                 {
                     for (int y = 0; y < boardSize; y++)
                     {
-                        boardState[x, y] = TurnManager.PlayerType.None;
+                        boardState[x, y] = PlayerType.None;
                     }
                 }
             }
@@ -484,9 +484,9 @@ namespace Gomoku
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <returns>Piece type at position</returns>
-        public TurnManager.PlayerType GetPieceAt(int x, int y)
+        public PlayerType GetPieceAt(int x, int y)
         {
-            if (!IsValidCoordinate(x, y)) return TurnManager.PlayerType.None;
+            if (!IsValidCoordinate(x, y)) return PlayerType.None;
             return boardState[x, y];
         }
         
@@ -498,7 +498,7 @@ namespace Gomoku
         /// <returns>True if occupied</returns>
         public bool IsPositionOccupied(int x, int y)
         {
-            return GetPieceAt(x, y) != TurnManager.PlayerType.None;
+            return GetPieceAt(x, y) != PlayerType.None;
         }
         
         /// <summary>

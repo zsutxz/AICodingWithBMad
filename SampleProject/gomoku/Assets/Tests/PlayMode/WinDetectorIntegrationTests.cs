@@ -91,7 +91,7 @@ public class WinDetectorIntegrationTests
         // Directly manipulate the board state
         for (int x = 0; x < 5; x++)
         {
-            piecePlacement.BoardState[x, 0] = TurnManager.PlayerType.Black;
+            piecePlacement.BoardState[x, 0] = PlayerType.Black;
         }
 
         // Ensure banner is initially hidden
@@ -102,7 +102,7 @@ public class WinDetectorIntegrationTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.Black, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
         Assert.IsTrue(bannerPanel.activeSelf);
         Assert.AreEqual("Black Wins!", winnerText.text);
@@ -115,8 +115,8 @@ public class WinDetectorIntegrationTests
     {
         // Arrange
         // Set up a board with no winning pattern
-        piecePlacement.BoardState[0, 0] = TurnManager.PlayerType.Black;
-        piecePlacement.BoardState[1, 0] = TurnManager.PlayerType.White;
+        piecePlacement.BoardState[0, 0] = PlayerType.Black;
+        piecePlacement.BoardState[1, 0] = PlayerType.White;
 
         // Ensure banner is initially hidden
         Assert.IsFalse(bannerPanel.activeSelf);
@@ -140,7 +140,7 @@ public class WinDetectorIntegrationTests
         // Directly manipulate the board state
         for (int y = 0; y < 5; y++)
         {
-            piecePlacement.BoardState[0, y] = TurnManager.PlayerType.White;
+            piecePlacement.BoardState[0, y] = PlayerType.White;
         }
 
         // Ensure banner is initially hidden
@@ -151,7 +151,7 @@ public class WinDetectorIntegrationTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(TurnManager.PlayerType.White, winDetector.GetWinner());
+        Assert.AreEqual(PlayerType.White, winDetector.GetWinner());
         Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
         Assert.IsTrue(bannerPanel.activeSelf);
         Assert.AreEqual("White Wins!", winnerText.text);

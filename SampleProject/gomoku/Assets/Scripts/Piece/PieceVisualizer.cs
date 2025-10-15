@@ -127,7 +127,7 @@ namespace Gomoku
         /// <summary>
         /// Handles the piece placed event
         /// </summary>
-        private void Handle_OnPiecePlaced(Vector2Int position, TurnManager.PlayerType player)
+        private void Handle_OnPiecePlaced(Vector2Int position, PlayerType player)
         {
             // Optionally, create a highlight or animation on the placed piece
             // e.g., a brief flash or a growing circle effect

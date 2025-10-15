@@ -60,12 +60,16 @@
     <Analyzer Include="D:\Program Files\Unity 2022.3.5f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Tests\EditMode\WinDetectorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\TurnManagerTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\UIManagementTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\GameBoard\BoardRendererTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\UIMoveCounterTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\WinDetectorTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\UIPauseButtonTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\IntersectionDetectorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardTests.cs" />
-    <Compile Include="Assets\Tests\EditMode\GameBoard\BoardRendererTests.cs" />
     <Compile Include="Assets\Tests\PlayMode\WinDetectorIntegrationTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\UITurnIndicatorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\PiecePlacementTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardValidationTests.cs" />
   </ItemGroup>

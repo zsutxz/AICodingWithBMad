@@ -4,112 +4,138 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Gomoku;
+using static Gomoku.TurnManager;
+using System;
 
-/// <summary>
-/// VictoryBanner is responsible for displaying the winner information when a player wins the game.
-/// It shows a banner with the winner's name and a victory message.
-/// </summary>
-public class VictoryBanner : MonoBehaviour
+namespace Gomoku.UI
 {
-    // Reference to the text component that displays the winner's name
-    [SerializeField] private Text winnerText;
-    
-    // Reference to the game object that contains the victory banner UI
-    [SerializeField] private GameObject bannerPanel;
-    
-    // Reference to the win detector to listen for win events
-    [SerializeField] private WinDetector winDetector;
-    
-    // Reference to the player who won the game
-    private TurnManager.PlayerType winner;
+    /// <summary>
+    /// VictoryBanner is responsible for displaying the winner information when a player wins the game.
+    /// It shows a banner with the winner's name and a victory message.
+    /// </summary>
+    public class VictoryBanner : MonoBehaviour
+    {
+        // Reference to the text component that displays the winner's name
+        [SerializeField] private Text winnerText;
 
-    private void Awake()
-    {
-        // Validate references
-        if (winnerText == null)
+        // Reference to the game object that contains the victory banner UI
+        [SerializeField] private GameObject bannerPanel;
+
+        // Reference to the win detector to listen for win events
+        [SerializeField] private WinDetector winDetector;
+
+        // Reference to the player who won the game
+        private PlayerType winner;
+
+        private void Awake()
         {
-            Debug.LogError("WinnerText reference not set in VictoryBanner");
+            // Validate references
+            if (winnerText == null)
+            {
+                Debug.LogError("WinnerText reference not set in VictoryBanner");
+            }
+
+            if (bannerPanel == null)
+            {
+                Debug.LogError("BannerPanel reference not set in VictoryBanner");
+            }
+
+            if (winDetector == null)
+            {
+                Debug.LogError("WinDetector reference not set in VictoryBanner");
+            }
+
+            // Initially hide the banner
+            HideBanner();
         }
-        
-        if (bannerPanel == null)
+
+        private void OnEnable()
         {
-            Debug.LogError("BannerPanel reference not set in VictoryBanner");
+            //// Subscribe to win events
+            //if (winDetector != null)
+            //{
+            //    winDetector.onWinDetected.AddListener(OnWinDetected);
+            //}
         }
-        
-        if (winDetector == null)
+
+
+
+        private void OnDisable()
         {
-            Debug.LogError("WinDetector reference not set in VictoryBanner");
+            //// Unsubscribe from win events
+            //if (winDetector != null)
+            //{
+            //    winDetector.onWinDetected.RemoveListener(OnWinDetected);
+            //}
         }
-        
-        // Initially hide the banner
-        HideBanner();
-    }
-    
-    private void OnEnable()
-    {
-        // Subscribe to win events
-        if (winDetector != null)
+
+        /// <summary>
+        /// Called when a win is detected by the WinDetector.
+        /// Displays the victory banner with the winner's information.
+        /// </summary>
+        /// <param name="winner">The player who won the game</param>
+        private void OnWinDetected(PlayerType winner)
         {
-            winDetector.onWinDetected.AddListener(OnWinDetected);
+            this.winner = winner;
+
+            // Display the winner's name
+            if (winnerText != null)
+            {
+                winnerText.text = $"{(winner == PlayerType.Black ? "Black" : "White")} Wins!";
+            }
+
+            // Show the victory banner
+            ShowBanner();
         }
-    }
-    
-    private void OnDisable()
-    {
-        // Unsubscribe from win events
-        if (winDetector != null)
+
+        /// <summary>
+        /// Shows the victory banner UI.
+        /// </summary>
+        private void ShowBanner()
         {
-            winDetector.onWinDetected.RemoveListener(OnWinDetected);
+            if (bannerPanel != null)
+            {
+                bannerPanel.SetActive(true);
+            }
         }
-    }
-    
-    /// <summary>
-    /// Called when a win is detected by the WinDetector.
-    /// Displays the victory banner with the winner's information.
-    /// </summary>
-    /// <param name="winner">The player who won the game</param>
-    private void OnWinDetected(TurnManager.PlayerType winner)
-    {
-        this.winner = winner;
-        
-        // Display the winner's name
-        if (winnerText != null)
+
+        /// <summary>
+        /// Hides the victory banner UI.
+        /// </summary>
+        private void HideBanner()
         {
-            winnerText.text = $"{(winner == TurnManager.PlayerType.Black ? "Black" : "White")} Wins!";
+            if (bannerPanel != null)
+            {
+                bannerPanel.SetActive(false);
+            }
         }
-        
-        // Show the victory banner
-        ShowBanner();
-    }
-    
-    /// <summary>
-    /// Shows the victory banner UI.
-    /// </summary>
-    private void ShowBanner()
-    {
-        if (bannerPanel != null)
+
+        /// <summary>
+        /// Resets the victory banner for a new game.
+        /// </summary>
+        public void Reset()
         {
-            bannerPanel.SetActive(true);
+            HideBanner();
+            winner = PlayerType.None;
         }
-    }
-    
-    /// <summary>
-    /// Hides the victory banner UI.
-    /// </summary>
-    private void HideBanner()
-    {
-        if (bannerPanel != null)
+
+        /// <summary>
+        /// Sets the winner of the game and displays the victory banner.
+        /// This method is provided for external control of the victory banner.
+        /// </summary>
+        /// <param name="winner">The player who won the game</param>
+        public void SetWinner(PlayerType winner)
         {
-            bannerPanel.SetActive(false);
+            this.winner = winner;
+
+            // Display the winner's name
+            if (winnerText != null)
+            {
+                winnerText.text = $"{(winner == PlayerType.Black ? "Black" : "White")} Wins!";
+            }
+
+            // Show the victory banner
+            ShowBanner();
         }
-    }
-    
-    /// <summary>
-    /// Resets the victory banner for a new game.
-    /// </summary>
-    public void Reset()
-    {
-        HideBanner();
-        winner = TurnManager.PlayerType.None;
     }
 }

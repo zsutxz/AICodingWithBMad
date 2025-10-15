@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Gomoku.SceneManagement;
+using Gomoku.Audio;
+using Gomoku.UI;
 
 namespace Gomoku.GameState
 {
@@ -31,10 +33,16 @@ namespace Gomoku.GameState
 
         [Header("References")]
         [Tooltip("Reference to the UI Manager for screen transitions")]
-        [SerializeField] private GameObject uiManager;
+        [SerializeField] private UIManager uiManager;
 
         [Tooltip("Reference to the Audio Manager for feedback")]
-        [SerializeField] private GameObject audioManager;
+        [SerializeField] private AudioManager audioManager;
+
+        [Tooltip("Reference to the Game Over Screen for displaying results")]
+        [SerializeField] private GameOverScreen gameOverScreen;
+
+        [Tooltip("Reference to the Win Detector for victory detection")]
+        [SerializeField] private WinDetector winDetector;
 
         [Tooltip("Reference to the SceneLoader for scene transitions")]
         [SerializeField] private SceneLoader sceneLoader;
@@ -209,7 +217,7 @@ namespace Gomoku.GameState
             // Play main menu music
             if (audioManager != null)
             {
-                // Trigger audio manager to play main menu music
+                audioManager.PlayMainMenuMusic();
             }
 
             // Pause any ongoing gameplay
@@ -241,7 +249,7 @@ namespace Gomoku.GameState
             // Play gameplay music
             if (audioManager != null)
             {
-                // Trigger audio manager to play gameplay music
+                audioManager.PlayGameplayMusic();
             }
 
             // Resume game time
@@ -273,7 +281,8 @@ namespace Gomoku.GameState
             // Play pause sound effect
             if (audioManager != null)
             {
-                // Trigger audio manager to play pause sound effect
+                audioManager.PlayPauseSound();
+                audioManager.SetPausedState();
             }
 
             // Pause game time
@@ -289,13 +298,29 @@ namespace Gomoku.GameState
             if (uiManager != null)
             {
                 uiManager.SetActive(true);
-                // Additional UI setup for game over screen
             }
 
-            // Play game over sound effect
+            // Play victory sound and set audio state
             if (audioManager != null)
             {
-                // Trigger audio manager to play game over sound effect
+                audioManager.PlayVictorySound();
+                audioManager.SetGameOverState();
+            }
+
+            // Show the victory banner with winner information
+            if (gameOverScreen != null)
+            {
+                // Get the winner from the WinDetector
+                if (winDetector != null && winDetector.HasWinner())
+                {
+                    var winner = winDetector.GetWinner();
+                    gameOverScreen.ShowGameOver(winner);
+                }
+                else
+                {
+                    // Fallback: if no winner is detected, default to black
+                    gameOverScreen.ShowGameOver(PlayerType.Black);
+                }
             }
 
             // Pause game time
