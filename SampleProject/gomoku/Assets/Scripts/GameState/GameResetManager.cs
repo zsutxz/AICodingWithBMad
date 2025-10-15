@@ -17,6 +17,9 @@ namespace Gomoku.GameState
         [Tooltip("Reference to the VictoryBanner to reset winner display")]
         [SerializeField] private UI.VictoryBanner victoryBanner;
 
+        [Tooltip("Reference to the GameBoardModel to reset board state")]
+        [SerializeField] private GameBoard.GameBoardModel gameBoardModel;
+
         /// <summary>
         /// Reset all game systems to their initial state for a new game
         /// </summary>
