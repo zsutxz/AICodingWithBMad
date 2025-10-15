@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gomoku", "Gomoku.csproj", "{CEA18B83-75DD-C927-E3AE-4195987A757F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gomoku.Tests", "Gomoku.Tests.csproj", "{5A74FF72-2C21-960A-94F5-E8B6DE1F8BA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEA18B83-75DD-C927-E3AE-4195987A757F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA18B83-75DD-C927-E3AE-4195987A757F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA18B83-75DD-C927-E3AE-4195987A757F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA18B83-75DD-C927-E3AE-4195987A757F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A74FF72-2C21-960A-94F5-E8B6DE1F8BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A74FF72-2C21-960A-94F5-E8B6DE1F8BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A74FF72-2C21-960A-94F5-E8B6DE1F8BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A74FF72-2C21-960A-94F5-E8B6DE1F8BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
