@@ -209,3 +209,4 @@ SampleProject/gomoku/Assets/Library/*
 SampleProject/gomoku/Temp/*
 SampleProject/gomoku/Assets/.vs/*
 SampleProject/gomoku/obj/*
+SampleProject/gomoku/obj/Debug/*
