@@ -537,3 +537,4 @@ namespace Gomoku
         #endif
     }
 }
+

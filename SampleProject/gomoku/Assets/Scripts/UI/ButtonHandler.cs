@@ -127,7 +127,7 @@ namespace Gomoku.UI
         private System.Collections.IEnumerator PlayClickAnimation()
         {
             Vector3 startScale = transform.localScale;
-            Vector3 clickScale = originalScale * clickScale;
+            Vector3 clickScale = originalScale;
             float elapsed = 0f;
 
             // Scale down

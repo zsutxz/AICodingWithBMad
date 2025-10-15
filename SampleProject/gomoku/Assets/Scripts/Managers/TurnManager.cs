@@ -159,9 +159,14 @@ namespace Gomoku
 
             Debug.Log($"TurnManager initialized. Starting with {currentPlayer}");
         }
-
         #endregion
-
+        /// <summary>
+        /// Utility: validate a player type
+        /// </summary>
+        public static bool IsValidPlayer(PlayerType player)
+        {
+            return player == PlayerType.Black || player == PlayerType.White;
+        }
         #region Events
 
         /// <summary>
@@ -170,6 +175,7 @@ namespace Gomoku
         public UnityEvent<PlayerType> OnPlayerTurnChanged
         {
             get { return onPlayerTurnChanged; }
+            set {   onPlayerTurnChanged =value; }
         }
 
         /// <summary>

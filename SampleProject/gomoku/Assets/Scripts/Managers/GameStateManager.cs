@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using Gomoku.SceneManagement;
 using Gomoku.Audio;
 using Gomoku.UI;
+using System;
 
 namespace Gomoku.GameState
 {
@@ -52,6 +53,7 @@ namespace Gomoku.GameState
 
         // Previous state for resuming gameplay
         private GameState previousState;
+        internal UnityEvent<GameState> OnStateChange;
 
         #region MonoBehaviour Methods
 
@@ -210,7 +212,7 @@ namespace Gomoku.GameState
             // Activate main menu UI
             if (uiManager != null)
             {
-                uiManager.SetActive(true);
+                uiManager.gameObject.SetActive(true);
                 // Additional UI setup for main menu
             }
 
@@ -310,17 +312,17 @@ namespace Gomoku.GameState
             // Show the victory banner with winner information
             if (gameOverScreen != null)
             {
-                // Get the winner from the WinDetector
-                if (winDetector != null && winDetector.HasWinner())
-                {
-                    var winner = winDetector.GetWinner();
-                    gameOverScreen.ShowGameOver(winner);
-                }
-                else
-                {
-                    // Fallback: if no winner is detected, default to black
-                    gameOverScreen.ShowGameOver(PlayerType.Black);
-                }
+                //// Get the winner from the WinDetector
+                //if (winDetector != null && winDetector.HasWinner())
+                //{
+                //    var winner = winDetector.GetWinner();
+                //    gameOverScreen.ShowGameOver(winner);
+                //}
+                //else
+                //{
+                //    // Fallback: if no winner is detected, default to black
+                //    gameOverScreen.ShowGameOver(PlayerType.Black);
+                //}
             }
 
             // Pause game time
@@ -340,3 +342,4 @@ namespace Gomoku.GameState
         #endregion
     }
 }
+

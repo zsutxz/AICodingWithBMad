@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
 
     private void InitializeUI()
     {
-        // 动态创建StartButton
+        // Dynamically create StartButton
         if (startButtonPrefab != null)
         {
             GameObject buttonObject = Instantiate(startButtonPrefab, transform);
@@ -33,25 +33,20 @@ public class UIManager : MonoBehaviour
                 startButtonText = buttonObject.GetComponentInChildren<Text>();
             }
         }
-        
-        // 确保引用已设置
+
+        // Ensure references are set
         if (startButton == null || startButtonText == null)
         {
             Debug.LogError("UIManager: Failed to create or find required UI elements!");
             return;
         }
 
-        // 设置开始按钮的文本
+        // Set start button text
         SetStartButtonText(startGameText);
 
-        // 可以在这里添加其他UI初始化逻辑
         Debug.Log("UIManager: UI initialized successfully");
     }
 
-    /// <summary>
-    /// 设置开始按钮的文本
-    /// </summary>
-    /// <param name="text">要显示的文本</param>
     public void SetStartButtonText(string text)
     {
         if (startButtonText != null)
@@ -60,12 +55,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 获取当前开始按钮的文本
-    /// </summary>
-    /// <returns>当前文本</returns>
     public string GetStartButtonText()
     {
         return startButtonText?.text ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Sets the active state of the UI Manager's root GameObject
+    /// </summary>
+    /// <param name="active">Whether to activate the UI</param>
+    public void SetActive(bool active)
+    {
+        gameObject.SetActive(active);
     }
 }

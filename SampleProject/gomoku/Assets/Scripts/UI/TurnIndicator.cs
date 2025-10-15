@@ -61,7 +61,7 @@ namespace Gomoku.UI
             }
 
             // Subscribe to turn changes
-            turnManager.OnPlayerTurnChanged += Handle_OnPlayerTurnChanged;
+            //turnManager.OnPlayerTurnChanged += Handle_OnPlayerTurnChanged;
 
             // Set initial state
             UpdateTurnDisplay(turnManager.CurrentPlayer, false);
@@ -82,7 +82,7 @@ namespace Gomoku.UI
         /// </summary>
         /// <param name="player">Current player</param>
         /// <param name="animate">Whether to animate the change</param>
-        private void UpdateTurnDisplay(PlayerType player, bool animate)
+        public void UpdateTurnDisplay(PlayerType player, bool animate)
         {
             string textToShow = "";
             Sprite iconToShow = null;
@@ -163,7 +163,7 @@ namespace Gomoku.UI
         {
             if (turnManager != null)
             {
-                turnManager.OnPlayerTurnChanged -= Handle_OnPlayerTurnChanged;
+                turnManager.OnPlayerTurnChanged.RemoveListener(new UnityEngine.Events.UnityAction<Gomoku.PlayerType>(Handle_OnPlayerTurnChanged));
             }
         }
     }

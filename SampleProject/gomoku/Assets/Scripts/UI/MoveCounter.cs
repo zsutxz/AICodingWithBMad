@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using Gomoku.GameBoard;
 
 namespace Gomoku.UI
 {
@@ -23,6 +22,9 @@ namespace Gomoku.UI
 
         // Milestone thresholds for special visual feedback
         private int[] milestones = { 10, 25, 50, 75, 100 };
+
+        [Tooltip("Reference to the GameBoardModel to reset board state")]
+        [SerializeField] private GameBoard.GameBoardModel gameBoardModel;
 
         private void Awake()
         {

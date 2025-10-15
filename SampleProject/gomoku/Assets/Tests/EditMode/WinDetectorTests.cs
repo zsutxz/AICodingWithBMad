@@ -21,7 +21,7 @@ public class WinDetectorTests
     public WinCondition winCondition;
     public PiecePlacement piecePlacement;
     public GameBoardController gameBoard;
-    private object gameBoardModel;
+
 
     [SetUp]
     public void SetUp()

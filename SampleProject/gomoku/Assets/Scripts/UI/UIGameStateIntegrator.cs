@@ -1,6 +1,7 @@
 using UnityEngine;
 using Gomoku.GameState;
 using Gomoku.GameBoard;
+using System;
 
 namespace Gomoku.UI
 {
@@ -23,6 +24,7 @@ namespace Gomoku.UI
         [SerializeField] private bool autoInitialize = true;
         [SerializeField] private bool enableStateEvents = true;
 
+        private object gameBoardModel;
         private void Awake()
         {
             if (autoInitialize)
@@ -86,18 +88,23 @@ namespace Gomoku.UI
             // Game state manager events
             if (gameStateManager != null)
             {
-                gameStateManager.OnStateChange += HandleGameStateChange;
+                gameStateManager.OnStateChange.AddListener(HandleGameStateChange);
             }
 
-            // Turn manager events
-            if (turnManager != null)
-            {
-                turnManager.OnPlayerTurnChanged += HandlePlayerTurnChanged;
-                turnManager.OnTurnCompleted += HandleTurnCompleted;
-            }
+            //// Turn manager events
+            //if (turnManager != null)
+            //{
+            //    turnManager.OnPlayerTurnChanged += HandlePlayerTurnChanged;
+            //    turnManager.OnTurnCompleted += HandleTurnCompleted;
+            //}
 
             // Game board model events (if available)
             // Note: GameBoardModel may need to be extended to include move events
+        }
+
+        private void HandleGameStateChange(GameState.GameState arg0)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -291,13 +298,15 @@ namespace Gomoku.UI
         {
             if (gameStateManager != null)
             {
-                gameStateManager.OnStateChange -= HandleGameStateChange;
+                // 修正：OnStateChange 只接受 UnityAction<GameState>，而不是带两个参数的委托
+                gameStateManager.OnStateChange.RemoveListener(HandleGameStateChange);
             }
 
             if (turnManager != null)
             {
-                turnManager.OnPlayerTurnChanged -= HandlePlayerTurnChanged;
-                turnManager.OnTurnCompleted -= HandleTurnCompleted;
+                // 假设 turnManager 的事件是 UnityEvent<PlayerType> 类型
+                turnManager.OnPlayerTurnChanged.RemoveListener(HandlePlayerTurnChanged);
+                turnManager.OnTurnCompleted.RemoveListener(HandleTurnCompleted);
             }
         }
 
