@@ -1,71 +1,78 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+namespace Gomoku.UI
 {
-    [Header("UI Prefabs")]
-    [SerializeField] private GameObject startButtonPrefab;
-
-    [Header("UI References")]
-    private Button startButton;
-    private Text startButtonText;
-
-    [Header("Text Settings")]
-    [SerializeField] private string startGameText = "开始游戏";
-
-    private void Awake()
+    /// <summary>
+    /// Manages all user interface elements and interactions
+    /// </summary>
+    public class UIManager : MonoBehaviour
     {
-        InitializeUI();
-    }
+        [Header("UI Prefabs")]
+        [SerializeField] private GameObject startButtonPrefab;
 
-    private void InitializeUI()
-    {
-        // Dynamically create StartButton
-        if (startButtonPrefab != null)
+        [Header("UI References")]
+        private Button startButton;
+        private Text startButtonText;
+
+        [Header("Text Settings")]
+        [SerializeField] private string startGameText = "开始游戏";
+
+        private void Awake()
         {
-            GameObject buttonObject = Instantiate(startButtonPrefab, transform);
-            startButton = buttonObject.GetComponent<Button>();
-            // First try to get Text component directly on the same GameObject
-            startButtonText = buttonObject.GetComponent<Text>();
-            // If not found, then look for it in children
-            if (startButtonText == null)
+            InitializeUI();
+        }
+
+        private void InitializeUI()
+        {
+            // Dynamically create StartButton
+            if (startButtonPrefab != null)
             {
-                startButtonText = buttonObject.GetComponentInChildren<Text>();
+                GameObject buttonObject = Instantiate(startButtonPrefab, transform);
+                startButton = buttonObject.GetComponent<Button>();
+                // First try to get Text component directly on the same GameObject
+                startButtonText = buttonObject.GetComponent<Text>();
+                // If not found, then look for it in children
+                if (startButtonText == null)
+                {
+                    startButtonText = buttonObject.GetComponentInChildren<Text>();
+                }
+            }
+
+            // Ensure references are set
+            if (startButton == null || startButtonText == null)
+            {
+                Debug.LogError("UIManager: Failed to create or find required UI elements!");
+                return;
+            }
+
+            // Set start button text
+            SetStartButtonText(startGameText);
+
+            Debug.Log("UIManager: UI initialized successfully");
+        }
+
+        public void SetStartButtonText(string text)
+        {
+            if (startButtonText != null)
+            {
+                startButtonText.text = text;
             }
         }
 
-        // Ensure references are set
-        if (startButton == null || startButtonText == null)
+        public string GetStartButtonText()
         {
-            Debug.LogError("UIManager: Failed to create or find required UI elements!");
-            return;
+            return startButtonText?.text ?? string.Empty;
         }
 
-        // Set start button text
-        SetStartButtonText(startGameText);
-
-        Debug.Log("UIManager: UI initialized successfully");
-    }
-
-    public void SetStartButtonText(string text)
-    {
-        if (startButtonText != null)
+        /// <summary>
+        /// Sets the active state of the UI Manager's root GameObject
+        /// </summary>
+        /// <param name="active">Whether to activate the UI</param>
+        public void SetActive(bool active)
         {
-            startButtonText.text = text;
+            gameObject.SetActive(active);
         }
-    }
-
-    public string GetStartButtonText()
-    {
-        return startButtonText?.text ?? string.Empty;
-    }
-
-    /// <summary>
-    /// Sets the active state of the UI Manager's root GameObject
-    /// </summary>
-    /// <param name="active">Whether to activate the UI</param>
-    public void SetActive(bool active)
-    {
-        gameObject.SetActive(active);
     }
 }
+
