@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Gomoku
 {
     /// <summary>
-    /// Handles the visual rendering of the game board including grid lines and background
+    /// Handles the visual rendering of the game board using procedural drawing instead of GameObjects
     /// </summary>
     public class BoardRenderer : MonoBehaviour
     {
@@ -13,26 +13,43 @@ namespace Gomoku
         [SerializeField] private float gridLineWidth = 0.02f;
 
         [Header("Background Settings")]
-        [SerializeField] private SpriteRenderer backgroundRenderer;
-        [SerializeField] private Sprite boardBackgroundSprite;
         [SerializeField] private Color boardBackgroundColor = new Color(0.8f, 0.7f, 0.5f, 1.0f); // Dark wood tone
 
-        [Header("Intersection Markers")]
-        [SerializeField] private GameObject intersectionMarkerPrefab;
-        [SerializeField] private Color intersectionMarkerColor = new Color(0.3f, 0.3f, 0.3f, 0.8f);
-        [SerializeField] private float intersectionMarkerSize = 0.05f;
+        [Header("Piece Settings")]
+        [SerializeField] private Color blackPieceColor = Color.black;
+        [SerializeField] private Color whitePieceColor = Color.white;
+        [SerializeField] private float pieceSize = 0.8f;
 
         [Header("Debug Settings")]
         [SerializeField] private bool showGridCoordinates = false;
-        [SerializeField] private GameObject coordinateLabelPrefab;
 
         private int boardSize;
         private float cellSize;
         private Vector2 boardOffset;
-        private LineRenderer[] horizontalLines;
-        private LineRenderer[] verticalLines;
-        private GameObject[] intersectionMarkers;
-        private GameObject[] coordinateLabels;
+
+        /// <summary>
+        /// Gets the total board width in world units
+        /// </summary>
+        public float BoardWidth => (boardSize - 1) * cellSize;
+
+        /// <summary>
+        /// Gets the total board height in world units
+        /// </summary>
+        public float BoardHeight => (boardSize - 1) * cellSize;
+
+        // Meshes for rendering
+        private Mesh gridMesh;
+        private Mesh pieceMesh;
+        private Mesh backgroundMesh;
+
+        // Materials for different elements
+        private Material gridMaterial;
+        private Material backgroundMaterial;
+        private MaterialPropertyBlock blackPiecePropertyBlock;
+        private MaterialPropertyBlock whitePiecePropertyBlock;
+
+        // Track placed pieces
+        private PlayerType[,] placedPieces;
 
         /// <summary>
         /// Initializes the board renderer with the specified configuration
@@ -46,289 +63,269 @@ namespace Gomoku
             this.cellSize = cellSize;
             this.boardOffset = boardOffset;
 
-            ClearExistingVisuals();
-            SetupBackground();
-            CreateGridLines();
-            CreateIntersectionMarkers();
-            
-            if (showGridCoordinates)
+            // Initialize rendering resources
+            CreateBackgroundMesh();
+            CreateGridMesh();
+            CreatePieceMesh();
+            CreateMaterials();
+
+            // Initialize piece tracking
+            placedPieces = new PlayerType[boardSize, boardSize];
+            for (int x = 0; x < boardSize; x++)
             {
-                CreateCoordinateLabels();
+                for (int y = 0; y < boardSize; y++)
+                {
+                    placedPieces[x, y] = PlayerType.None;
+                }
             }
+
+            Debug.Log($"BoardRenderer initialized with size {boardSize}x{boardSize}");
         }
 
         /// <summary>
-        /// Clears any existing visual elements
+        /// Creates a mesh for the board background
         /// </summary>
-        private void ClearExistingVisuals()
+        private void CreateBackgroundMesh()
         {
-            // Clear existing grid lines
-            if (horizontalLines != null)
+            if (backgroundMesh != null)
             {
-                foreach (var line in horizontalLines)
-                {
-                    if (line != null) DestroyImmediate(line.gameObject);
-                }
+                DestroyImmediate(backgroundMesh);
             }
 
-            if (verticalLines != null)
-            {
-                foreach (var line in verticalLines)
-                {
-                    if (line != null) DestroyImmediate(line.gameObject);
-                }
-            }
+            backgroundMesh = new Mesh();
 
-            // Clear intersection markers
-            if (intersectionMarkers != null)
-            {
-                foreach (var marker in intersectionMarkers)
-                {
-                    if (marker != null) DestroyImmediate(marker);
-                }
-            }
+            // Create a quad for the background
+            Vector3[] vertices = {
+                new Vector3(boardOffset.x, boardOffset.y, 0),
+                new Vector3(boardOffset.x + BoardWidth, boardOffset.y, 0),
+                new Vector3(boardOffset.x, boardOffset.y + BoardHeight, 0),
+                new Vector3(boardOffset.x + BoardWidth, boardOffset.y + BoardHeight, 0)
+            };
 
-            // Clear coordinate labels
-            if (coordinateLabels != null)
-            {
-                foreach (var label in coordinateLabels)
-                {
-                    if (label != null) DestroyImmediate(label);
-                }
-            }
+            int[] triangles = {
+                0, 2, 1, // First triangle
+                1, 2, 3  // Second triangle
+            };
+
+            Vector2[] uv = {
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(0, 1),
+                new Vector2(1, 1)
+            };
+
+            backgroundMesh.vertices = vertices;
+            backgroundMesh.triangles = triangles;
+            backgroundMesh.uv = uv;
+            backgroundMesh.RecalculateNormals();
+            backgroundMesh.RecalculateBounds();
         }
 
         /// <summary>
-        /// Sets up the board background with traditional Chinese aesthetic
+        /// Creates a mesh for the grid lines
         /// </summary>
-        private void SetupBackground()
+        private void CreateGridMesh()
         {
-            if (backgroundRenderer == null)
+            if (gridMesh != null)
             {
-                // Create background GameObject if not assigned
-                GameObject backgroundObject = new GameObject("BoardBackground");
-                backgroundObject.transform.SetParent(transform);
-                backgroundRenderer = backgroundObject.AddComponent<SpriteRenderer>();
+                DestroyImmediate(gridMesh);
             }
 
-            // Configure background
-            backgroundRenderer.sprite = boardBackgroundSprite;
-            backgroundRenderer.color = boardBackgroundColor;
-            backgroundRenderer.sortingOrder = -10;
+            gridMesh = new Mesh();
 
-            // Position and scale background to fit the board
-            float boardWidth = (boardSize - 1) * cellSize;
-            float boardHeight = (boardSize - 1) * cellSize;
-            Vector3 backgroundPosition = new Vector3(
-                boardOffset.x + boardWidth / 2,
-                boardOffset.y + boardHeight / 2,
-                0
-            );
+            // Calculate vertices for all grid lines
+            int horizontalLineCount = boardSize;
+            int verticalLineCount = boardSize;
+            int totalLines = horizontalLineCount + verticalLineCount;
+            int verticesPerLine = 2; // Start and end points
 
-            backgroundRenderer.transform.position = backgroundPosition;
-            
-            // Scale background to be slightly larger than the board
-            float padding = 0.5f;
-            backgroundRenderer.transform.localScale = new Vector3(
-                boardWidth + padding,
-                boardHeight + padding,
-                1
-            );
-        }
+            Vector3[] vertices = new Vector3[totalLines * verticesPerLine];
+            int[] triangles = new int[totalLines * verticesPerLine * 3]; // Each line needs 2 triangles for width
+            Vector2[] uv = new Vector2[totalLines * verticesPerLine];
 
-        /// <summary>
-        /// Creates the horizontal and vertical grid lines
-        /// </summary>
-        private void CreateGridLines()
-        {
-            horizontalLines = new LineRenderer[boardSize];
-            verticalLines = new LineRenderer[boardSize];
+            int vertexIndex = 0;
+            int triangleIndex = 0;
 
             // Create horizontal lines
             for (int i = 0; i < boardSize; i++)
             {
-                GameObject lineObject = new GameObject($"HorizontalLine_{i}");
-                lineObject.transform.SetParent(transform);
-                
-                horizontalLines[i] = lineObject.AddComponent<LineRenderer>();
-                ConfigureLineRenderer(horizontalLines[i]);
+                float y = boardOffset.y + i * cellSize;
 
-                // Set line positions
-                Vector3 startPos = new Vector3(
-                    boardOffset.x,
-                    boardOffset.y + i * cellSize,
-                    0
-                );
-                Vector3 endPos = new Vector3(
-                    boardOffset.x + (boardSize - 1) * cellSize,
-                    boardOffset.y + i * cellSize,
-                    0
-                );
+                // Left end of horizontal line
+                vertices[vertexIndex] = new Vector3(boardOffset.x, y, 0);
+                uv[vertexIndex] = new Vector2(0, 0);
 
-                horizontalLines[i].positionCount = 2;
-                horizontalLines[i].SetPosition(0, startPos);
-                horizontalLines[i].SetPosition(1, endPos);
+                // Right end of horizontal line
+                vertices[vertexIndex + 1] = new Vector3(boardOffset.x + (boardSize - 1) * cellSize, y, 0);
+                uv[vertexIndex + 1] = new Vector2(1, 0);
+
+                // Create triangles for line width
+                if (vertexIndex > 0)
+                {
+                    // Create quad between this line and previous line
+                    int v0 = vertexIndex - 2;
+                    int v1 = vertexIndex - 1;
+                    int v2 = vertexIndex;
+                    int v3 = vertexIndex + 1;
+
+                    triangles[triangleIndex++] = v0;
+                    triangles[triangleIndex++] = v1;
+                    triangles[triangleIndex++] = v2;
+
+                    triangles[triangleIndex++] = v1;
+                    triangles[triangleIndex++] = v3;
+                    triangles[triangleIndex++] = v2;
+                }
+
+                vertexIndex += 2;
             }
 
             // Create vertical lines
             for (int i = 0; i < boardSize; i++)
             {
-                GameObject lineObject = new GameObject($"VerticalLine_{i}");
-                lineObject.transform.SetParent(transform);
-                
-                verticalLines[i] = lineObject.AddComponent<LineRenderer>();
-                ConfigureLineRenderer(verticalLines[i]);
+                float x = boardOffset.x + i * cellSize;
 
-                // Set line positions
-                Vector3 startPos = new Vector3(
-                    boardOffset.x + i * cellSize,
-                    boardOffset.y,
-                    0
-                );
-                Vector3 endPos = new Vector3(
-                    boardOffset.x + i * cellSize,
-                    boardOffset.y + (boardSize - 1) * cellSize,
-                    0
-                );
+                // Bottom end of vertical line
+                vertices[vertexIndex] = new Vector3(x, boardOffset.y, 0);
+                uv[vertexIndex] = new Vector2(0, 0);
 
-                verticalLines[i].positionCount = 2;
-                verticalLines[i].SetPosition(0, startPos);
-                verticalLines[i].SetPosition(1, endPos);
+                // Top end of vertical line
+                vertices[vertexIndex + 1] = new Vector3(x, boardOffset.y + (boardSize - 1) * cellSize, 0);
+                uv[vertexIndex + 1] = new Vector2(1, 0);
+
+                // Create triangles for line width
+                if (vertexIndex > 0)
+                {
+                    // Create quad between this line and previous line
+                    int v0 = vertexIndex - 2;
+                    int v1 = vertexIndex - 1;
+                    int v2 = vertexIndex;
+                    int v3 = vertexIndex + 1;
+
+                    triangles[triangleIndex++] = v0;
+                    triangles[triangleIndex++] = v1;
+                    triangles[triangleIndex++] = v2;
+
+                    triangles[triangleIndex++] = v1;
+                    triangles[triangleIndex++] = v3;
+                    triangles[triangleIndex++] = v2;
+                }
+
+                vertexIndex += 2;
             }
+
+            // Resize arrays to actual size used
+            System.Array.Resize(ref triangles, triangleIndex);
+
+            // Assign to mesh
+            gridMesh.vertices = vertices;
+            gridMesh.triangles = triangles;
+            gridMesh.uv = uv;
+            gridMesh.RecalculateNormals();
+            gridMesh.RecalculateBounds();
         }
 
         /// <summary>
-        /// Configures a LineRenderer with common settings
+        /// Creates a simple quad mesh for pieces
         /// </summary>
-        /// <param name="lineRenderer">LineRenderer to configure</param>
-        private void ConfigureLineRenderer(LineRenderer lineRenderer)
+        private void CreatePieceMesh()
         {
-            lineRenderer.material = gridLineMaterial;
-            lineRenderer.startColor = gridLineColor;
-            lineRenderer.endColor = gridLineColor;
-            lineRenderer.startWidth = gridLineWidth;
-            lineRenderer.endWidth = gridLineWidth;
-            lineRenderer.useWorldSpace = true;
-            lineRenderer.sortingOrder = -5;
+            if (pieceMesh != null)
+            {
+                DestroyImmediate(pieceMesh);
+            }
+
+            pieceMesh = new Mesh();
+
+            // Create a simple quad for pieces
+            Vector3[] vertices = {
+                new Vector3(-pieceSize/2, -pieceSize/2, 0),
+                new Vector3(pieceSize/2, -pieceSize/2, 0),
+                new Vector3(-pieceSize/2, pieceSize/2, 0),
+                new Vector3(pieceSize/2, pieceSize/2, 0)
+            };
+
+            int[] triangles = {
+                0, 2, 1, // First triangle
+                1, 2, 3  // Second triangle
+            };
+
+            Vector2[] uv = {
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(0, 1),
+                new Vector2(1, 1)
+            };
+
+            pieceMesh.vertices = vertices;
+            pieceMesh.triangles = triangles;
+            pieceMesh.uv = uv;
+            pieceMesh.RecalculateNormals();
+            pieceMesh.RecalculateBounds();
         }
 
         /// <summary>
-        /// Creates visual markers at each grid intersection
+        /// Creates materials for rendering
         /// </summary>
-        private void CreateIntersectionMarkers()
+        private void CreateMaterials()
         {
-            intersectionMarkers = new GameObject[boardSize * boardSize];
+            // Create grid material
+            gridMaterial = new Material(gridLineMaterial);
+            gridMaterial.color = gridLineColor;
 
+            // Create background material
+            backgroundMaterial = new Material(gridLineMaterial);
+            backgroundMaterial.color = boardBackgroundColor;
+
+            // Create property blocks for pieces to avoid material instances
+            blackPiecePropertyBlock = new MaterialPropertyBlock();
+            blackPiecePropertyBlock.SetColor("_Color", blackPieceColor);
+
+            whitePiecePropertyBlock = new MaterialPropertyBlock();
+            whitePiecePropertyBlock.SetColor("_Color", whitePieceColor);
+        }
+
+        /// <summary>
+        /// Renders the board in the scene
+        /// </summary>
+        private void OnRenderObject()
+        {
+            // Draw background first
+            if (backgroundMesh != null && backgroundMaterial != null)
+            {
+                backgroundMaterial.SetPass(0);
+                Graphics.DrawMeshNow(backgroundMesh, Matrix4x4.identity);
+            }
+
+            // Draw grid
+            if (gridMesh != null && gridMaterial != null)
+            {
+                gridMaterial.SetPass(0);
+                Graphics.DrawMeshNow(gridMesh, Matrix4x4.identity);
+            }
+
+            // Draw placed pieces
             for (int x = 0; x < boardSize; x++)
             {
                 for (int y = 0; y < boardSize; y++)
                 {
-                    Vector3 position = new Vector3(
-                        boardOffset.x + x * cellSize,
-                        boardOffset.y + y * cellSize,
-                        0
-                    );
-
-                    GameObject marker;
-                    if (intersectionMarkerPrefab != null)
+                    if (placedPieces[x, y] != PlayerType.None)
                     {
-                        marker = Instantiate(intersectionMarkerPrefab, position, Quaternion.identity, transform);
+                        Vector3 position = new Vector3(
+                            boardOffset.x + x * cellSize,
+                            boardOffset.y + y * cellSize,
+                            0
+                        );
+
+                        Matrix4x4 matrix = Matrix4x4.TRS(position, Quaternion.identity, Vector3.one);
+
+                        // Use the appropriate property block based on piece type
+                        MaterialPropertyBlock propertyBlock = placedPieces[x, y] == PlayerType.Black ?
+                            blackPiecePropertyBlock : whitePiecePropertyBlock;
+
+                        Graphics.DrawMesh(pieceMesh, matrix, gridMaterial, 0, null, 0, propertyBlock);
                     }
-                    else
-                    {
-                        // Create a simple sphere marker if no prefab is assigned
-                        marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                        marker.transform.SetParent(transform);
-                        marker.transform.position = position;
-                        marker.transform.localScale = Vector3.one * intersectionMarkerSize;
-                        
-                        Renderer renderer = marker.GetComponent<Renderer>();
-                        if (renderer != null)
-                        {
-                            renderer.material.color = intersectionMarkerColor;
-                        }
-                    }
-
-                    marker.name = $"Intersection_{x}_{y}";
-                    intersectionMarkers[x * boardSize + y] = marker;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Creates coordinate labels for debugging purposes
-        /// </summary>
-        private void CreateCoordinateLabels()
-        {
-            if (coordinateLabelPrefab == null) return;
-
-            coordinateLabels = new GameObject[boardSize * 2]; // Horizontal and vertical labels
-            int labelIndex = 0;
-
-            // Create horizontal coordinate labels (A-O)
-            for (int i = 0; i < boardSize; i++)
-            {
-                char coordinateChar = (char)('A' + i);
-                Vector3 position = new Vector3(
-                    boardOffset.x + i * cellSize,
-                    boardOffset.y - 0.2f,
-                    0
-                );
-
-                GameObject label = Instantiate(coordinateLabelPrefab, position, Quaternion.identity, transform);
-                // Note: In a real implementation, you would set the text component here
-                label.name = $"Coordinate_H_{coordinateChar}";
-                coordinateLabels[labelIndex++] = label;
-            }
-
-            // Create vertical coordinate labels (1-15)
-            for (int i = 0; i < boardSize; i++)
-            {
-                Vector3 position = new Vector3(
-                    boardOffset.x - 0.2f,
-                    boardOffset.y + i * cellSize,
-                    0
-                );
-
-                GameObject label = Instantiate(coordinateLabelPrefab, position, Quaternion.identity, transform);
-                // Note: In a real implementation, you would set the text component here
-                label.name = $"Coordinate_V_{i + 1}";
-                coordinateLabels[labelIndex++] = label;
-            }
-        }
-
-        /// <summary>
-        /// Toggles the display of grid coordinates
-        /// </summary>
-        /// <param name="show">Whether to show coordinates</param>
-        public void ToggleGridCoordinates(bool show)
-        {
-            showGridCoordinates = show;
-
-            if (coordinateLabels != null)
-            {
-                foreach (var label in coordinateLabels)
-                {
-                    if (label != null) label.SetActive(show);
-                }
-            }
-
-            if (show && coordinateLabels == null)
-            {
-                CreateCoordinateLabels();
-            }
-        }
-
-        /// <summary>
-        /// Updates the board background color
-        /// </summary>
-        /// <param name="newColor">New background color</param>
-        public void UpdateBackgroundColor(Color newColor)
-        {
-            boardBackgroundColor = newColor;
-            if (backgroundRenderer != null)
-            {
-                backgroundRenderer.color = boardBackgroundColor;
             }
         }
 
@@ -339,30 +336,99 @@ namespace Gomoku
         public void UpdateGridLineColor(Color newColor)
         {
             gridLineColor = newColor;
-            
-            if (horizontalLines != null)
+            if (gridMaterial != null)
             {
-                foreach (var line in horizontalLines)
-                {
-                    if (line != null)
-                    {
-                        line.startColor = gridLineColor;
-                        line.endColor = gridLineColor;
-                    }
-                }
+                gridMaterial.color = gridLineColor;
+            }
+        }
+
+        /// <summary>
+        /// Updates the board background color
+        /// </summary>
+        /// <param name="newColor">New background color</param>
+        public void UpdateBackgroundColor(Color newColor)
+        {
+            boardBackgroundColor = newColor;
+            if (backgroundMaterial != null)
+            {
+                backgroundMaterial.color = boardBackgroundColor;
+            }
+            // Recreate the background mesh if needed
+            if (backgroundMesh != null)
+            {
+                CreateBackgroundMesh();
+            }
+        }
+
+        /// <summary>
+        /// Places a piece on the board
+        /// </summary>
+        /// <param name="pieceType">The type of piece to place</param>
+        /// <param name="x">X coordinate on the board</param>
+        /// <param name="y">Y coordinate on the board</param>
+        public void PlacePiece(PlayerType pieceType, int x, int y)
+        {
+            if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
+            {
+                placedPieces[x, y] = pieceType;
+            }
+        }
+
+        /// <summary>
+        /// Removes a piece from the board
+        /// </summary>
+        /// <param name="x">X coordinate on the board</param>
+        /// <param name="y">Y coordinate on the board</param>
+        public void RemovePiece(int x, int y)
+        {
+            if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
+            {
+                placedPieces[x, y] = PlayerType.None;
+            }
+        }
+
+        /// <summary>
+        /// Cleans up resources
+        /// </summary>
+        private void OnDestroy()
+        {
+            if (gridMesh != null)
+            {
+                DestroyImmediate(gridMesh);
             }
 
-            if (verticalLines != null)
+            if (pieceMesh != null)
             {
-                foreach (var line in verticalLines)
-                {
-                    if (line != null)
-                    {
-                        line.startColor = gridLineColor;
-                        line.endColor = gridLineColor;
-                    }
-                }
+                DestroyImmediate(pieceMesh);
             }
+
+            if (backgroundMesh != null)
+            {
+                DestroyImmediate(backgroundMesh);
+            }
+
+            if (gridMaterial != null)
+            {
+                DestroyImmediate(gridMaterial);
+            }
+
+            if (backgroundMaterial != null)
+            {
+                DestroyImmediate(backgroundMaterial);
+            }
+        }
+
+        /// <summary>
+        /// Toggles the display of grid coordinates
+        /// </summary>
+        /// <param name="show">Whether to show grid coordinates</param>
+        public void ToggleGridCoordinates(bool show)
+        {
+            showGridCoordinates = show;
+
+            // If we need to visualize coordinates, we'd need to implement that
+            // For now, just store the setting
+            Debug.Log($"Grid coordinates visualization: {(show ? "enabled" : "disabled")}");
         }
 
         #if UNITY_EDITOR

@@ -200,6 +200,33 @@ namespace Gomoku
             Debug.Log($"GameBoard initialized for test with size {boardSize}x{boardSize}");
         }
 
+        /// <summary>
+        /// Notifies the board renderer that a piece has been placed
+        /// </summary>
+        /// <param name="pieceType">The type of piece that was placed</param>
+        /// <param name="x">X coordinate on the board</param>
+        /// <param name="y">Y coordinate on the board</param>
+        public void NotifyPiecePlaced(PlayerType pieceType, int x, int y)
+        {
+            if (boardRenderer != null)
+            {
+                boardRenderer.PlacePiece(pieceType, x, y);
+            }
+        }
+
+        /// <summary>
+        /// Notifies the board renderer that a piece has been removed
+        /// </summary>
+        /// <param name="x">X coordinate on the board</param>
+        /// <param name="y">Y coordinate on the board</param>
+        public void NotifyPieceRemoved(int x, int y)
+        {
+            if (boardRenderer != null)
+            {
+                boardRenderer.RemovePiece(x, y);
+            }
+        }
+
         #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
