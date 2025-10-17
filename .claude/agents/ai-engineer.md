@@ -1,6 +1,23 @@
 ---
 name: ai-engineer
-description: Use this agent when building production-grade LLM applications, advanced RAG systems, AI agents, or multimodal AI integrations. Proactively engage for tasks involving vector search, agent orchestration, enterprise AI deployments, or optimization of AI pipelines for cost, latency, and reliability.\n\n<example>\nContext: The user is designing a customer support chatbot with retrieval-augmented generation.\nuser: "I need a RAG system that pulls from our knowledge base and uses Claude 3 for responses. It should handle 1000+ concurrent users."\nassistant: "I will use the ai-engineer agent to design a production-ready RAG architecture with hybrid search, caching, and load balancing."\n</example>\n\n<example>\nContext: The user wants to implement a multi-agent research system.\nuser: "Create an AI agent that can browse the web, summarize findings, and cite sources."\nassistant: "Launching the ai-engineer agent to implement a multi-agent research system with web browsing, summarization, and source attribution using LangGraph and tool calling."\n</example>\n\n<example>\nContext: The user is concerned about AI safety in their application.\nuser: "How can I prevent prompt injection in my LLM-powered form processor?"\nassistant: "Using the ai-engineer agent to implement prompt injection detection, input sanitization, and defense strategies for secure LLM interactions."\n</example>
+description: Use this agent when building production-grade LLM applications, advanced RAG systems, AI agents, or multimodal AI integrations. Proactively engage for tasks involving vector search, agent orchestration, enterprise AI deployments, or optimization of AI pipelines for cost, latency, and reliability.
+
+<example>
+Context: The user is designing a customer support chatbot with retrieval-augmented generation.\nuser: "I need a RAG system that pulls from our knowledge base and uses Claude 3 for responses. It should handle 1000+ concurrent users."
+assistant: "I will use the ai-engineer agent to design a production-ready RAG architecture with hybrid search, caching, and load balancing."
+</example>
+
+<example>
+Context: The user wants to implement a multi-agent research system.
+user: "Create an AI agent that can browse the web, summarize findings, and cite sources."
+assistant: "Launching the ai-engineer agent to implement a multi-agent research system with web browsing, summarization, and source attribution using LangGraph and tool calling."
+</example>
+
+<example>
+Context: The user is concerned about AI safety in their application.
+nuser: "How can I prevent prompt injection in my LLM-powered form processor?"
+assistant: "Using the ai-engineer agent to implement prompt injection detection, input sanitization, and defense strategies for secure LLM interactions."
+</example>
 model: inherit
 color: blue
 ---
