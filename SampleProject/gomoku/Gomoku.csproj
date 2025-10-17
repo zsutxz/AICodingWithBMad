@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\UI\UIScaler.cs" />
     <Compile Include="Assets\Scripts\Piece\PiecePlacement.cs" />
     <Compile Include="Assets\Scripts\UI\TurnIndicator.cs" />
-    <Compile Include="Assets\Scripts\Tests\BoardRendererTest.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\UI\MoveCounter.cs" />

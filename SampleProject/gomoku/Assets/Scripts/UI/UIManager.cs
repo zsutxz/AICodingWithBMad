@@ -10,6 +10,7 @@ namespace Gomoku.UI
     {
         [Header("UI Prefabs")]
         [SerializeField] private GameObject startButtonPrefab;
+        [SerializeField] private GameBoardController gameBoardPrefab;
 
         [Header("UI References")]
         private Button startButton;
@@ -18,6 +19,7 @@ namespace Gomoku.UI
         [Header("Text Settings")]
         [SerializeField] private string startGameText = "开始游戏";
 
+        GameBoardController m_gameBoardCtr;
         private void Awake()
         {
             InitializeUI();
@@ -25,45 +27,23 @@ namespace Gomoku.UI
 
         private void InitializeUI()
         {
+            if(gameBoardPrefab != null)
+            {
+                m_gameBoardCtr = Instantiate<GameBoardController>(gameBoardPrefab, transform);
+            }
+
             // Dynamically create StartButton
             if (startButtonPrefab != null)
             {
                 GameObject buttonObject = Instantiate(startButtonPrefab, transform);
                 startButton = buttonObject.GetComponent<Button>();
-                // First try to get Text component directly on the same GameObject
-                startButtonText = buttonObject.GetComponent<Text>();
-                // If not found, then look for it in children
-                if (startButtonText == null)
-                {
-                    startButtonText = buttonObject.GetComponentInChildren<Text>();
-                }
-            }
+               // First try to get Text component directly on the same GameObject
 
-            // Ensure references are set
-            if (startButton == null || startButtonText == null)
-            {
-                Debug.LogError("UIManager: Failed to create or find required UI elements!");
-                return;
             }
-
-            // Set start button text
-            SetStartButtonText(startGameText);
 
             Debug.Log("UIManager: UI initialized successfully");
         }
 
-        public void SetStartButtonText(string text)
-        {
-            if (startButtonText != null)
-            {
-                startButtonText.text = text;
-            }
-        }
-
-        public string GetStartButtonText()
-        {
-            return startButtonText?.text ?? string.Empty;
-        }
 
         /// <summary>
         /// Sets the active state of the UI Manager's root GameObject
