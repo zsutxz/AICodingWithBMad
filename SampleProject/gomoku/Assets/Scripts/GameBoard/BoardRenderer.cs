@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gomoku
 {
@@ -78,6 +79,9 @@ namespace Gomoku
                     placedPieces[x, y] = PlayerType.None;
                 }
             }
+
+            // Initialize UI elements
+            InitializeUI();
 
             Debug.Log($"BoardRenderer initialized with size {boardSize}x{boardSize}");
         }
@@ -286,47 +290,162 @@ namespace Gomoku
         }
 
         /// <summary>
-        /// Renders the board in the scene
+        /// Reference to the canvas that will contain the board UI elements
         /// </summary>
-        private void OnRenderObject()
+        [SerializeField] private Canvas canvas;
+
+        /// <summary>
+        /// Reference to the panel that will act as the board container
+        /// </summary>
+        [SerializeField] private RectTransform boardPanel;
+
+        /// <summary>
+        /// Prefab for grid lines
+        /// </summary>
+        [SerializeField] private GameObject gridLinePrefab;
+
+        /// <summary>
+        /// Prefab for game pieces
+        /// </summary>
+        [SerializeField] private GameObject piecePrefab;
+
+        /// <summary>
+        /// Container for all grid lines
+        /// </summary>
+        private GameObject gridContainer;
+
+        /// <summary>
+        /// Container for all pieces
+        /// </summary>
+        private GameObject piecesContainer;
+
+        /// <summary>
+        /// Array of piece game objects for quick access
+        /// </summary>
+        private GameObject[,] pieceObjects;
+
+        private void Awake()
         {
-            // Draw background first
-            if (backgroundMesh != null && backgroundMaterial != null)
-            {
-                backgroundMaterial.SetPass(0);
-                Graphics.DrawMeshNow(backgroundMesh, Matrix4x4.identity);
-            }
+            InitializeUI();
+        }
 
-            // Draw grid
-            if (gridMesh != null && gridMaterial != null)
+        /// <summary>
+        /// Initializes the UI elements for the board
+        /// </summary>
+        private void InitializeUI()
+        {
+            // Get or create canvas
+            if (canvas == null)
             {
-                gridMaterial.SetPass(0);
-                Graphics.DrawMeshNow(gridMesh, Matrix4x4.identity);
-            }
-
-            // Draw placed pieces
-            for (int x = 0; x < boardSize; x++)
-            {
-                for (int y = 0; y < boardSize; y++)
+                canvas = GetComponentInParent<Canvas>();
+                if (canvas == null)
                 {
-                    if (placedPieces[x, y] != PlayerType.None)
-                    {
-                        Vector3 position = new Vector3(
-                            boardOffset.x + x * cellSize,
-                            boardOffset.y + y * cellSize,
-                            0
-                        );
-
-                        Matrix4x4 matrix = Matrix4x4.TRS(position, Quaternion.identity, Vector3.one);
-
-                        // Use the appropriate property block based on piece type
-                        MaterialPropertyBlock propertyBlock = placedPieces[x, y] == PlayerType.Black ?
-                            blackPiecePropertyBlock : whitePiecePropertyBlock;
-
-                        Graphics.DrawMesh(pieceMesh, matrix, gridMaterial, 0, null, 0, propertyBlock);
-                    }
+                    // Create a new canvas
+                    GameObject canvasObj = new GameObject("BoardCanvas");
+                    canvas = canvasObj.AddComponent<Canvas>();
+                    canvas.renderMode = RenderMode.WorldSpace;
+                    canvas.transform.SetParent(transform);
+                    canvas.transform.localPosition = Vector3.zero;
+                    canvas.transform.localRotation = Quaternion.identity;
+                    canvas.transform.localScale = Vector3.one;
                 }
             }
+
+            // Get or create board panel
+            if (boardPanel == null)
+            {
+                // Create a panel to contain the board
+                GameObject panelObj = new GameObject("BoardPanel");
+                boardPanel = panelObj.AddComponent<RectTransform>();
+                boardPanel.SetParent(canvas.transform);
+
+                // Set size to match board dimensions
+                float width = (boardSize - 1) * cellSize;
+                float height = (boardSize - 1) * cellSize;
+                boardPanel.sizeDelta = new Vector2(width, height);
+                boardPanel.anchoredPosition = Vector2.zero;
+
+                // Add Image component for background
+                Image backgroundImage = panelObj.AddComponent<Image>();
+                backgroundImage.color = boardBackgroundColor;
+            }
+
+            // Create containers for grid lines and pieces
+            gridContainer = new GameObject("GridLines");
+            gridContainer.transform.SetParent(boardPanel);
+
+            piecesContainer = new GameObject("Pieces");
+            piecesContainer.transform.SetParent(boardPanel);
+
+            // Initialize piece objects array
+            pieceObjects = new GameObject[boardSize, boardSize];
+
+            // Create grid lines
+            CreateGridLines();
+
+            Debug.Log("BoardRenderer UI initialized");
+        }
+
+        /// <summary>
+        /// Creates the grid lines for the board
+        /// </summary>
+        private void CreateGridLines()
+        {
+            // Clear existing grid lines
+            foreach (Transform child in gridContainer.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            float width = (boardSize - 1) * cellSize;
+            float height = (boardSize - 1) * cellSize;
+
+            // Create horizontal lines
+            for (int i = 0; i < boardSize; i++)
+            {
+                float yPos = i * cellSize;
+                CreateGridLine(new Vector2(0, yPos), new Vector2(width, yPos));
+            }
+
+            // Create vertical lines
+            for (int i = 0; i < boardSize; i++)
+            {
+                float xPos = i * cellSize;
+                CreateGridLine(new Vector2(xPos, 0), new Vector2(xPos, height));
+            }
+        }
+
+        /// <summary>
+        /// Creates a single grid line between two points
+        /// </summary>
+        /// <param name="start">Start point in local space</param>
+        /// <param name="end">End point in local space</param>
+        private void CreateGridLine(Vector2 start, Vector2 end)
+        {
+            GameObject line = Instantiate(gridLinePrefab != null ? gridLinePrefab : new GameObject("GridLine"), gridContainer.transform);
+            RectTransform rectTransform = line.GetComponent<RectTransform>();
+
+            if (rectTransform == null)
+            {
+                rectTransform = line.AddComponent<RectTransform>();
+            }
+
+            // Calculate position and rotation
+            Vector2 center = (start + end) / 2;
+            float length = Vector2.Distance(start, end);
+            float angle = Mathf.Atan2(end.y - start.y, end.x - start.x) * Mathf.Rad2Deg;
+
+            rectTransform.anchoredPosition = center;
+            rectTransform.sizeDelta = new Vector2(length, gridLineWidth);
+            rectTransform.localEulerAngles = new Vector3(0, 0, angle);
+
+            // Apply color
+            Image image = line.GetComponent<Image>();
+            if (image == null)
+            {
+                image = line.AddComponent<Image>();
+            }
+            image.color = gridLineColor;
         }
 
         /// <summary>
@@ -370,7 +489,38 @@ namespace Gomoku
         {
             if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
             {
+                // Update the internal state
                 placedPieces[x, y] = pieceType;
+
+                // Create or update the piece UI element
+                if (pieceObjects[x, y] == null)
+                {
+                    // Create a new piece
+                    GameObject piece = Instantiate(piecePrefab != null ? piecePrefab : new GameObject("Piece"), piecesContainer.transform);
+                    RectTransform rectTransform = piece.GetComponent<RectTransform>();
+
+                    if (rectTransform == null)
+                    {
+                        rectTransform = piece.AddComponent<RectTransform>();
+                    }
+
+                    // Position the piece
+                    float posX = x * cellSize;
+                    float posY = y * cellSize;
+                    rectTransform.anchoredPosition = new Vector2(posX, posY);
+                    rectTransform.sizeDelta = new Vector2(pieceSize, pieceSize);
+
+                    // Apply color based on piece type
+                    Image image = piece.GetComponent<Image>();
+                    if (image == null)
+                    {
+                        image = piece.AddComponent<Image>();
+                    }
+                    image.color = pieceType == PlayerType.Black ? blackPieceColor : whitePieceColor;
+
+                    // Store reference
+                    pieceObjects[x, y] = piece;
+                }
             }
         }
 
@@ -383,7 +533,15 @@ namespace Gomoku
         {
             if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
             {
+                // Update the internal state
                 placedPieces[x, y] = PlayerType.None;
+
+                // Remove the UI element if it exists
+                if (pieceObjects[x, y] != null)
+                {
+                    Destroy(pieceObjects[x, y]);
+                    pieceObjects[x, y] = null;
+                }
             }
         }
 
@@ -392,6 +550,7 @@ namespace Gomoku
         /// </summary>
         private void OnDestroy()
         {
+            // Clean up procedural meshes and materials
             if (gridMesh != null)
             {
                 DestroyImmediate(gridMesh);
@@ -415,6 +574,27 @@ namespace Gomoku
             if (backgroundMaterial != null)
             {
                 DestroyImmediate(backgroundMaterial);
+            }
+
+            // Clean up UI elements
+            if (gridContainer != null)
+            {
+                Destroy(gridContainer);
+            }
+
+            if (piecesContainer != null)
+            {
+                Destroy(piecesContainer);
+            }
+
+            if (boardPanel != null)
+            {
+                Destroy(boardPanel.gameObject);
+            }
+
+            if (canvas != null && canvas.gameObject.name == "BoardCanvas")
+            {
+                Destroy(canvas.gameObject);
             }
         }
 

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Gomoku.UI;
 namespace Gomoku
 {
     /// <summary>

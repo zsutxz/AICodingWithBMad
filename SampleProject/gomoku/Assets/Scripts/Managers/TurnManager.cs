@@ -3,15 +3,7 @@ using UnityEngine.Events;
 
 namespace Gomoku
 {
-    /// <summary>
-    /// Represents the player types in the game
-    /// </summary>
-    public enum PlayerType
-    {
-        None = 0,
-        Black = 1,
-        White = 2
-    }
+
 
     /// <summary>
     /// Manages player turns and turn-based game logic

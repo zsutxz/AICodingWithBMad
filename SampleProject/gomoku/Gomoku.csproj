@@ -72,7 +72,8 @@
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Piece\Piece.cs" />
-    <Compile Include="Assets\Scripts\GameState\GameResetManager.cs" />
+    <Compile Include="Assets\Scripts\Core\PlayerType.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameResetManager.cs" />
     <Compile Include="Assets\Scripts\UI\ScreenManager.cs" />
     <Compile Include="Assets\Scripts\UI\PauseButton.cs" />
     <Compile Include="Assets\Scripts\UI\VictoryBanner.cs" />
@@ -83,9 +84,9 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\UI\MoveCounter.cs" />
     <Compile Include="Assets\Scripts\UI\UIStyleManager.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\GameBoardController.cs" />
     <Compile Include="Assets\Scripts\UI\UIGameStateIntegrator.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardScaler.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\GameBoard.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardRenderer.cs" />
     <Compile Include="Assets\Scripts\Piece\PieceVisualizer.cs" />
     <Compile Include="Assets\Scripts\Managers\GameStateManager.cs" />

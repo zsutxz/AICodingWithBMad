@@ -8,6 +8,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Gomoku;
+using Gomoku.UI;
 
 /// <summary>
 /// WinDetectorTests contains unit tests for the WinDetector class.

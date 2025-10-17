@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
+using Gomoku.UI;
 
 namespace Gomoku.Tests
 {

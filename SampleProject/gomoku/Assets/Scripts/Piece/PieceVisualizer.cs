@@ -1,3 +1,4 @@
+using Gomoku.UI;
 using UnityEngine;
 
 namespace Gomoku
