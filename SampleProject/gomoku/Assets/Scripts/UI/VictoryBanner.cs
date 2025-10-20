@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Gomoku;
+using Gomoku.Core;
 using static Gomoku.TurnManager;
 using System;
 
@@ -81,7 +82,7 @@ namespace Gomoku.UI
             // Display the winner's name
             if (winnerText != null)
             {
-                winnerText.text = $"{(winner == PlayerType.Black ? "Black" : "White")} Wins!";
+                winnerText.text = $"{(winner == PlayerType.PlayerOne ? "Black" : "White")} Wins!";
             }
 
             // Show the victory banner
@@ -131,7 +132,7 @@ namespace Gomoku.UI
             // Display the winner's name
             if (winnerText != null)
             {
-                winnerText.text = $"{(winner == PlayerType.Black ? "Black" : "White")} Wins!";
+                winnerText.text = $"{(winner == PlayerType.PlayerOne ? "Black" : "White")} Wins!";
             }
 
             // Show the victory banner

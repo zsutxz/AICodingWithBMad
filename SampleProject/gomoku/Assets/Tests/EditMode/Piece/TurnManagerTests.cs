@@ -1,3 +1,4 @@
+using Gomoku.Core;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -25,23 +26,23 @@ namespace Gomoku.Tests
         public void TurnManager_Initializes_With_Black_As_Starting_Player_By_Default()
         {
             // TurnManager initializes automatically in Awake
-            Assert.AreEqual(PlayerType.Black, turnManager.CurrentPlayer);
+            Assert.AreEqual(PlayerType.PlayerOne, turnManager.CurrentPlayer);
         }
 
         [Test]
         public void EndTurn_Switches_From_Black_To_White()
         {
             turnManager.EndTurn();
-            Assert.AreEqual(PlayerType.White, turnManager.CurrentPlayer);
+            Assert.AreEqual(PlayerType.PlayerTwo, turnManager.CurrentPlayer);
         }
 
         [Test]
         public void EndTurn_Switches_From_White_To_Black()
         {
             // Set starting player to White first
-            turnManager.SetStartingPlayer(PlayerType.White);
+            turnManager.SetStartingPlayer(PlayerType.PlayerTwo);
             turnManager.EndTurn();
-            Assert.AreEqual(PlayerType.Black, turnManager.CurrentPlayer);
+            Assert.AreEqual(PlayerType.PlayerOne, turnManager.CurrentPlayer);
         }
 
         [Test]
@@ -50,7 +51,7 @@ namespace Gomoku.Tests
             turnManager.EndTurn(); // B -> W
             turnManager.EndTurn(); // W -> B
             turnManager.ResetTurns();
-            Assert.AreEqual(PlayerType.Black, turnManager.CurrentPlayer);
+            Assert.AreEqual(PlayerType.PlayerOne, turnManager.CurrentPlayer);
         }
     }
 }

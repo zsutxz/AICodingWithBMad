@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Gomoku.Core;
 
 namespace Gomoku.UI
 {
@@ -90,13 +91,13 @@ namespace Gomoku.UI
 
             switch (player)
             {
-                case PlayerType.Black:
+                case PlayerType.PlayerOne:
                     textToShow = blackTurnText;
                     iconToShow = blackPlayerSprite;
                     textColor = blackPlayerColor;
                     break;
 
-                case PlayerType.White:
+                case PlayerType.PlayerTwo:
                     textToShow = whiteTurnText;
                     iconToShow = whitePlayerSprite;
                     textColor = whitePlayerColor;
@@ -163,7 +164,7 @@ namespace Gomoku.UI
         {
             if (turnManager != null)
             {
-                turnManager.OnPlayerTurnChanged.RemoveListener(new UnityEngine.Events.UnityAction<Gomoku.PlayerType>(Handle_OnPlayerTurnChanged));
+                turnManager.OnPlayerTurnChanged.RemoveListener(new UnityEngine.Events.UnityAction<Gomoku.Core.PlayerType>(Handle_OnPlayerTurnChanged));
             }
         }
     }

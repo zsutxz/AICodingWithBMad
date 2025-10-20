@@ -6,19 +6,24 @@ using Gomoku.Audio;
 using Gomoku.UI;
 using System;
 
-/// <summary>
-/// Enum representing the different game states
-/// </summary>
-public enum GameState
+namespace Gomoku.Core
 {
-    MainMenu,
-    Playing,
-    Paused,
-    GameOver
+    /// <summary>
+    /// Enum representing the different game states
+    /// </summary>
+    public enum GameState
+    {
+        MainMenu,
+        Playing,
+        Paused,
+        GameOver
+    }
 }
 
 namespace Gomoku
 {
+    using Gomoku.Core;
+
     /// <summary>
     /// Manages the overall game state and transitions between states
     /// </summary>
@@ -34,22 +39,22 @@ namespace Gomoku
 
         [Header("References")]
         [Tooltip("Reference to the UI Manager for screen transitions")]
-        [SerializeField] private UIManager uiManager;
+        [SerializeField] public UIManager uiManager;
 
         [Tooltip("Reference to the Audio Manager for feedback")]
-        [SerializeField] private AudioManager audioManager;
+        [SerializeField] public AudioManager audioManager;
 
         [Tooltip("Reference to the Game Over Screen for displaying results")]
-        [SerializeField] private GameOverScreen gameOverScreen;
+        [SerializeField] public GameOverScreen gameOverScreen;
 
         [Tooltip("Reference to the Win Detector for victory detection")]
-        [SerializeField] private WinDetector winDetector;
+        [SerializeField] public WinDetector winDetector;
 
         [Tooltip("Reference to the SceneLoader for scene transitions")]
-        [SerializeField] private SceneLoader sceneLoader;
+        [SerializeField] public SceneLoader sceneLoader;
 
         // Current state of the game
-        private GameState currentState;
+        public GameState currentState;
 
         // Previous state for resuming gameplay
         private GameState previousState;
@@ -321,7 +326,7 @@ namespace Gomoku
                 else
                 {
                     // Fallback: if no winner is detected, default to black
-                    gameOverScreen.ShowGameOver(PlayerType.Black);
+                    gameOverScreen.ShowGameOver(PlayerType.PlayerOne);
                 }
             }
 

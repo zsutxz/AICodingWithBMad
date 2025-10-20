@@ -1,5 +1,6 @@
 using UnityEngine;
 using Gomoku;
+using Gomoku.Core;
 using System;
 
 namespace Gomoku.UI

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Gomoku.UI;
+using Gomoku.Core;
 namespace Gomoku
 {
     /// <summary>
@@ -18,10 +19,10 @@ namespace Gomoku
                 piecePlacement.InitializeGame();
 
                 // Place a few test pieces
-                piecePlacement.TryPlacePiece(7, 7, PlayerType.Black);
-                piecePlacement.TryPlacePiece(7, 8, PlayerType.White);
-                piecePlacement.TryPlacePiece(8, 7, PlayerType.Black);
-                piecePlacement.TryPlacePiece(8, 8, PlayerType.White);
+                piecePlacement.TryPlacePiece(7, 7, PlayerType.PlayerOne);
+                piecePlacement.TryPlacePiece(7, 8, PlayerType.PlayerTwo);
+                piecePlacement.TryPlacePiece(8, 7, PlayerType.PlayerOne);
+                piecePlacement.TryPlacePiece(8, 8, PlayerType.PlayerOne);
             }
         }
     }

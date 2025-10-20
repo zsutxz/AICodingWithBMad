@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 using Gomoku.UI;
+using Gomoku.Core;
 
 namespace Gomoku.Tests.EditMode
 {
@@ -54,7 +55,7 @@ namespace Gomoku.Tests.EditMode
         public void ShowGameOver_ActivatesScreen_AndVictoryBanner()
         {
             // Arrange
-            var winner = PlayerType.Black;
+            var winner = PlayerType.PlayerOne;
             screenObject.SetActive(false);
 
             // Act
@@ -151,7 +152,7 @@ namespace Gomoku.Tests.EditMode
             gameOverScreen.mainMenuButton = null;
 
             // Act & Assert
-            Assert.DoesNotThrow(() => gameOverScreen.ShowGameOver(PlayerType.Black),
+            Assert.DoesNotThrow(() => gameOverScreen.ShowGameOver(PlayerType.PlayerOne),
                 "ShowGameOver should handle null references gracefully");
             Assert.DoesNotThrow(() => gameOverScreen.HideGameOver(),
                 "HideGameOver should handle null references gracefully");

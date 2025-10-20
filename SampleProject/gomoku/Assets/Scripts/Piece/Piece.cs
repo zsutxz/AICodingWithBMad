@@ -1,5 +1,6 @@
 using UnityEngine;
 using static Gomoku.TurnManager;
+using Gomoku.Core;
 
 namespace Gomoku
 {
@@ -31,8 +32,8 @@ namespace Gomoku
         // Properties
         public PlayerType PieceType => pieceType;
         public Vector2Int BoardPosition => boardPosition;
-        public bool IsBlackPiece => pieceType == PlayerType.Black;
-        public bool IsWhitePiece => pieceType == PlayerType.White;
+        public bool IsBlackPiece => pieceType == PlayerType.PlayerOne;
+        public bool IsWhitePiece => pieceType == PlayerType.PlayerTwo;
         public bool IsAnimating => isAnimating;
 
         private void Awake()

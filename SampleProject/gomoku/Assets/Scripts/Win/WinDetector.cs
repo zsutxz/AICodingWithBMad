@@ -5,6 +5,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Gomoku;
+using Gomoku.Core;
 using System;
 
 /// <summary>

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Gomoku.Core;
 
 namespace Gomoku
 {
@@ -516,7 +517,7 @@ namespace Gomoku
                     {
                         image = piece.AddComponent<Image>();
                     }
-                    image.color = pieceType == PlayerType.Black ? blackPieceColor : whitePieceColor;
+                    image.color = pieceType == PlayerType.PlayerOne ? blackPieceColor : whitePieceColor;
 
                     // Store reference
                     pieceObjects[x, y] = piece;

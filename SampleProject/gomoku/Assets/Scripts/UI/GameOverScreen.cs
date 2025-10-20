@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Gomoku;
+using Gomoku.Core;
 
 namespace Gomoku.UI
 {

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Gomoku.Core;
 using System;
 
 namespace Gomoku.UI
@@ -207,7 +207,7 @@ namespace Gomoku.UI
             {
                 // Get winner information and show game over screen
                 // This would need to be implemented based on win detection
-                gameOverScreen.ShowGameOver(PlayerType.Black); // Placeholder
+                gameOverScreen.ShowGameOver(PlayerType.PlayerOne); // Placeholder
             }
 
             // Disable in-game UI interactions
@@ -297,13 +297,13 @@ namespace Gomoku.UI
         {
             if (gameStateManager != null)
             {
-                // ÐÞÕý£ºOnStateChange Ö»½ÓÊÜ UnityAction<GameState>£¬¶ø²»ÊÇ´øÁ½¸ö²ÎÊýµÄÎ¯ÍÐ
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½OnStateChange Ö»ï¿½ï¿½ï¿½ï¿½ UnityAction<GameState>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¯ï¿½ï¿½
                 gameStateManager.OnStateChange.RemoveListener(HandleGameStateChange);
             }
 
             if (turnManager != null)
             {
-                // ¼ÙÉè turnManager µÄÊÂ¼þÊÇ UnityEvent<PlayerType> ÀàÐÍ
+                // ï¿½ï¿½ï¿½ï¿½ turnManager ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ UnityEvent<PlayerType> ï¿½ï¿½ï¿½ï¿½
                 turnManager.OnPlayerTurnChanged.RemoveListener(HandlePlayerTurnChanged);
                 turnManager.OnTurnCompleted.RemoveListener(HandleTurnCompleted);
             }

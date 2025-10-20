@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using Gomoku.UI;
 using Gomoku.Audio;
+using Gomoku.Core;
 
 namespace Gomoku.Tests.EditMode
 {
