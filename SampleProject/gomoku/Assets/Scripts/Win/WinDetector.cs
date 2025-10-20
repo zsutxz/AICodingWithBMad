@@ -342,9 +342,13 @@ public class WinDetector : MonoBehaviour
         gameWon = false;
     }
 
+    /// <summary>
+    /// Checks if there is a winner in the current game state.
+    /// </summary>
+    /// <returns>True if there is a winner, false otherwise</returns>
     internal bool HasWinner()
     {
-        throw new NotImplementedException();
+        return gameWon && winner != PlayerType.None;
     }
 }
 

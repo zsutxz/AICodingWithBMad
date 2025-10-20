@@ -173,10 +173,23 @@ namespace Gomoku.UI
         /// </summary>
         public void ClearBoard()
         {
-            if (!isInitialized) return;
+            if (!isInitialized)
+            {
+                Debug.LogWarning("GameBoardController not initialized. Cannot clear board.");
+                return;
+            }
 
-            // TODO: Implement clearing all pieces from the renderer
-            Debug.Log("ClearBoard not fully implemented yet");
+            // Clear pieces from the renderer
+            if (boardRenderer != null)
+            {
+                boardRenderer.ClearBoard();
+            }
+            else
+            {
+                Debug.LogError("BoardRenderer reference not set. Cannot clear board.");
+            }
+
+            Debug.Log("Game board cleared successfully");
         }
 
         /// <summary>
@@ -236,19 +249,84 @@ namespace Gomoku.UI
             }
         }
 
+        /// <summary>
+        /// Updates the board configuration and reinitializes components
+        /// </summary>
+        /// <param name="boardSize">New board size</param>
+        /// <param name="cellSize">New cell size</param>
+        /// <param name="boardOffset">New board offset</param>
         public void UpdateBoardConfiguration(int boardSize, float cellSize, Vector2 boardOffset)
         {
-            throw new NotImplementedException();
+            // Validate parameters
+            if (boardSize < 2 || boardSize > 25)
+            {
+                Debug.LogError($"Invalid board size: {boardSize}. Must be between 2 and 25.");
+                return;
+            }
+
+            if (cellSize <= 0)
+            {
+                Debug.LogError($"Invalid cell size: {cellSize}. Must be greater than 0.");
+                return;
+            }
+
+            // Update configuration
+            this.boardSize = boardSize;
+            this.cellSize = cellSize;
+            this.boardOffset = boardOffset;
+
+            // Reinitialize components with new configuration
+            if (isInitialized)
+            {
+                Initialize();
+            }
         }
 
+        /// <summary>
+        /// Gets the bounds of the game board in world space
+        /// </summary>
+        /// <returns>The bounds of the game board</returns>
         public Bounds GetBoardBounds()
         {
-            throw new NotImplementedException();
+            if (!isInitialized)
+            {
+                Debug.LogWarning("GameBoardController not initialized. Returning default bounds.");
+                return new Bounds(Vector3.zero, Vector3.one);
+            }
+
+            // Calculate board bounds
+            float boardWidth = (boardSize - 1) * cellSize;
+            float boardHeight = (boardSize - 1) * cellSize;
+            Vector3 center = new Vector3(boardOffset.x + boardWidth / 2, boardOffset.y + boardHeight / 2, 0);
+            Vector3 size = new Vector3(boardWidth, boardHeight, 0.1f);
+
+            return new Bounds(center, size);
         }
 
-        public void InitializeForTest(int v)
+        /// <summary>
+        /// Initializes the game board controller for testing purposes
+        /// </summary>
+        /// <param name="testBoardSize">Board size for testing</param>
+        public void InitializeForTest(int testBoardSize)
         {
-            throw new NotImplementedException();
+            // Set test configuration
+            boardSize = testBoardSize;
+            cellSize = 1.0f;
+            boardOffset = Vector2.zero;
+
+            // Initialize components
+            if (boardRenderer != null)
+            {
+                boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+            }
+
+            if (intersectionDetector != null)
+            {
+                intersectionDetector.Initialize(boardSize, cellSize, boardOffset);
+            }
+
+            isInitialized = true;
+            Debug.Log($"GameBoardController initialized for testing with {boardSize}x{boardSize} board");
         }
     }
 }

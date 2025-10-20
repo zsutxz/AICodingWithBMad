@@ -547,6 +547,36 @@ namespace Gomoku
         }
 
         /// <summary>
+        /// Clears all pieces from the board
+        /// </summary>
+        public void ClearBoard()
+        {
+            if (placedPieces == null || pieceObjects == null)
+            {
+                Debug.LogWarning("BoardRenderer not properly initialized. Cannot clear board.");
+                return;
+            }
+
+            // Clear all pieces from the internal state
+            for (int x = 0; x < boardSize; x++)
+            {
+                for (int y = 0; y < boardSize; y++)
+                {
+                    placedPieces[x, y] = PlayerType.None;
+
+                    // Remove the UI element if it exists
+                    if (pieceObjects[x, y] != null)
+                    {
+                        Destroy(pieceObjects[x, y]);
+                        pieceObjects[x, y] = null;
+                    }
+                }
+            }
+
+            Debug.Log($"Board cleared: removed all pieces from {boardSize}x{boardSize} board");
+        }
+
+        /// <summary>
         /// Cleans up resources
         /// </summary>
         private void OnDestroy()
