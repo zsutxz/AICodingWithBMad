@@ -364,7 +364,7 @@ namespace Gomoku
                 float width = (boardSize - 1) * cellSize;
                 float height = (boardSize - 1) * cellSize;
                 boardPanel.sizeDelta = new Vector2(width, height);
-                boardPanel.anchoredPosition = Vector2.zero;
+                boardPanel.anchoredPosition = boardOffset;
 
                 // Add Image component for background
                 Image backgroundImage = panelObj.AddComponent<Image>();
@@ -404,15 +404,15 @@ namespace Gomoku
             // Create horizontal lines
             for (int i = 0; i < boardSize; i++)
             {
-                float yPos = i * cellSize;
-                CreateGridLine(new Vector2(0, yPos), new Vector2(width, yPos));
+                float yPos = boardOffset.y + i * cellSize;
+                CreateGridLine(new Vector2(boardOffset.x, yPos), new Vector2(boardOffset.x + width, yPos));
             }
 
             // Create vertical lines
             for (int i = 0; i < boardSize; i++)
             {
-                float xPos = i * cellSize;
-                CreateGridLine(new Vector2(xPos, 0), new Vector2(xPos, height));
+                float xPos = boardOffset.x + i * cellSize;
+                CreateGridLine(new Vector2(xPos, boardOffset.y), new Vector2(xPos, boardOffset.y + height));
             }
         }
 
