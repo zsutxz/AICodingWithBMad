@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using Gomoku;
 using Gomoku.UI;
+using Gomoku.Core;
 
 namespace Gomoku.Tests.PlayMode
 {
@@ -254,7 +255,7 @@ namespace Gomoku.Tests.PlayMode
             }
 
             // Show game over screen
-            gameOverScreen.ShowGameOver(PlayerType.Black);
+            gameOverScreen.ShowGameOver(PlayerType.PlayerOne);
             yield return new WaitForSeconds(0.5f);
 
             // Verify screen is active
