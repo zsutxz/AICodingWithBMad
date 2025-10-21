@@ -62,7 +62,7 @@ namespace Gomoku.UI
             }
 
             // Subscribe to turn changes
-            //turnManager.OnPlayerTurnChanged += Handle_OnPlayerTurnChanged;
+            turnManager.OnPlayerTurnChanged.AddListener(Handle_OnPlayerTurnChanged);
 
             // Set initial state
             UpdateTurnDisplay(turnManager.CurrentPlayer, false);
