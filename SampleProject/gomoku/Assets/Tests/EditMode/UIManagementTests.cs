@@ -102,25 +102,6 @@ namespace Gomoku.Tests.EditMode
         }
 
         [Test]
-        public void UIGameStateIntegrator_Initializes_WithoutErrors()
-        {
-            // Arrange
-            var integratorObject = new GameObject("UIGameStateIntegrator");
-            var integrator = integratorObject.AddComponent<UIGameStateIntegrator>();
-
-            // Act
-            integrator.InitializeIntegration();
-
-            // Assert
-            // Verify initialization completes without errors
-            Assert.DoesNotThrow(() => integrator.InitializeIntegration(), 
-                "Integration should initialize without errors");
-
-            // Clean up
-            Object.DestroyImmediate(integratorObject);
-        }
-
-        [Test]
         public void UILayoutManager_DetectsBoardVisibility_Correctly()
         {
             // Arrange

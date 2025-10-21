@@ -159,22 +159,7 @@ public class WinDetectorTests
     
     [Test]
     public void CheckForWin_WinAfterMultipleMoves_DetectsWin()
-    {
-        //// Arrange
-        //// Set up a winning pattern with moves in non-sequential order
-        //gameBoardModel.SetCellState(new Vector2Int(0, 0), Player.Player1);
-        //gameBoardModel.SetCellState(new Vector2Int(1, 0), Player.Player1);
-        //gameBoardModel.SetCellState(new Vector2Int(2, 0), Player.Player1);
-        //gameBoardModel.SetCellState(new Vector2Int(3, 0), Player.Player1);
-        //// Leave position (4,0) empty for now
-        
-        //// Make some other moves
-        //gameBoardModel.SetCellState(new Vector2Int(0, 1), Player.Player2);
-        //gameBoardModel.SetCellState(new Vector2Int(1, 1), Player.Player2);
-        
-        //// Complete the winning move
-        //gameBoardModel.SetCellState(new Vector2Int(4, 0), Player.Player1);
-        
+    {   
         // Act
         bool winDetected = winDetector.CheckForWin(new Vector2Int(4, 0));
         

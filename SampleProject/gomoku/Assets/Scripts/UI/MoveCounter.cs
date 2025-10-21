@@ -25,7 +25,6 @@ namespace Gomoku.UI
 
         [Tooltip("Reference to the GameBoardModel to reset board state")]
         [SerializeField] private GameBoard.GameBoardModel gameBoardModel;
-
         private void Awake()
         {
             InitializeMoveCounter();

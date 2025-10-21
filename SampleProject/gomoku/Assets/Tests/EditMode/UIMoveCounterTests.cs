@@ -13,7 +13,6 @@ namespace Gomoku.Tests.EditMode
     {
         private GameObject moveCounterObject;
         private MoveCounter moveCounter;
-        private GameBoardModel gameBoardModel;
 
         [SetUp]
         public void SetUp()
@@ -21,10 +20,6 @@ namespace Gomoku.Tests.EditMode
             // Create test objects
             moveCounterObject = new GameObject("MoveCounter");
             moveCounter = moveCounterObject.AddComponent<MoveCounter>();
-
-            // Create mock GameBoardModel
-            GameObject gameBoardObject = new GameObject("GameBoardModel");
-            gameBoardModel = gameBoardObject.AddComponent<GameBoardModel>();
 
             // Set up references
             // Note: In a real test, we would use dependency injection or mock objects
@@ -37,8 +32,6 @@ namespace Gomoku.Tests.EditMode
             if (moveCounterObject != null)
                 Object.DestroyImmediate(moveCounterObject);
 
-            if (gameBoardModel != null)
-                Object.DestroyImmediate(gameBoardModel.gameObject);
         }
 
         [Test]
@@ -136,9 +129,6 @@ namespace Gomoku.Tests.EditMode
         {
             // Arrange
             var textComponent = moveCounterObject.AddComponent<UnityEngine.UI.Text>();
-
-            // Set up GameBoardModel with specific move count
-            // Note: This would require proper mock setup
 
             // Act
             moveCounter.RefreshDisplay();
