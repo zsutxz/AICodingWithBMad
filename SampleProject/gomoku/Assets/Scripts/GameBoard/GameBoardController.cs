@@ -11,7 +11,7 @@ namespace Gomoku.UI
     public class GameBoardController : MonoBehaviour
     {
         [Header("Board Configuration")]
-        [SerializeField] private int boardSize = 15;
+        [SerializeField] private int boardSize = 30;
         [SerializeField] private float cellSize = 1f;
         [SerializeField] private Vector2 boardOffset = Vector2.zero;
 

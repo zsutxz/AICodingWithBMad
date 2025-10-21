@@ -82,7 +82,7 @@ namespace Gomoku
             }
 
             // Initialize UI elements
-            InitializeUI();
+            //InitializeUI();
 
             Debug.Log($"BoardRenderer initialized with size {boardSize}x{boardSize}");
         }
@@ -352,31 +352,24 @@ namespace Gomoku
                 }
             }
 
-            // Get or create board panel
-            if (boardPanel == null)
+            // Add Image component for background
+            Image backgroundImage = gameObject.AddComponent<Image>();
+            backgroundImage.color = boardBackgroundColor;
+
+            if (gridContainer == null)
             {
-                // Create a panel to contain the board
-                GameObject panelObj = new GameObject("BoardPanel");
-                boardPanel = panelObj.AddComponent<RectTransform>();
-                boardPanel.SetParent(canvas.transform);
-
-                // Set size to match board dimensions
-                float width = (boardSize - 1) * cellSize;
-                float height = (boardSize - 1) * cellSize;
-                boardPanel.sizeDelta = new Vector2(width, height);
-                boardPanel.anchoredPosition = boardOffset;
-
-                // Add Image component for background
-                Image backgroundImage = panelObj.AddComponent<Image>();
-                backgroundImage.color = boardBackgroundColor;
+                // Create containers for grid lines and pieces
+                gridContainer = new GameObject("GridLines");
+                gridContainer.transform.localPosition = new Vector3(640,360,0);
+                gridContainer.transform.SetParent(this.transform);
             }
 
-            // Create containers for grid lines and pieces
-            gridContainer = new GameObject("GridLines");
-            gridContainer.transform.SetParent(boardPanel);
-
-            piecesContainer = new GameObject("Pieces");
-            piecesContainer.transform.SetParent(boardPanel);
+            if(piecesContainer==null)
+            {
+                piecesContainer = new GameObject("Pieces");
+                piecesContainer.transform.localPosition = new Vector3(640, 360, 0);
+                piecesContainer.transform.SetParent(transform);
+            }
 
             // Initialize piece objects array
             pieceObjects = new GameObject[boardSize, boardSize];
@@ -423,7 +416,7 @@ namespace Gomoku
         /// <param name="end">End point in local space</param>
         private void CreateGridLine(Vector2 start, Vector2 end)
         {
-            GameObject line = Instantiate(gridLinePrefab != null ? gridLinePrefab : new GameObject("GridLine"), gridContainer.transform);
+            GameObject line = Instantiate(gridLinePrefab, gridContainer.transform);
             RectTransform rectTransform = line.GetComponent<RectTransform>();
 
             if (rectTransform == null)
@@ -623,10 +616,16 @@ namespace Gomoku
                 Destroy(boardPanel.gameObject);
             }
 
+            if (boardPanel != null)
+            {
+                Destroy(boardPanel.gameObject);
+            }
+
             if (canvas != null && canvas.gameObject.name == "BoardCanvas")
             {
                 Destroy(canvas.gameObject);
             }
+            Destroy(this);
         }
 
         /// <summary>
