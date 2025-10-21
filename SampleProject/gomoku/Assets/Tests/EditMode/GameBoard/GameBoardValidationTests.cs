@@ -57,17 +57,7 @@ namespace Gomoku.Tests
             Assert.IsTrue(true, "BoardScaler responsive scaling validation passed");
         }
 
-        [Test]
-        public void BoardSetupManager_CompleteSetup_ConfiguresAllComponents()
-        {
-            // Validates that BoardSetupManager properly configures all components
-            // - Visual settings applied
-            // - Scaling configured
-            // - Centering applied
-            // - Margins respected
-            
-            Assert.IsTrue(true, "BoardSetupManager complete setup validation passed");
-        }
+ 
 
         [Test]
         public void DeveloperSettings_DebugFeatures_ToggleCorrectly()
@@ -93,17 +83,6 @@ namespace Gomoku.Tests
             Assert.IsTrue(true, "BoardVisualSettings traditional Chinese aesthetic validation passed");
         }
 
-        [Test]
-        public void Integration_AllComponents_WorkTogether()
-        {
-            // Validates integration between all components
-            // - GameBoard provides correct data to BoardRenderer
-            // - BoardScaler responds to GameBoard changes
-            // - IntersectionDetector communicates with GameBoard
-            // - BoardSetupManager coordinates all components
-            
-            Assert.IsTrue(true, "Integration between all components validation passed");
-        }
 
         [Test]
         public void Performance_BoardRendering_IsEfficient()

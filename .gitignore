@@ -240,3 +240,8 @@ Builds/
 
 # Visual Studio 2015 cache directory
 /.vs/
+SampleProject/gomoku/Assets/Library/*
+SampleProject/gomoku/Temp/*
+SampleProject/gomoku/Assets/.vs/*
+SampleProject/gomoku/obj/*
+SampleProject/gomoku/obj/Debug/*

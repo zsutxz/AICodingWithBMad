@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Win\WinCondition.cs" />
     <Compile Include="Assets\Scripts\GameBoard\DeveloperSettings.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\BoardSetupManager.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardVisualSettings.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\PlayingState.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\GameState.cs" />

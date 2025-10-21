@@ -26,13 +26,15 @@ This repository is a documentation and educational wrapper around the BMAD-METHO
 
 ## High-Level Architecture
 
-The BMAD-METHOD follows a modular, dependency-driven architecture:
+The BMAD-METHOD follows a modular, dependency-driven architecture centered around the BMAD Orchestrator:
 
-1. **Agents**: AI personas defined in Markdown+YAML files with role definitions, personalities, and available commands
-2. **Tasks**: Specific executable instructions that agents can perform
-3. **Templates**: YAML-based document structures ensuring consistent outputs
-4. **Dependencies**: Each agent declares dependencies (tasks, templates, data) that are dynamically loaded
-5. **Dependency Resolution**: The system (in `tools/lib/dependency-resolver.js`) recursively loads all dependencies and constructs a "super prompt" combining agent persona, task instructions, templates, and context
+1. **BMAD Orchestrator**: The central AI agent that serves as the system's entry point and controller. It can dynamically transform into any specialized agent based on user commands (e.g., `/pm`, `/architect`). The Orchestrator is responsible for parsing user requirements and coordinating the execution of tasks.
+2. **Specialized Agents**: AI personas defined in Markdown+YAML files with specific roles, skills, and pre-defined tasks. Examples include Analyst, Project Manager, Architect, Developer, and QA agents, each with distinct capabilities.
+3. **Workflows**: Pre-defined sequences of agent interactions and tasks that automate common development processes (e.g., greenfield-fullstack.yaml for new project development).
+4. **Tasks**: Specific executable instructions that agents can perform.
+5. **Templates**: YAML-based document structures ensuring consistent outputs for PRDs, architecture documents, and other artifacts.
+6. **Dependencies**: Each agent declares dependencies (tasks, templates, data) that are dynamically loaded.
+7. **Dependency Resolution**: The system (in `tools/lib/dependency-resolver.js`) recursively loads all dependencies and constructs a "super prompt" combining agent persona, task instructions, templates, and context.
 
 **Key Innovation**: When you invoke an agent (e.g., `/pm create-prd`), the system doesn't just send the command to the LLM. Instead, it:
 1. Loads the agent definition from `bmad-core/agents/pm.md`
@@ -101,9 +103,15 @@ npm run version:major
 
 ## Development Workflow
 
-1. **Planning Phase**: Use Analyst, PM, and Architect agents to create detailed PRDs and Architecture documents
-2. **Development Cycle**: Use Scrum Master to transform plans into actionable stories, then Developer to implement
-3. **Quality Assurance**: Use QA agent for testing and validation throughout the process
+The framework supports structured development workflows that guide projects from concept to completion:
+
+1. **Planning Phase**: Use Analyst, PM, and Architect agents to create detailed PRDs and Architecture documents. The Analyst agent performs market research, the PM agent creates product requirements, and the Architect agent designs the system architecture.
+
+2. **Development Cycle**: Use the Scrum Master (SM) agent to transform high-level plans into actionable user stories and tasks. The SM agent then coordinates with the Developer agent to implement the features, following agile development practices.
+
+3. **Quality Assurance**: Use the QA agent for comprehensive testing and validation throughout the development process. The QA agent can perform various types of testing and ensure the implementation meets the requirements.
+
+4. **Workflow Automation**: The framework includes pre-defined workflows (in `bmad-core/workflows/`) that automate common development patterns. These workflows can be invoked via CLI commands and coordinate multiple agents to complete complex tasks end-to-end.
 
 ## Key Directories
 

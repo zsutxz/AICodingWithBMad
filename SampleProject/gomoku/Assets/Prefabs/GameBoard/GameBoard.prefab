@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd6040803a79de244886d37d1d76185a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSize: 100
-  cellSize: 10
-  boardOffset: {x: 0, y: 0}
+  boardSize: 15
+  cellSize: 50
+  boardOffset: {x: -350, y: -350}
   boardRenderer: {fileID: 11400001}
   intersectionDetector: {fileID: 11400002}
 --- !u!114 &11400001
