@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\UI\MoveCounter.cs" />
     <Compile Include="Assets\Scripts\UI\UIStyleManager.cs" />
+    <Compile Include="Assets\Scripts\UI\MainMenu\MainMenuScreen.cs" />
     <Compile Include="Assets\Scripts\GameBoard\GameBoardController.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\GameOverState.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardRenderer.cs" />
