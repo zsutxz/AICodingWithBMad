@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Gomoku.UI.MainMenu;
 
 namespace Tests
 {

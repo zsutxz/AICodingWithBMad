@@ -82,10 +82,8 @@
     <Compile Include="Assets\Scripts\UI\UIScaler.cs" />
     <Compile Include="Assets\Scripts\Piece\PiecePlacement.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\PausedState.cs" />
-    <Compile Include="Assets\Scripts\UI\MainMenuScreen.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\MainMenuState.cs" />
     <Compile Include="Assets\Scripts\UI\TurnIndicator.cs" />
-    <Compile Include="Assets\Scripts\UI\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\UI\MoveCounter.cs" />
     <Compile Include="Assets\Scripts\UI\UIStyleManager.cs" />
@@ -93,6 +91,7 @@
     <Compile Include="Assets\Scripts\GameBoard\GameBoardController.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\GameOverState.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardRenderer.cs" />
+    <Compile Include="Assets\Scripts\UI\MainMenu\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\Managers\GameStateManager.cs" />
     <Compile Include="Assets\Scripts\Win\WinDetector.cs" />
     <Compile Include="Assets\Scripts\UI\GameOverScreen.cs" />
