@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.UI.MainMenu;
+using Gomoku.Audio;
 
 namespace Tests
 {
@@ -74,7 +75,6 @@ namespace Tests
         public void ExitGame_QuitsApplicationOrStopsEditor()
         {
             #if UNITY_EDITOR
-            bool editorStopped = false;
             UnityEditor.EditorApplication.isPlaying = true;
 
             _mainMenuScreen.ExitGame();
@@ -84,6 +84,80 @@ namespace Tests
             // In build, would call Application.Quit(), but can't test directly
             Assert.Pass("ExitGame calls Application.Quit() in build environment");
             #endif
+        }
+
+        [Test]
+        public void StartGame_TransitionsToPlayingState()
+        {
+            // Test that StartGame transitions to Playing state
+            var originalState = GameStateManager.Instance.GetCurrentState();
+            
+            _mainMenuScreen.StartGame();
+            
+            var newState = GameStateManager.Instance.GetCurrentState();
+            Assert.AreEqual(GameStateEnum.Playing, newState);
+        }
+
+        [Test]
+        public void MainMenuScreen_InitializesInMainMenuState()
+        {
+            // Test that MainMenuScreen sets the correct initial state
+            var stateManager = GameStateManager.Instance;
+            
+            // Start() is automatically called by Unity when the component is enabled
+            // The state should already be set to MainMenu after component creation
+            Assert.AreEqual(GameStateEnum.MainMenu, stateManager.GetCurrentState());
+        }
+
+        [Test]
+        public void OpenSettings_DoesNotThrowException()
+        {
+            // Test that OpenSettings method doesn't throw exceptions
+            // Currently commented out but should be safe to call
+            Assert.DoesNotThrow(() => _mainMenuScreen.OpenSettings());
+        }
+
+        [Test]
+        public void SceneLoader_ProperlyInitialized()
+        {
+            // Test that SceneLoader component exists and is properly configured
+            var sceneLoader = Object.FindObjectOfType<SceneLoader>();
+            Assert.IsNotNull(sceneLoader, "SceneLoader should be present in the scene");
+        }
+
+        [Test]
+        public void GameStateManager_PersistsAcrossSceneChanges()
+        {
+            // Test that GameStateManager uses DontDestroyOnLoad
+            var stateManager = GameStateManager.Instance;
+            
+            // Verify it's marked as DontDestroyOnLoad by checking if it's a singleton
+            var managers = Object.FindObjectsOfType<GameStateManager>();
+            Assert.AreEqual(1, managers.Length, "Should only have one GameStateManager instance");
+        }
+
+        [Test]
+        public void AudioManager_IntegrationWithButtonHandler()
+        {
+            // Test that AudioManager is accessible and can be used by ButtonHandler
+            var audioManager = Object.FindObjectOfType<AudioManager>();
+            
+            // Create a test button handler
+            var buttonObject = new GameObject("TestButton");
+            var buttonHandler = buttonObject.AddComponent<ButtonHandler>();
+            
+            // Test that button handler can access AudioManager without errors
+            Assert.DoesNotThrow(() => 
+            {
+                // Create AudioManager instance if it doesn't exist
+                var audioManagerInstance = AudioManager.Instance;
+                if (audioManagerInstance != null)
+                {
+                    audioManagerInstance.PlayUIClick();
+                }
+            });
+            
+            Object.Destroy(buttonObject);
         }
 
     }

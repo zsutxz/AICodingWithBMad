@@ -8,6 +8,8 @@ namespace Gomoku.Audio
     /// </summary>
     public class AudioManager : MonoBehaviour
     {
+        private static AudioManager instance;
+
         [Header("Audio Mixers")]
         [Tooltip("Reference to the main audio mixer")]
         [SerializeField] private AudioMixer mainMixer;
@@ -24,6 +26,9 @@ namespace Gomoku.Audio
 
         [Tooltip("Sound effect when the game is paused")]
         [SerializeField] private AudioClip pauseSound;
+
+        [Tooltip("Sound effect for UI button clicks")]
+        [SerializeField] private AudioClip uiClickSound;
 
         [Header("Audio Sources")]
         [Tooltip("Primary audio source for music")]
@@ -51,22 +56,43 @@ namespace Gomoku.Audio
 
         private void Awake()
         {
-            // Ensure this manager persists across scene changes
-            DontDestroyOnLoad(gameObject);
-
-            // Validate references
-            if (musicSource == null || sfxSource == null)
+            if (instance == null)
             {
-                Debug.LogError("AudioManager: Audio sources not assigned!");
-                return;
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+
+                // Validate references
+                if (musicSource == null || sfxSource == null)
+                {
+                    Debug.LogError("AudioManager: Audio sources not assigned!");
+                    return;
+                }
+
+                // Set up initial state
+                musicSource.loop = true;
+                musicSource.playOnAwake = false;
+                sfxSource.playOnAwake = false;
+
+                Debug.Log("AudioManager initialized successfully");
             }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
-            // Set up initial state
-            musicSource.loop = true;
-            musicSource.playOnAwake = false;
-            sfxSource.playOnAwake = false;
-
-            Debug.Log("AudioManager initialized successfully");
+        public static AudioManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    GameObject managerObject = new GameObject("AudioManager");
+                    instance = managerObject.AddComponent<AudioManager>();
+                    DontDestroyOnLoad(managerObject);
+                }
+                return instance;
+            }
         }
 
         /// <summary>
@@ -131,6 +157,19 @@ namespace Gomoku.Audio
             }
 
             Debug.Log("Playing pause sound");
+        }
+
+        /// <summary>
+        /// Play UI click sound effect
+        /// </summary>
+        public void PlayUIClick()
+        {
+            if (uiClickSound != null && sfxSource != null)
+            {
+                sfxSource.PlayOneShot(uiClickSound);
+            }
+
+            Debug.Log("Playing UI click sound");
         }
 
         /// <summary>

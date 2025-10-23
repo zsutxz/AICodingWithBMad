@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
+using Gomoku.Audio;
 
 namespace Gomoku.UI.MainMenu
 {
@@ -32,16 +33,16 @@ namespace Gomoku.UI.MainMenu
         {
             isHovered = false;
             StopAllCoroutines();
-            //StartCoroutine(ScaleTo(originalScale));
+            StartCoroutine(ScaleTo(1.0f));
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            //// Play UI click sound
-            //if (AudioManager.Instance != null)
-            //{
-            //    AudioManager.Instance.PlayUIClick();
-            //}
+            // Play UI click sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayUIClick();
+            }
 
             StopAllCoroutines();
             StartCoroutine(ClickAnimation());
@@ -65,9 +66,9 @@ namespace Gomoku.UI.MainMenu
         {
             // Scale down
             yield return ScaleTo(clickScale);
-            //// Scale back to appropriate scale (hover or original)
-            //float target = isHovered ? hoverScale : originalScale;
-            //yield return ScaleTo(target);
+            // Scale back to appropriate scale (hover or original)
+            float target = isHovered ? hoverScale : 1.0f;
+            yield return ScaleTo(target);
         }
     }
 }
