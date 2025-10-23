@@ -94,7 +94,6 @@ namespace Gomoku.Tests
         {
             // Arrange
             intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
-            float detectionRadius = 0.3f;
 
             // Test positions near intersections (within detection radius)
             Vector3[] testPositions = {

@@ -52,9 +52,6 @@ namespace Gomoku.Tests.EditMode
         [Test]
         public void LoadMainMenu_SetsCorrectSceneName()
         {
-            // Arrange
-            var expectedSceneName = "MainMenu";
-
             // Act
             // Method calls SceneManager.LoadScene internally
 
@@ -66,9 +63,6 @@ namespace Gomoku.Tests.EditMode
         [Test]
         public void LoadGameScene_SetsCorrectSceneName()
         {
-            // Arrange
-            var expectedSceneName = "GameScene";
-
             // Act
             // Method calls SceneManager.LoadScene internally
 
@@ -80,9 +74,6 @@ namespace Gomoku.Tests.EditMode
         [Test]
         public void LoadGameOverScene_SetsCorrectSceneName()
         {
-            // Arrange
-            var expectedSceneName = "GameOver";
-
             // Act
             // Method calls SceneManager.LoadScene internally
 

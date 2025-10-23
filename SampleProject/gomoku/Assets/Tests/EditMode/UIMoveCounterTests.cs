@@ -143,7 +143,6 @@ namespace Gomoku.Tests.EditMode
         {
             // Arrange
             var textComponent = moveCounterObject.AddComponent<UnityEngine.UI.Text>();
-            string testFormat = "Moves: {0}";
 
             // Set text format
             // Note: This would be a serialized field in the actual component
