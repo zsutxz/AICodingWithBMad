@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Gomoku.UI;
+using Gomoku.Core;
 
 namespace Gomoku
 {
@@ -9,7 +11,7 @@ namespace Gomoku
     public class PiecePlacement : MonoBehaviour
     {
         [Header("Component References")]
-        [SerializeField] private GameBoard gameBoard;
+        [SerializeField] private GameBoardController gameBoard;
         [SerializeField] private TurnManager turnManager;
         [SerializeField] private IntersectionDetector intersectionDetector;
         
@@ -94,7 +96,7 @@ namespace Gomoku
         {
             // Auto-find components if not assigned
             if (gameBoard == null)
-                gameBoard = FindObjectOfType<GameBoard>();
+                gameBoard = FindObjectOfType<GameBoardController>();
             
             if (turnManager == null)
                 turnManager = FindObjectOfType<TurnManager>();
@@ -469,14 +471,6 @@ namespace Gomoku
             Debug.Log("Game stopped");
         }
         
-        /// <summary>
-        /// Resumes the game
-        /// </summary>
-        public void ResumeGame()
-        {
-            gameActive = true;
-            Debug.Log("Game resumed");
-        }
         
         /// <summary>
         /// Gets the piece type at specific coordinates
@@ -537,3 +531,4 @@ namespace Gomoku
         #endif
     }
 }
+

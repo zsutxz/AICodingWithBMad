@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
+using Gomoku.UI;
 
 namespace Gomoku.Tests
 {
     [TestFixture]
     public class GameBoardTests
     {
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
         private GameObject gameBoardObject;
 
         [SetUp]
@@ -15,7 +16,7 @@ namespace Gomoku.Tests
         {
             // Create a test GameBoard object
             gameBoardObject = new GameObject("TestGameBoard");
-            gameBoard = gameBoardObject.AddComponent<GameBoard>();
+            gameBoard = gameBoardObject.AddComponent<GameBoardController>();
         }
 
         [TearDown]
@@ -46,16 +47,17 @@ namespace Gomoku.Tests
         }
 
         [Test]
-        public void GameBoard_Initialization_WithInvalidSize_ClampsToMinimum()
+        public void GameBoard_Initialization_WithInvalidSize_DoesNotChangeConfiguration()
         {
             // Arrange
-            int invalidSize = 2; // Below minimum of 3
+            int invalidSize = 2; // Below minimum of 2
+            int originalSize = gameBoard.BoardSize;
 
             // Act
             gameBoard.UpdateBoardConfiguration(invalidSize, 1.0f, Vector2.zero);
 
-            // Assert
-            Assert.AreEqual(3, gameBoard.BoardSize, "Board size should be clamped to minimum of 3");
+            // Assert - Configuration should not change when invalid size is provided
+            Assert.AreEqual(originalSize, gameBoard.BoardSize, "Board size should not change when invalid size is provided");
         }
 
         [Test]

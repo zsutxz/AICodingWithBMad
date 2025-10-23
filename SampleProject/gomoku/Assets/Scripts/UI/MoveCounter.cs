@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using Gomoku.GameBoard;
 
 namespace Gomoku.UI
 {
@@ -10,7 +9,6 @@ namespace Gomoku.UI
     public class MoveCounter : MonoBehaviour
     {
         [Header("Component References")]
-        [SerializeField] private GameBoardModel gameBoardModel;
         [SerializeField] private TextMeshProUGUI moveText;
 
         [Header("Text Settings")]
@@ -25,6 +23,8 @@ namespace Gomoku.UI
         // Milestone thresholds for special visual feedback
         private int[] milestones = { 10, 25, 50, 75, 100 };
 
+        [Tooltip("Reference to the GameBoardModel to reset board state")]
+        [SerializeField] private GameBoard.GameBoardModel gameBoardModel;
         private void Awake()
         {
             InitializeMoveCounter();
@@ -40,19 +40,8 @@ namespace Gomoku.UI
         /// </summary>
         private void InitializeMoveCounter()
         {
-            // Auto-find references
-            if (gameBoardModel == null)
-                gameBoardModel = FindObjectOfType<GameBoardModel>();
-
             if (moveText == null)
                 moveText = GetComponentInChildren<TextMeshProUGUI>();
-
-            if (gameBoardModel == null)
-            {
-                Debug.LogError("GameBoardModel reference not found for MoveCounter");
-                enabled = false;
-                return;
-            }
 
             // Set initial display
             UpdateMoveDisplay(gameBoardModel.GetMoveCount(), false);

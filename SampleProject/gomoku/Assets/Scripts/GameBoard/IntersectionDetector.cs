@@ -1,3 +1,4 @@
+using Gomoku.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,7 +21,7 @@ namespace Gomoku
         private int boardSize;
         private float cellSize;
         private Vector2 boardOffset;
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
 
         // Events
         public System.Action<int, int> OnIntersectionClicked;
@@ -39,10 +40,10 @@ namespace Gomoku
             this.boardOffset = boardOffset;
 
             // Get reference to parent GameBoard
-            gameBoard = GetComponentInParent<GameBoard>();
+            gameBoard = GetComponentInParent<GameBoardController>();
             if (gameBoard == null)
             {
-                Debug.LogError("IntersectionDetector must be a child of a GameBoard component.");
+                Debug.LogError("IntersectionDetector must be a child of a GameBoardController component.");
             }
 
             // Ensure we have a collider for detection
@@ -56,7 +57,19 @@ namespace Gomoku
             float boardWidth = (boardSize - 1) * cellSize;
             float boardHeight = (boardSize - 1) * cellSize;
             collider.size = new Vector2(boardWidth, boardHeight);
-            collider.offset = new Vector2(boardOffset.x + boardWidth / 2, boardOffset.y + boardHeight / 2);
+
+            // Position the collider in the local space of the RectTransform if we have one
+            RectTransform rectTransform = GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                // In UI space, the offset is relative to the pivot
+                collider.offset = new Vector2(boardWidth / 2, boardHeight / 2);
+            }
+            else
+            {
+                // In world space, use the board offset
+                collider.offset = new Vector2(boardOffset.x + boardWidth / 2, boardOffset.y + boardHeight / 2);
+            }
         }
 
         /// <summary>
@@ -90,19 +103,20 @@ namespace Gomoku
             RectTransform rectTransform = GetComponent<RectTransform>();
             if (rectTransform != null)
             {
-                RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                    rectTransform, 
-                    eventData.position, 
-                    eventData.pressEventCamera, 
-                    out Vector3 worldPosition
-                );
-                return worldPosition;
+                // Use the RectTransform to convert screen position to world position
+                if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                    rectTransform,
+                    eventData.position,
+                    eventData.pressEventCamera,
+                    out Vector3 worldPosition))
+                {
+                    return worldPosition;
+                }
             }
-            else
-            {
-                // For world-space detection
-                return Camera.main.ScreenToWorldPoint(eventData.position);
-            }
+
+            // For world-space detection or if RectTransform conversion fails
+            Camera camera = eventData.pressEventCamera ?? Camera.main;
+            return camera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, camera.nearClipPlane));
         }
 
         /// <summary>

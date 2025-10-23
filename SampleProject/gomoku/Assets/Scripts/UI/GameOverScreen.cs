@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Gomoku;
+using Gomoku.Core;
 
 namespace Gomoku.UI
 {
@@ -12,27 +13,27 @@ namespace Gomoku.UI
     {
         [Header("UI References")]
         [Tooltip("Reference to the victory banner to display winner information")]
-        [SerializeField] private GameObject victoryBanner;
+        [SerializeField] public GameObject victoryBanner;
 
         [Tooltip("Reference to the play again button")]
-        [SerializeField] private Button playAgainButton;
+        [SerializeField] public Button playAgainButton;
 
         [Tooltip("Reference to the main menu button")]
-        [SerializeField] private Button mainMenuButton;
+        [SerializeField] public Button mainMenuButton;
 
         [Header("Text Settings")]
         [Tooltip("Text to display on the play again button")]
-        [SerializeField] private string playAgainText = "再玩一次";
+        [SerializeField] public string playAgainText = "再玩一次";
 
         [Tooltip("Text to display on the main menu button")]
-        [SerializeField] private string mainMenuText = "主菜单";
+        [SerializeField] public string mainMenuText = "主菜单";
 
         [Header("Scene Management")]
         [Tooltip("Name of the game scene to load when playing again")]
-        [SerializeField] private string gameSceneName = "GameScene";
+        [SerializeField] public string gameSceneName = "GameScene";
 
         [Tooltip("Name of the main menu scene to load when returning to main menu")]
-        [SerializeField] private string mainMenuSceneName = "MainMenu";
+        [SerializeField] public string mainMenuSceneName = "MainMenu";
 
         private void Awake()
         {

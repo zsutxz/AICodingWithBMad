@@ -37,7 +37,14 @@
       "Bash(do if [ ! -f \"$file\" ])",
       "Bash(then echo \"Orphaned meta file: $file.meta\")",
       "Bash(fi:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(git commit:*)",
+      "Bash(rm:*)",
+      "Bash(git checkout:*)",
+      "WebFetch(domain:docs.unity3d.com)",
+      "Bash(for file in Assets/Scripts/Game/GameState/States/GameOverState.cs Assets/Scripts/Game/GameState/States/MainMenuState.cs Assets/Scripts/Game/GameState/States/PausedState.cs Assets/Scripts/Game/GameState/States/PlayingState.cs Assets/Scripts/Managers/GameResetManager.cs Assets/Scripts/UI/UIGameStateIntegrator.cs Assets/Scripts/Win/WinDetector.cs)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(head -10 \"$file\")"
     ],
     "deny": [],
     "ask": [],

@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
+using Gomoku.UI;
+using Gomoku.Core;
 
 namespace Gomoku.Tests
 {
@@ -7,7 +9,7 @@ namespace Gomoku.Tests
     public class PiecePlacementTests
     {
         private PiecePlacement piecePlacement;
-        private GameBoard gameBoard;
+        private GameBoardController gameBoard;
         private TurnManager turnManager;
         private IntersectionDetector intersectionDetector;
 
@@ -15,7 +17,7 @@ namespace Gomoku.Tests
         public void SetUp()
         {
             GameObject go = new GameObject("TestSetup");
-            gameBoard = go.AddComponent<GameBoard>();
+            gameBoard = go.AddComponent<GameBoardController>();
             turnManager = go.AddComponent<TurnManager>();
             intersectionDetector = go.AddComponent<IntersectionDetector>();
             piecePlacement = go.AddComponent<PiecePlacement>();
@@ -35,24 +37,24 @@ namespace Gomoku.Tests
         [Test]
         public void TryPlacePiece_Places_Piece_On_Empty_Intersection()
         {
-            bool placed = piecePlacement.TryPlacePiece(0, 0, PlayerType.Black);
+            bool placed = piecePlacement.TryPlacePiece(0, 0, PlayerType.PlayerOne);
             Assert.IsTrue(placed);
-            Assert.AreEqual(PlayerType.Black, piecePlacement.BoardState[0, 0]);
+            Assert.AreEqual(PlayerType.PlayerOne, piecePlacement.BoardState[0, 0]);
         }
 
         [Test]
         public void TryPlacePiece_Does_Not_Place_Piece_On_Occupied_Intersection()
         {
-            piecePlacement.TryPlacePiece(0, 0, PlayerType.Black);
-            bool placed = piecePlacement.TryPlacePiece(0, 0, PlayerType.White);
+            piecePlacement.TryPlacePiece(0, 0, PlayerType.PlayerOne);
+            bool placed = piecePlacement.TryPlacePiece(0, 0, PlayerType.PlayerTwo);
             Assert.IsFalse(placed);
-            Assert.AreEqual(PlayerType.Black, piecePlacement.BoardState[0, 0]);
+            Assert.AreEqual(PlayerType.PlayerOne, piecePlacement.BoardState[0, 0]);
         }
 
         [Test]
         public void TryPlacePiece_Does_Not_Place_Piece_On_Invalid_Coordinates()
         {
-            bool placed = piecePlacement.TryPlacePiece(-1, 15, PlayerType.Black);
+            bool placed = piecePlacement.TryPlacePiece(-1, 15, PlayerType.PlayerOne);
             Assert.IsFalse(placed);
         }
 
@@ -61,7 +63,7 @@ namespace Gomoku.Tests
         {
             // TurnManager starts with Black by default
             piecePlacement.TryPlacePiece(0, 0, turnManager.CurrentPlayer);
-            Assert.AreEqual(PlayerType.White, turnManager.CurrentPlayer);
+            Assert.AreEqual(PlayerType.PlayerTwo, turnManager.CurrentPlayer);
         }
     }
 }

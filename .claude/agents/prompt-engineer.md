@@ -1,6 +1,32 @@
 ---
 name: prompt-engineer
-description: Use this agent when designing, optimizing, or evaluating prompts for LLMs, especially in production systems. Ideal for creating advanced prompting strategies such as chain-of-thought, constitutional AI, multi-agent workflows, or RAG optimizations. Also use when improving agent performance, ensuring safety and alignment, or conducting prompt A/B testing.\n\n<example>\nContext: The user wants to create a self-correcting content moderation system using constitutional AI principles.\nuser: "Create a constitutional AI prompt for content moderation that self-corrects problematic outputs"\nassistant: "I will use the prompt-engineer agent to design a constitutional AI prompt with self-critique and revision capabilities for content moderation."\n<commentary>\nSince the request involves advanced prompt design with safety and self-correction features, use the prompt-engineer agent to generate a production-ready, well-documented prompt.\n</commentary>\n</example>\n\n<example>\nContext: The user is building a financial analysis agent and needs a prompt that ensures step-by-step reasoning.\nuser: "Design a chain-of-thought prompt for financial analysis that shows clear reasoning steps"\nassistant: "Now invoking the prompt-engineer agent to create a structured chain-of-thought prompt for financial analysis with traceable logic flow."\n<commentary>\nChain-of-thought prompting for complex analytical tasks falls directly within the prompt-engineer's expertise. Use the agent to generate a robust, tested prompt.\n</commentary>\n</example>\n\n<example>\nContext: The user is developing a customer service multi-agent system and needs orchestration prompts.\nuser: "Build a multi-agent prompt system for customer service with escalation workflows"\nassistant: "Activating the prompt-engineer agent to design a multi-agent collaboration framework with role definitions, communication protocols, and escalation logic."\n<commentary>\nMulti-agent prompt design with workflow orchestration is a core capability of the prompt-engineer. Use this agent to ensure reliability, safety, and efficiency.\n</commentary>\n</example>
+description: Use this agent when designing, optimizing, or evaluating prompts for LLMs, especially in production systems. Ideal for creating advanced prompting strategies such as chain-of-thought, constitutional AI, multi-agent workflows, or RAG optimizations. Also use when improving agent performance, ensuring safety and alignment, or conducting prompt A/B testing.
+
+<example>
+Context: The user wants to create a self-correcting content moderation system using constitutional AI principles.user: "Create a constitutional AI prompt for content moderation that self-corrects problematic outputs"
+assistant: "I will use the prompt-engineer agent to design a constitutional AI prompt with self-critique and revision capabilities for content moderation."
+<commentary>
+Since the request involves advanced prompt design with safety and self-correction features, use the prompt-engineer agent to generate a production-ready, well-documented prompt.
+</commentary>
+</example>
+
+<example>
+Context: The user is building a financial analysis agent and needs a prompt that ensures step-by-step reasoning.user: "Design a chain-of-thought prompt for financial analysis that shows clear reasoning steps"
+assistant: "Now invoking the prompt-engineer agent to create a structured chain-of-thought prompt for financial analysis with traceable logic flow."
+<commentary>
+Chain-of-thought prompting for complex analytical tasks falls directly within the prompt-engineer's expertise. Use the agent to generate a robust, tested prompt.
+</commentary>
+</example>
+
+<example>
+Context: The user is developing a customer service multi-agent system and needs orchestration prompts.
+user: "Build a multi-agent prompt system for customer service with escalation workflows"
+assistant: "Activating the prompt-engineer agent to design a multi-agent collaboration framework with role definitions, communication protocols, and escalation logic."
+
+<commentary>
+Multi-agent prompt design with workflow orchestration is a core capability of the prompt-engineer. Use this agent to ensure reliability, safety, and efficiency.
+</commentary>
+</example>
 model: inherit
 color: blue
 ---

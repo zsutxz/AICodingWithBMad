@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Gomoku.Core;
 
 namespace Gomoku.UI
 {
@@ -61,7 +62,7 @@ namespace Gomoku.UI
             }
 
             // Subscribe to turn changes
-            turnManager.OnPlayerTurnChanged += Handle_OnPlayerTurnChanged;
+            turnManager.OnPlayerTurnChanged.AddListener(Handle_OnPlayerTurnChanged);
 
             // Set initial state
             UpdateTurnDisplay(turnManager.CurrentPlayer, false);
@@ -82,7 +83,7 @@ namespace Gomoku.UI
         /// </summary>
         /// <param name="player">Current player</param>
         /// <param name="animate">Whether to animate the change</param>
-        private void UpdateTurnDisplay(PlayerType player, bool animate)
+        public void UpdateTurnDisplay(PlayerType player, bool animate)
         {
             string textToShow = "";
             Sprite iconToShow = null;
@@ -90,13 +91,13 @@ namespace Gomoku.UI
 
             switch (player)
             {
-                case PlayerType.Black:
+                case PlayerType.PlayerOne:
                     textToShow = blackTurnText;
                     iconToShow = blackPlayerSprite;
                     textColor = blackPlayerColor;
                     break;
 
-                case PlayerType.White:
+                case PlayerType.PlayerTwo:
                     textToShow = whiteTurnText;
                     iconToShow = whitePlayerSprite;
                     textColor = whitePlayerColor;
@@ -163,7 +164,7 @@ namespace Gomoku.UI
         {
             if (turnManager != null)
             {
-                turnManager.OnPlayerTurnChanged -= Handle_OnPlayerTurnChanged;
+                turnManager.OnPlayerTurnChanged.RemoveListener(new UnityEngine.Events.UnityAction<Gomoku.Core.PlayerType>(Handle_OnPlayerTurnChanged));
             }
         }
     }

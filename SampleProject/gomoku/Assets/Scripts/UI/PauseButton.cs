@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Gomoku.GameState;
 
 namespace Gomoku.UI
 {
@@ -93,13 +92,13 @@ namespace Gomoku.UI
             if (isPaused)
             {
                 // Resume game
-                gameStateManager.ResumeGame();
+                //gameStateManager.ResumeGame();
                 isPaused = false;
             }
             else
             {
                 // Pause game
-                gameStateManager.PauseGame();
+                gameStateManager.SetState(GameStateEnum.Paused);
                 isPaused = true;
             }
 

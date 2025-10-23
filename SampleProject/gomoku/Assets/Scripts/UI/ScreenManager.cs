@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using Gomoku.GameState;
+
 
 namespace Gomoku.UI
 {

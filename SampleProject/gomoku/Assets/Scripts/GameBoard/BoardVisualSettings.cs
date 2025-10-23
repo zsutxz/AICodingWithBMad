@@ -28,7 +28,7 @@ namespace Gomoku
         
         [Header("Board Dimensions")]
         [SerializeField] private int boardSize = 15;
-        [SerializeField] private float cellSize = 1.0f;
+        [SerializeField] private float cellSize = 5.0f;
         [SerializeField] private Vector2 boardOffset = new Vector2(-7, -7);
 
         // Public properties for access

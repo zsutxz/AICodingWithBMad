@@ -1,18 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Gomoku.Core;
 
 namespace Gomoku
 {
-    /// <summary>
-    /// Represents the player types in the game
-    /// </summary>
-    public enum PlayerType
-    {
-        None = 0,
-        Black = 1,
-        White = 2
-    }
-
     /// <summary>
     /// Manages player turns and turn-based game logic
     /// </summary>
@@ -20,7 +11,7 @@ namespace Gomoku
     {
         [Header("Turn Settings")]
         [Tooltip("Starting player for the game")]
-        [SerializeField] private PlayerType startingPlayer = PlayerType.Black;
+        [SerializeField] private PlayerType startingPlayer = PlayerType.PlayerOne;
 
         [Header("Events")]
         [Tooltip("Event triggered when the player turn changes")]
@@ -119,8 +110,8 @@ namespace Gomoku
         {
             return current switch
             {
-                PlayerType.Black => PlayerType.White,
-                PlayerType.White => PlayerType.Black,
+                PlayerType.PlayerOne => PlayerType.PlayerTwo,
+                PlayerType.PlayerTwo => PlayerType.PlayerOne,
                 _ => startingPlayer
             };
         }
@@ -159,9 +150,14 @@ namespace Gomoku
 
             Debug.Log($"TurnManager initialized. Starting with {currentPlayer}");
         }
-
         #endregion
-
+        /// <summary>
+        /// Utility: validate a player type
+        /// </summary>
+        public static bool IsValidPlayer(PlayerType player)
+        {
+            return player == PlayerType.PlayerOne || player == PlayerType.PlayerTwo;
+        }
         #region Events
 
         /// <summary>
@@ -170,6 +166,7 @@ namespace Gomoku
         public UnityEvent<PlayerType> OnPlayerTurnChanged
         {
             get { return onPlayerTurnChanged; }
+            set {   onPlayerTurnChanged =value; }
         }
 
         /// <summary>

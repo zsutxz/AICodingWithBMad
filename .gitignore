@@ -205,8 +205,42 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Uu]ser[Ss]ettings/
+
+# Unity upgrade backups
+/[Aa]ssets/*/.assetbackup
+
+# Visual Studio cache directory
+*/[Vv]isual[Ss]tudio/[Tt]emp/
+
+# Unity3D generated meta files
+*.pidb
+*.pdb
+*.mdb
+*.db
+
+# Unity3D Generated File On Crash Reports
+crash*
+
+# Asset store tools plugin
+AssetStoreTools
+
+# MemoStar plugin
+MemoStar.id
+
+# Automated build folder
+Builds/
+
+# Visual Studio 2015 cache directory
+/.vs/
 SampleProject/gomoku/Assets/Library/*
 SampleProject/gomoku/Temp/*
 SampleProject/gomoku/Assets/.vs/*
 SampleProject/gomoku/obj/*
-SampleProject/gomoku/obj/Debug/*

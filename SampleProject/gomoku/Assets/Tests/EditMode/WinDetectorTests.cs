@@ -7,8 +7,9 @@ using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using Gomoku.GameState;
 using Gomoku;
+using Gomoku.UI;
+using Gomoku.Core;
 
 /// <summary>
 /// WinDetectorTests contains unit tests for the WinDetector class.
@@ -20,8 +21,8 @@ public class WinDetectorTests
     public GameStateManager gameStateManager;
     public WinCondition winCondition;
     public PiecePlacement piecePlacement;
-    public GameBoard gameBoard;
-    private object gameBoardModel;
+    public GameBoardController gameBoard;
+
 
     [SetUp]
     public void SetUp()
@@ -32,7 +33,7 @@ public class WinDetectorTests
         // Add the required components
         winDetector = testGameObject.AddComponent<WinDetector>();
         gameStateManager = testGameObject.AddComponent<GameStateManager>();
-        gameBoard = testGameObject.AddComponent<GameBoard>();
+        gameBoard = testGameObject.AddComponent<GameBoardController>();
         piecePlacement = testGameObject.AddComponent<PiecePlacement>();
 
         //// Set up references between components
@@ -66,7 +67,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int x = 0; x < 5; x++)
         {
-            piecePlacement.BoardState[x, 0] = PlayerType.Black;
+            piecePlacement.BoardState[x, 0] = PlayerType.PlayerOne;
         }
 
         // Act
@@ -74,8 +75,8 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -86,7 +87,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int y = 0; y < 5; y++)
         {
-            piecePlacement.BoardState[0, y] = PlayerType.White;
+            piecePlacement.BoardState[0, y] = PlayerType.PlayerTwo;
         }
 
         // Act
@@ -94,8 +95,8 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.White, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerTwo, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -106,7 +107,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int i = 0; i < 5; i++)
         {
-            piecePlacement.BoardState[i, i] = PlayerType.Black;
+            piecePlacement.BoardState[i, i] = PlayerType.PlayerOne;
         }
 
         // Act
@@ -114,8 +115,8 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -126,7 +127,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int i = 0; i < 5; i++)
         {
-            piecePlacement.BoardState[4 - i, i] = PlayerType.White;
+            piecePlacement.BoardState[4 - i, i] = PlayerType.PlayerTwo;
         }
 
         // Act
@@ -134,8 +135,8 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.White, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerTwo, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -143,44 +144,29 @@ public class WinDetectorTests
     {
         // Arrange
         // Set up a board with no winning pattern
-        piecePlacement.BoardState[0, 0] = PlayerType.Black;
-        piecePlacement.BoardState[1, 0] = PlayerType.White;
-        piecePlacement.BoardState[0, 1] = PlayerType.White;
-        piecePlacement.BoardState[1, 1] = PlayerType.Black;
+        piecePlacement.BoardState[0, 0] = PlayerType.PlayerOne;
+        piecePlacement.BoardState[1, 0] = PlayerType.PlayerTwo;
+        piecePlacement.BoardState[0, 1] = PlayerType.PlayerTwo;
+        piecePlacement.BoardState[1, 1] = PlayerType.PlayerOne;
 
         // Act
         bool winDetected = winDetector.CheckForWin(new Vector2Int(1, 1));
 
         // Assert
         Assert.IsFalse(winDetected);
-        Assert.AreEqual(GameState.Playing, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
     }
     
     [Test]
     public void CheckForWin_WinAfterMultipleMoves_DetectsWin()
-    {
-        //// Arrange
-        //// Set up a winning pattern with moves in non-sequential order
-        //gameBoardModel.SetCellState(new Vector2Int(0, 0), Player.Player1);
-        //gameBoardModel.SetCellState(new Vector2Int(1, 0), Player.Player1);
-        //gameBoardModel.SetCellState(new Vector2Int(2, 0), Player.Player1);
-        //gameBoardModel.SetCellState(new Vector2Int(3, 0), Player.Player1);
-        //// Leave position (4,0) empty for now
-        
-        //// Make some other moves
-        //gameBoardModel.SetCellState(new Vector2Int(0, 1), Player.Player2);
-        //gameBoardModel.SetCellState(new Vector2Int(1, 1), Player.Player2);
-        
-        //// Complete the winning move
-        //gameBoardModel.SetCellState(new Vector2Int(4, 0), Player.Player1);
-        
+    {   
         // Act
         bool winDetected = winDetector.CheckForWin(new Vector2Int(4, 0));
         
         // Assert
         Assert.IsTrue(winDetected);
         //Assert.AreEqual(Player.Player1, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -194,7 +180,7 @@ public class WinDetectorTests
         // Directly manipulate the board state
         for (int x = 0; x < 3; x++)
         {
-            piecePlacement.BoardState[x, 0] = PlayerType.Black;
+            piecePlacement.BoardState[x, 0] = PlayerType.PlayerTwo;
         }
 
         // Act
@@ -202,8 +188,8 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -222,6 +208,6 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         //Assert.AreEqual(Player.Player1, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
 }

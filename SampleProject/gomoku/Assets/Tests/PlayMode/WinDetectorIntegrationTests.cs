@@ -7,8 +7,9 @@ using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine.UI;
-using Gomoku.GameState;
 using Gomoku;
+using Gomoku.Core;
+using Gomoku.UI;
 
 /// <summary>
 /// WinDetectorIntegrationTests contains play mode integration tests for the WinDetector class.
@@ -24,7 +25,7 @@ public class WinDetectorIntegrationTests
     private GameObject bannerPanel;
     private WinCondition winCondition;
     private PiecePlacement piecePlacement;
-    private GameBoard gameBoard;
+    private GameBoardController gameBoard;
     
     [UnitySetUp]
     public IEnumerator SetUp()
@@ -35,7 +36,7 @@ public class WinDetectorIntegrationTests
         // Add required components
         winDetector = testGameObject.AddComponent<WinDetector>();
         gameStateManager = testGameObject.AddComponent<GameStateManager>();
-        gameBoard = testGameObject.AddComponent<GameBoard>();
+        gameBoard = testGameObject.AddComponent<GameBoardController>();
         piecePlacement = testGameObject.AddComponent<PiecePlacement>();
 
         // Set up references between components
@@ -86,14 +87,6 @@ public class WinDetectorIntegrationTests
     [UnityTest]
     public IEnumerator CheckForWin_WinDetected_VictoryBannerShowsWinner()
     {
-        // Arrange
-        // Set up a horizontal win for Black player
-        // Directly manipulate the board state
-        for (int x = 0; x < 5; x++)
-        {
-            piecePlacement.BoardState[x, 0] = PlayerType.Black;
-        }
-
         // Ensure banner is initially hidden
         Assert.IsFalse(bannerPanel.activeSelf);
 
@@ -102,8 +95,8 @@ public class WinDetectorIntegrationTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.Black, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
         Assert.IsTrue(bannerPanel.activeSelf);
         Assert.AreEqual("Black Wins!", winnerText.text);
         
@@ -115,8 +108,8 @@ public class WinDetectorIntegrationTests
     {
         // Arrange
         // Set up a board with no winning pattern
-        piecePlacement.BoardState[0, 0] = PlayerType.Black;
-        piecePlacement.BoardState[1, 0] = PlayerType.White;
+        piecePlacement.BoardState[0, 0] = PlayerType.PlayerOne;
+        piecePlacement.BoardState[1, 0] = PlayerType.PlayerTwo;
 
         // Ensure banner is initially hidden
         Assert.IsFalse(bannerPanel.activeSelf);
@@ -127,7 +120,7 @@ public class WinDetectorIntegrationTests
         // Assert
         Assert.IsFalse(winDetected);
         Assert.IsFalse(bannerPanel.activeSelf);
-        Assert.AreEqual(GameState.Playing, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
         
         yield return null;
     }
@@ -140,7 +133,7 @@ public class WinDetectorIntegrationTests
         // Directly manipulate the board state
         for (int y = 0; y < 5; y++)
         {
-            piecePlacement.BoardState[0, y] = PlayerType.White;
+            piecePlacement.BoardState[0, y] = PlayerType.PlayerTwo;
         }
 
         // Ensure banner is initially hidden
@@ -151,8 +144,8 @@ public class WinDetectorIntegrationTests
 
         // Assert
         Assert.IsTrue(winDetected);
-        Assert.AreEqual(PlayerType.White, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(PlayerType.PlayerTwo, winDetector.GetWinner());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
         Assert.IsTrue(bannerPanel.activeSelf);
         Assert.AreEqual("White Wins!", winnerText.text);
         

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Gomoku.Core;
+
 
 namespace Gomoku.GameBoard
 {
@@ -10,9 +12,9 @@ namespace Gomoku.GameBoard
     {
         public int X;
         public int Y;
-        public Gomoku.PlayerType Player;
+        public PlayerType Player;
 
-        public BoardMove(int x, int y, Gomoku.PlayerType player)
+        public BoardMove(int x, int y, PlayerType player)
         {
             X = x;
             Y = y;
@@ -137,7 +139,7 @@ namespace Gomoku.GameBoard
         /// <param name="y">Y coordinate of the position</param>
         /// <param name="player">The player placing the piece</param>
         /// <returns>True if the piece was placed successfully, false otherwise</returns>
-        public bool PlacePiece(int x, int y, Gomoku.PlayerType player)
+        public bool PlacePiece(int x, int y, PlayerType player)
         {
             // Check if the position is within bounds and empty
             if (x < 0 || x >= boardSize || y < 0 || y >= boardSize)
@@ -179,19 +181,19 @@ namespace Gomoku.GameBoard
         /// <param name="x">X coordinate of the position</param>
         /// <param name="y">Y coordinate of the position</param>
         /// <returns>The player type at the position, or PlayerType.None if empty</returns>
-        public Gomoku.PlayerType GetPositionOccupant(int x, int y)
+        public PlayerType GetPositionOccupant(int x, int y)
         {
             if (x < 0 || x >= boardSize || y < 0 || y >= boardSize)
             {
-                return Gomoku.PlayerType.None;
+                return PlayerType.None;
             }
 
             int state = boardState[x, y];
             return state switch
             {
-                1 => Gomoku.PlayerType.Black,
-                2 => Gomoku.PlayerType.White,
-                _ => Gomoku.PlayerType.None
+                1 => PlayerType.PlayerOne,
+                2 => PlayerType.PlayerTwo,
+                _ => PlayerType.None
             };
         }
 
@@ -223,7 +225,7 @@ namespace Gomoku.GameBoard
             if (index < 0 || index >= moveHistory.Count)
             {
                 Debug.LogError($"Invalid move index: {index}");
-                return new BoardMove(-1, -1, Gomoku.PlayerType.None);
+                return new BoardMove(-1, -1, PlayerType.None);
             }
 
             return moveHistory[index];
@@ -237,7 +239,7 @@ namespace Gomoku.GameBoard
         {
             if (moveHistory.Count == 0)
             {
-                return new BoardMove(-1, -1, Gomoku.PlayerType.None);
+                return new BoardMove(-1, -1, PlayerType.None);
             }
 
             return moveHistory[moveHistory.Count - 1];
