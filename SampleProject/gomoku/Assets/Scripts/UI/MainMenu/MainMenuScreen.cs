@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Gomoku.Core;
-using Gomoku.SceneManagement;
+using Gomoku.Game;
 using Gomoku.Audio;
 
 namespace Gomoku.UI.MainMenu
@@ -17,9 +16,9 @@ namespace Gomoku.UI.MainMenu
         [SerializeField] private Button exitButton;
 
         [Header("Dependencies")]
-        [SerializeField] private GameStateManager gameStateManager;
-        [SerializeField] private AudioManager audioManager;
-        [SerializeField] private SceneLoader sceneLoader;
+        [SerializeField] public GameStateManager gameStateManager;
+        [SerializeField] public AudioManager audioManager;
+        [SerializeField] public SceneLoader sceneLoader;
 
         #region MonoBehaviour Methods
 
@@ -98,14 +97,14 @@ namespace Gomoku.UI.MainMenu
             // Transition to playing state
             if (gameStateManager != null)
             {
-                gameStateManager.SetState(GameState.Playing);
+                gameStateManager.SetState(GameStateEnum.Playing);
             }
             else
             {
                 // Fallback: directly load game scene
                 if (sceneLoader != null)
                 {
-                    sceneLoader.LoadScene("GameScene");
+                    //sceneLoader.LoadScene("GameScene");
                 }
                 else
                 {

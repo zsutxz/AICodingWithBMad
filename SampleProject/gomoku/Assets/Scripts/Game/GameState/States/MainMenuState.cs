@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.Managers;
 using Gomoku.Core;
-using GameStateEnum = Gomoku.Core.GameState;
 
 namespace Gomoku.Game
 {
@@ -28,30 +27,27 @@ namespace Gomoku.Game
             base.Enter();
 
             // Activate main menu UI
-            if (stateManager.uiManager != null)
+            if (gameManager.uiManager != null)
             {
-                stateManager.uiManager.SetActive(true);
+                gameManager.uiManager.SetActive(true);
                 // Setup main menu specific UI elements
             }
 
-            // Play main menu music
-            if (stateManager.audioManager != null)
-            {
-                stateManager.audioManager.PlayMainMenuMusic();
-            }
+            //// Play main menu music
+            //if (gameManager.audioManager != null)
+            //{
+            //    gameManager.audioManager.PlayMainMenuMusic();
+            //}
 
             // Pause game time
             Time.timeScale = 0f;
 
+
             // Load main menu scene
-            if (stateManager.sceneLoader != null)
-            {
-                stateManager.sceneLoader.LoadScene("MainMenu");
-            }
-            else
-            {
-                SceneManager.LoadScene("MainMenu");
-            }
+  
+
+           SceneManager.LoadScene("MainMenu");
+       
 
             // Notify other systems
             GameEvents.GameStateChanged(GameStateEnum.MainMenu);

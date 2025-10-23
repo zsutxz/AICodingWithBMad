@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.Managers;
 using Gomoku.Core;
-using GameStateEnum = Gomoku.Core.GameState;
 
 namespace Gomoku.Game
 {
@@ -28,27 +27,27 @@ namespace Gomoku.Game
             base.Enter();
 
             // Deactivate pause menu UI
-            if (stateManager.uiManager != null)
+            if (gameManager.uiManager != null)
             {
-                stateManager.uiManager.SetActive(true);
+                gameManager.uiManager.SetActive(true);
                 // Setup gameplay specific UI elements
             }
 
             // Play gameplay music
-            if (stateManager.audioManager != null)
+            if (gameManager.audioManager != null)
             {
-                stateManager.audioManager.PlayGameplayMusic();
+                gameManager.audioManager.PlayGameplayMusic();
             }
 
             // Resume game time
             Time.timeScale = 1f;
 
             // Load game scene
-            if (stateManager.sceneLoader != null)
-            {
-                stateManager.sceneLoader.LoadSceneAsync("GameScene");
-            }
-            else
+            //if (gameManager.SceneLoader != null)
+            //{
+            //    gameManager.SceneLoader.LoadSceneAsync("GameScene");
+            //}
+            //else
             {
                 SceneManager.LoadScene("GameScene");
             }

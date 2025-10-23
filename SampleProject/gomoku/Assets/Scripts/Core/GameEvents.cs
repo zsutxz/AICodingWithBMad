@@ -11,7 +11,7 @@ namespace Gomoku.Core
     public static class GameEvents
     {
         // Game State Events
-        public static event System.Action<GameState> OnGameStateChanged;
+        public static event System.Action<GameStateEnum> OnGameStateChanged;
         public static event System.Action OnGameStarted;
         public static event System.Action OnGameEnded;
         public static event System.Action OnGameReset;
@@ -44,7 +44,7 @@ namespace Gomoku.Core
         /// Triggered when the game state changes (MainMenu, Playing, Paused, GameOver).
         /// </summary>
         /// <param name="state">The new game state</param>
-        public static void GameStateChanged(GameState state)
+        public static void GameStateChanged(GameStateEnum state)
         {
             OnGameStateChanged?.Invoke(state);
         }

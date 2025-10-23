@@ -5,16 +5,15 @@ namespace Gomoku.Game
 {
     /// <summary>
     /// Abstract base class for game states in the State pattern.
-    /// Each concrete state (MainMenu, Playing, Paused, GameOver) will inherit from this class
     /// and implement the specific behavior for that state.
     /// </summary>
     public abstract class GameState
     {
         // Reference to the state manager that owns this state
-        protected GameStateManager stateManager;
+        public GameStateManager gameStateManager;
 
         // Reference to the main game manager
-        protected GameManager gameManager;
+        public GameManager gameManager;
 
         /// <summary>
         /// Constructor for the base GameState class.
@@ -23,7 +22,7 @@ namespace Gomoku.Game
         /// <param name="gameManager">The main GameManager instance</param>
         public GameState(GameStateManager manager, GameManager gameManager)
         {
-            this.stateManager = manager;
+            this.gameStateManager = manager;
             this.gameManager = gameManager;
         }
 

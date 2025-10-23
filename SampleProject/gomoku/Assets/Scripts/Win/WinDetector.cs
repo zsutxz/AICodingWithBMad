@@ -123,7 +123,7 @@ public class WinDetector : MonoBehaviour
             onWinDetected?.Invoke(winner);
             
             // Transition to game over state
-            gameStateManager.SetState(GameState.GameOver);
+            gameStateManager.SetState(GameStateEnum.GameOver);
             
             return true;
         }

@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Win\WinCondition.cs" />
     <Compile Include="Assets\Scripts\GameBoard\DeveloperSettings.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardVisualSettings.cs" />
+    <Compile Include="Assets\Scripts\UI\TransitionManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\PlayingState.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\GameState.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Assets\Scripts\UI\UIScaler.cs" />
     <Compile Include="Assets\Scripts\Piece\PiecePlacement.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\PausedState.cs" />
+    <Compile Include="Assets\Scripts\UI\MainMenuScreen.cs" />
     <Compile Include="Assets\Scripts\Game\GameState\States\MainMenuState.cs" />
     <Compile Include="Assets\Scripts\UI\TurnIndicator.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonHandler.cs" />

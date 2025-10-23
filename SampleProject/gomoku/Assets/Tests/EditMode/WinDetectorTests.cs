@@ -76,7 +76,7 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -96,7 +96,7 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerTwo, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -116,7 +116,7 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -136,7 +136,7 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerTwo, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -154,7 +154,7 @@ public class WinDetectorTests
 
         // Assert
         Assert.IsFalse(winDetected);
-        Assert.AreEqual(GameState.Playing, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -166,7 +166,7 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         //Assert.AreEqual(Player.Player1, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -189,7 +189,7 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
     
     [Test]
@@ -208,6 +208,6 @@ public class WinDetectorTests
         // Assert
         Assert.IsTrue(winDetected);
         //Assert.AreEqual(Player.Player1, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
     }
 }

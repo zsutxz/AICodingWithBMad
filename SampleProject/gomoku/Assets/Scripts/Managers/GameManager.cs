@@ -1,3 +1,5 @@
+using Gomoku.Audio;
+using Gomoku.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +13,8 @@ namespace Gomoku.Managers
         // Singleton instance
         private static GameManager instance;
 
+        public UIManager uiManager;
+        public AudioManager audioManager;
         // Events for game state changes
         [Header("Events")]
         [Tooltip("Event triggered when the game starts")]
@@ -23,7 +27,12 @@ namespace Gomoku.Managers
         [SerializeField] private UnityEvent<int> onPlayerWin;
 
         [Tooltip("Event triggered when the game is reset")]
-        [SerializeField] private UnityEvent onGameReset;
+        [SerializeField] public UnityEvent onGameReset;
+
+        [Header("Managers")]
+        [SerializeField] public SceneLoader sceneLoader;
+
+        public SceneLoader SceneLoader => sceneLoader;
 
         #region Singleton Pattern
 

@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.Core;
 using Gomoku.Managers;
-using GameStateEnum = Gomoku.Core.GameState;
 
 namespace Gomoku.Game
 {
@@ -34,31 +33,31 @@ namespace Gomoku.Game
             base.Enter();
 
             // Activate game over UI
-            if (stateManager.uiManager != null)
+            if (gameManager.uiManager != null)
             {
-                stateManager.uiManager.SetActive(true);
+                gameManager.uiManager.SetActive(true);
             }
 
-            // Play victory sound and set audio state
-            if (stateManager.audioManager != null)
-            {
-                stateManager.audioManager.PlayVictorySound();
-                stateManager.audioManager.SetGameOverState();
-            }
+            //// Play victory sound and set audio state
+            //if (gameManager.audioManager != null)
+            //{
+            //    gameManager.audioManager.PlayVictorySound();
+            //    gameManager.audioManager.SetGameOverState();
+            //}
 
             // Show the victory banner with winner information
-            if (stateManager.gameOverScreen != null)
-            {
-                stateManager.gameOverScreen.ShowGameOver(winner);
-            }
+            //if (gameManager.gameOverScreen != null)
+            //{
+            //    gameManager.gameOverScreen.ShowGameOver(winner);
+            //}
 
             // Pause game time
             Time.timeScale = 0f;
 
             // Load game over scene
-            if (stateManager.sceneLoader != null)
+            if (gameManager.SceneLoader != null)
             {
-                stateManager.sceneLoader.LoadSceneAsync("GameOver");
+                //gameManager.SceneLoader.LoadSceneAsync("GameOver");
             }
             else
             {

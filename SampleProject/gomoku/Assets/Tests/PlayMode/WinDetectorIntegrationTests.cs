@@ -96,7 +96,7 @@ public class WinDetectorIntegrationTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerOne, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
         Assert.IsTrue(bannerPanel.activeSelf);
         Assert.AreEqual("Black Wins!", winnerText.text);
         
@@ -120,7 +120,7 @@ public class WinDetectorIntegrationTests
         // Assert
         Assert.IsFalse(winDetected);
         Assert.IsFalse(bannerPanel.activeSelf);
-        Assert.AreEqual(GameState.Playing, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
         
         yield return null;
     }
@@ -145,7 +145,7 @@ public class WinDetectorIntegrationTests
         // Assert
         Assert.IsTrue(winDetected);
         Assert.AreEqual(PlayerType.PlayerTwo, winDetector.GetWinner());
-        Assert.AreEqual(GameState.GameOver, gameStateManager.GetCurrentState());
+        Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
         Assert.IsTrue(bannerPanel.activeSelf);
         Assert.AreEqual("White Wins!", winnerText.text);
         

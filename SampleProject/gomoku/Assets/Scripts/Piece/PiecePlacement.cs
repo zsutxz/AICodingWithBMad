@@ -471,14 +471,6 @@ namespace Gomoku
             Debug.Log("Game stopped");
         }
         
-        /// <summary>
-        /// Resumes the game
-        /// </summary>
-        public void ResumeGame()
-        {
-            gameActive = true;
-            Debug.Log("Game resumed");
-        }
         
         /// <summary>
         /// Gets the piece type at specific coordinates

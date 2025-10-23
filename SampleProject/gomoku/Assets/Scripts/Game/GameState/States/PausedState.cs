@@ -1,7 +1,6 @@
 using UnityEngine;
 using Gomoku.Managers;
 using Gomoku.Core;
-using GameStateEnum = Gomoku.Core.GameState;
 
 namespace Gomoku.Game
 {
@@ -27,17 +26,17 @@ namespace Gomoku.Game
             base.Enter();
 
             // Activate pause menu UI
-            if (stateManager.uiManager != null)
+            if (gameManager.uiManager != null)
             {
-                stateManager.uiManager.SetActive(true);
+                gameManager.uiManager.SetActive(true);
                 // Setup pause menu specific UI elements
             }
 
             // Play pause sound effect
-            if (stateManager.audioManager != null)
+            if (gameManager.audioManager != null)
             {
-                stateManager.audioManager.PlayPauseSound();
-                stateManager.audioManager.SetPausedState();
+                gameManager.audioManager.PlayPauseSound();
+                gameManager.audioManager.SetPausedState();
             }
 
             // Pause game time
