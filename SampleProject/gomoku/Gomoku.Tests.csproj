@@ -60,23 +60,32 @@
     <Analyzer Include="D:\Program Files\Unity 2022.3.5f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Tests\EditMode\Animation\GameStateTransitionTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\VictoryEffectTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\TurnManagerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\MainMenuScreenTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIManagementTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\PieceAnimationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\ButtonHandlerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameState\GameStateManagerTests.cs" />
     <Compile Include="Assets\Tests\PlayMode\GameStatePersistenceTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\BoardRendererTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\AnimationPerformanceMonitorTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\AnimationManagerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIMoveCounterTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameState\GameOverScreenTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameState\ScreenManagerTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\AnimationIntegrationTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\TurnTransitionTests.cs" />
     <Compile Include="Assets\Tests\EditMode\WinDetectorTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\AnimationSettingsTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIPauseButtonTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\IntersectionDetectorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardTests.cs" />
     <Compile Include="Assets\Tests\PlayMode\WinDetectorIntegrationTests.cs" />
     <Compile Include="Assets\Tests\BoardRendererTest.cs" />
     <Compile Include="Assets\Tests\EditMode\UITurnIndicatorTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\Animation\ButtonHandlerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\PiecePlacementTests.cs" />
     <Compile Include="Assets\Tests\PlayMode\GameFlowIntegrationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardValidationTests.cs" />
