@@ -95,6 +95,7 @@
     <Compile Include="Assets\Tests\EditMode\Animation\ButtonHandlerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\AudioSettingsIntegrationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\PiecePlacementTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\StartButtonTests.cs" />
     <Compile Include="Assets\Tests\PlayMode\GameFlowIntegrationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardValidationTests.cs" />
   </ItemGroup>
