@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\UI\AudioSettingsUI.cs" />
     <Compile Include="Assets\Scripts\Win\WinCondition.cs" />
     <Compile Include="Assets\Scripts\GameBoard\DeveloperSettings.cs" />
+    <Compile Include="Assets\Scripts\Core\Bootstrap.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardVisualSettings.cs" />
     <Compile Include="Assets\Scripts\UI\UILayoutManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateListener.cs" />

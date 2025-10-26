@@ -68,6 +68,7 @@
     <Compile Include="Assets\Tests\EditMode\GameBoard\BoardRendererTests.cs" />
     <Compile Include="Assets\Tests\EditMode\WinDetectorAudioTests.cs" />
     <Compile Include="Assets\Tests\EditMode\UIMoveCounterTests.cs" />
+    <Compile Include="Assets\Tests\EditMode\SceneLoadingTests.cs" />
     <Compile Include="Assets\Tests\EditMode\AudioManagerVolumeTests.cs" />
     <Compile Include="Assets\Tests\EditMode\AudioManagerTests.cs" />
     <Compile Include="Assets\Tests\EditMode\WinDetectorTests.cs" />

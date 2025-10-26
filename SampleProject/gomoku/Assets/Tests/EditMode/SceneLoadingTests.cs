@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.UI;
 using Gomoku.Systems;
+using Gomoku.Core;
 
 namespace Gomoku.Tests.EditMode
 {

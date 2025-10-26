@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.Systems;
+using Gomoku.Audio;
 
 namespace Gomoku.Core
 {
@@ -50,7 +51,7 @@ namespace Gomoku.Core
             }
 
             // Ensure AudioManager exists
-            var audioManager = Systems.AudioManager.Instance;
+            var audioManager = AudioManager.Instance;
             if (audioManager != null)
             {
                 Debug.Log("Bootstrap: AudioManager initialized");
