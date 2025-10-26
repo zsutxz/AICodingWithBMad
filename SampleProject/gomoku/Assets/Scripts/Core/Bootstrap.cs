@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Gomoku.Systems;
 using Gomoku.Audio;
+using Gomoku.UI;
 
 namespace Gomoku.Core
 {
@@ -56,6 +57,28 @@ namespace Gomoku.Core
             {
                 Debug.Log("Bootstrap: AudioManager initialized");
             }
+
+            // Ensure UIManager exists and is properly set up
+            EnsureUIManagerExists();
+        }
+
+        private void EnsureUIManagerExists()
+        {
+            // Check if UIManager already exists
+            var existingUIManager = Object.FindObjectOfType<UIManager>();
+            if (existingUIManager != null)
+            {
+                Debug.Log("Bootstrap: UIManager already exists");
+                return;
+            }
+
+            // Create UIManager if it doesn't exist
+            Debug.Log("Bootstrap: Creating UIManager");
+            var uiManagerObject = new GameObject("UIManager");
+            var uiManager = uiManagerObject.AddComponent<UIManager>();
+
+            // Set it to not destroy on load so it persists across scenes
+            DontDestroyOnLoad(uiManagerObject);
         }
 
         private void SetGameStateForScene(string sceneName)

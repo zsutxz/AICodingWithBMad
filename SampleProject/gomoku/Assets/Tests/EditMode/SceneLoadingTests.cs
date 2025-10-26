@@ -16,26 +16,42 @@ namespace Gomoku.Tests.EditMode
         public void UIManager_CanLoadMainMenuScene()
         {
             // Test that UIManager can load MainMenu scene
-            var uiManager = new GameObject("TestUIManager").AddComponent<UIManager>();
+            // Note: UIManager is now managed by Bootstrap, so we'll test the singleton
+            var uiManager = UIManager.Instance;
 
-            // This should not throw an error
-            Assert.DoesNotThrow(() => uiManager.LoadMainMenu());
-
-            // Clean up
-            Object.DestroyImmediate(uiManager.gameObject);
+            if (uiManager != null)
+            {
+                // This should not throw an error
+                Assert.DoesNotThrow(() => uiManager.LoadMainMenu());
+            }
+            else
+            {
+                // If UIManager doesn't exist, create it for testing
+                var testUIManager = new GameObject("TestUIManager").AddComponent<UIManager>();
+                Assert.DoesNotThrow(() => testUIManager.LoadMainMenu());
+                Object.DestroyImmediate(testUIManager.gameObject);
+            }
         }
 
         [Test]
         public void UIManager_CanLoadGameScene()
         {
             // Test that UIManager can load GameScene
-            var uiManager = new GameObject("TestUIManager").AddComponent<UIManager>();
+            // Note: UIManager is now managed by Bootstrap, so we'll test the singleton
+            var uiManager = UIManager.Instance;
 
-            // This should not throw an error
-            Assert.DoesNotThrow(() => uiManager.LoadGameScene());
-
-            // Clean up
-            Object.DestroyImmediate(uiManager.gameObject);
+            if (uiManager != null)
+            {
+                // This should not throw an error
+                Assert.DoesNotThrow(() => uiManager.LoadGameScene());
+            }
+            else
+            {
+                // If UIManager doesn't exist, create it for testing
+                var testUIManager = new GameObject("TestUIManager").AddComponent<UIManager>();
+                Assert.DoesNotThrow(() => testUIManager.LoadGameScene());
+                Object.DestroyImmediate(testUIManager.gameObject);
+            }
         }
 
         [Test]

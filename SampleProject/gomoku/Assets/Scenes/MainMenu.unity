@@ -136,7 +136,6 @@ GameObject:
   - component: {fileID: 90282797}
   - component: {fileID: 90282796}
   - component: {fileID: 90282795}
-  - component: {fileID: 90282800}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -159,6 +158,9 @@ MonoBehaviour:
   startButtonPrefab: {fileID: 100000, guid: 6c5a8236cfdde024fbcc7393aaab1a0f, type: 3}
   pauseButtonPrefab: {fileID: 0}
   gameBoardPrefab: {fileID: 0}
+  mainMenuSceneName: MainMenu
+  gameSceneName: GameScene
+  transitionDuration: 1
   startGameText: "\u5F00\u59CB\u6E38\u620F"
 --- !u!114 &90282796
 MonoBehaviour:
@@ -606,18 +608,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &90282800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90282794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7d8f1f9a8c74d1e8b6e3f9c8e7d6f5a, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
