@@ -82,7 +82,7 @@ namespace Gomoku
             }
 
             // Initialize UI elements
-            //InitializeUI();
+            InitializeUI();
 
             Debug.Log($"BoardRenderer initialized with size {boardSize}x{boardSize}");
         }
@@ -327,7 +327,7 @@ namespace Gomoku
 
         private void Awake()
         {
-            InitializeUI();
+            // Don't initialize UI here - let Initialize() handle it after parameters are set
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace Gomoku
             {
                 // Create containers for grid lines and pieces
                 gridContainer = new GameObject("GridLines");
-                gridContainer.transform.localPosition = new Vector3(640,360,0);
+                gridContainer.transform.localPosition = new Vector3(boardOffset.x + BoardWidth/2, boardOffset.y + BoardHeight/2, 0);
                 gridContainer.transform.SetParent(this.transform);
             }
 
