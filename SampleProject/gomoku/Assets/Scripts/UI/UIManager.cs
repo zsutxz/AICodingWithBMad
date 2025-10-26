@@ -266,6 +266,13 @@ namespace Gomoku.UI
 
             Debug.Log($"UIManager: Loading scene '{sceneName}'");
 
+            // Check if scene exists in build settings
+            if (!IsSceneInBuildSettings(sceneName))
+            {
+                Debug.LogError($"UIManager: Scene '{sceneName}' is not in build settings. Please add it to Build Settings.");
+                return;
+            }
+
             if (useTransition)
             {
                 StartCoroutine(LoadSceneWithTransition(sceneName));
@@ -274,6 +281,18 @@ namespace Gomoku.UI
             {
                 SceneManager.LoadScene(sceneName);
             }
+        }
+
+        /// <summary>
+        /// Check if a scene is included in build settings
+        /// </summary>
+        private bool IsSceneInBuildSettings(string sceneName)
+        {
+            // This is a simple check - in a real Unity project, you might want to use
+            // UnityEditor.EditorBuildSettings.scenes to check build settings
+            // For now, we'll check against known scene names
+            string[] knownScenes = { "MainMenu", "GameScene", "GameOver" };
+            return System.Array.Exists(knownScenes, scene => scene == sceneName);
         }
 
         /// <summary>
