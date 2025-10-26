@@ -32,9 +32,6 @@ namespace Gomoku.UI
         private Text startButtonText;
         private GameObject pauseMenu;
 
-        [Header("Text Settings")]
-        [SerializeField] private string startGameText = "开始游戏";
-
         private GameBoardController m_gameBoardCtr;
         private ButtonHandler buttonHandler;
         private Gomoku.Systems.GameStateManager gameStateManager;
@@ -42,6 +39,27 @@ namespace Gomoku.UI
         // Singleton instance
         private static UIManager instance;
         public static UIManager Instance => instance;
+
+        /// <summary>
+        /// Helper method to get the scene name for a GameObject
+        /// </summary>
+        /// <param name="obj">GameObject to get scene name for</param>
+        /// <returns>Scene name or "Unknown" if not available</returns>
+        private static string GetSceneName(GameObject obj)
+        {
+            if (obj == null) return "Null";
+
+            var scene = obj.scene;
+            if (scene.IsValid()) return scene.name;
+
+            // If GameObject is not part of any scene (like DontDestroyOnLoad objects)
+            if (obj.transform.parent != null)
+            {
+                return "DontDestroyOnLoad";
+            }
+
+            return "Unknown";
+        }
 
         /// <summary>
         /// Clean up any UIManager instances in the current scene (useful for testing or debugging)
@@ -53,7 +71,7 @@ namespace Gomoku.UI
             {
                 if (uiManager != instance)
                 {
-                    Debug.Log($"Cleaning up UIManager from GameObject '{uiManager.name}'");
+                    Debug.Log($"Cleaning up UIManager from GameObject '{uiManager.name}' in scene '{GetSceneName(uiManager.gameObject)}'");
                     Object.DestroyImmediate(uiManager.gameObject);
                 }
             }
@@ -77,18 +95,21 @@ namespace Gomoku.UI
                 // Check if the existing instance is actually different from this one
                 if (instance != this)
                 {
-                    Debug.Log($"UIManager instance already exists. Destroying duplicate from GameObject '{gameObject.name}' in scene '{UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}'");
+                    // Log detailed information for debugging
+                    Debug.Log($"UIManager: Singleton conflict detected. " +
+                              $"Existing: '{instance.gameObject.name}' (Scene: {GetSceneName(instance.gameObject)}) " +
+                              $"Duplicate: '{gameObject.name}' (Scene: {GetSceneName(gameObject)})");
 
-                    // If this is from a scene, deactivate it immediately to prevent any conflicts
+                    // If this duplicate is from a scene, deactivate it immediately to prevent any Awake conflicts
                     gameObject.SetActive(false);
 
-                    // Destroy this duplicate instance
+                    // Destroy this duplicate instance to maintain singleton pattern
                     Destroy(gameObject);
                 }
                 else
                 {
                     // This should not happen, but handle it gracefully
-                    Debug.LogWarning("UIManager singleton self-reference detected. This should not happen.");
+                    Debug.LogError("UIManager: Self-reference detected in singleton pattern. This indicates a serious issue!");
                 }
             }
         }
