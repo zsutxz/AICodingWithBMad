@@ -1,35 +1,53 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections;
+using Gomoku.Audio;
+using Gomoku.Animation;
 
 namespace Gomoku.UI
 {
     /// <summary>
-    /// Handles UI button interactions for the game
+    /// Unified button handler for all UI buttons in the game
     /// </summary>
-    public class ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+    public class ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
     {
+        [Header("Animation Settings")]
+        [SerializeField] private float hoverScale = 1.1f;
+        [SerializeField] private float clickScale = 0.95f;
+        [SerializeField] private float animationDuration = 0.2f;
+
+        [Header("Game State References")]
         private GameStateManager gameStateManager;
-        
-        // Events for ButtonAnimationManager
+        private SimpleAnimationSystem animationSystem;
+
+        // Events for existing tests
         public System.Action<ButtonHandler> OnButtonHover;
         public System.Action<ButtonHandler> OnButtonClick;
-        
+
         // Animation properties
+        private Transform buttonTransform;
+        private Vector3 originalScale;
         private bool isAnimating = false;
         private bool isInteractable = true;
-        private float animationDuration = 0.2f;
-        private float hoverScale = 1.1f;
-        private float clickScale = 0.9f;
-        
+        private bool isHovered = false;
+        private bool isPressed = false;
+
         // Public properties for existing tests
         public bool IsAnimating => isAnimating;
-        public bool IsHovered { get; private set; }
-        public bool IsPressed { get; private set; }
-        
+        public bool IsHovered => isHovered;
+        public bool IsPressed => isPressed;
+  
+        void Awake()
+        {
+            buttonTransform = transform;
+            originalScale = buttonTransform.localScale;
+        }
+
         void Start()
         {
-            gameStateManager = GameStateManager.Instance;
+            gameStateManager = Gomoku.Systems.GameStateManager.Instance;
+            animationSystem = SimpleAnimationSystem.Instance;
         }
         
         /// <summary>
@@ -98,31 +116,66 @@ namespace Gomoku.UI
             gameStateManager.ReturnToMainMenu();
             OnButtonClick?.Invoke(this);
         }
-        
+  
         // Pointer event handlers for existing tests
         public void OnPointerEnter(PointerEventData eventData)
         {
-            IsHovered = true;
+            isHovered = true;
             isAnimating = true;
+            if (animationSystem != null)
+            {
+                StopAllCoroutines();
+                StartCoroutine(animationSystem.AnimateScale(buttonTransform, buttonTransform.localScale, originalScale * hoverScale, animationDuration));
+            }
             OnButtonHover?.Invoke(this);
         }
-        
+
         public void OnPointerExit(PointerEventData eventData)
         {
-            IsHovered = false;
+            isHovered = false;
             isAnimating = false;
+            if (animationSystem != null)
+            {
+                StopAllCoroutines();
+                StartCoroutine(animationSystem.AnimateScale(buttonTransform, buttonTransform.localScale, originalScale, animationDuration));
+            }
         }
-        
+
         public void OnPointerDown(PointerEventData eventData)
         {
-            IsPressed = true;
+            isPressed = true;
             isAnimating = true;
         }
-        
+
         public void OnPointerUp(PointerEventData eventData)
         {
-            IsPressed = false;
+            isPressed = false;
             isAnimating = false;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            // Play UI click sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayUIClick();
+            }
+
+            if (animationSystem != null)
+            {
+                StopAllCoroutines();
+                StartCoroutine(ClickAnimation());
+            }
+        }
+
+        // Animation method
+        private IEnumerator ClickAnimation()
+        {
+            // Scale down
+            yield return animationSystem.AnimateScale(buttonTransform, buttonTransform.localScale, originalScale * clickScale, animationDuration);
+            // Scale back to appropriate scale (hover or original)
+            float targetScale = isHovered ? hoverScale : 1.0f;
+            yield return animationSystem.AnimateScale(buttonTransform, buttonTransform.localScale, originalScale * targetScale, animationDuration);
         }
         
         // Methods for ButtonAnimationManager compatibility

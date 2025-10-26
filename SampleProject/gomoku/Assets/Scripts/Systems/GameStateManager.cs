@@ -1,18 +1,23 @@
 using System;
 using UnityEngine;
 
-public enum GameStateEnum
+namespace Gomoku.Systems
 {
-    MainMenu,
-    Playing,
-    Paused,
-    GameOver
-}
+    public enum GameStateEnum
+    {
+        MainMenu,
+        Playing,
+        Paused,
+        GameOver
+    }
 
-public class GameStateManager : MonoBehaviour
+    public class GameStateManager : MonoBehaviour
 {
     private static GameStateManager instance;
     public GameStateEnum CurrentState { get; private set; }
+
+    // Events for state changes
+    public static event System.Action<GameStateEnum> OnGameStateChanged;
 
     void Awake()
     {
@@ -44,7 +49,12 @@ public class GameStateManager : MonoBehaviour
 
     public void SetState(GameStateEnum newState)
     {
-        CurrentState = newState;
+        if (CurrentState != newState)
+        {
+            CurrentState = newState;
+            Debug.Log($"Game state changed to: {newState}");
+            OnGameStateChanged?.Invoke(newState);
+        }
     }
 
     public void ResumeGame()
@@ -83,5 +93,6 @@ public class GameStateManager : MonoBehaviour
     public bool IsInState(GameStateEnum testState)
     {
         return CurrentState == testState;
+    }
     }
 }

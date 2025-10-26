@@ -48,7 +48,8 @@
       "Bash(msbuild Gomoku.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /t:Build /verbosity:minimal)",
       "Bash(dotnet test:*)",
       "Bash(dotnet build:*)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": [],

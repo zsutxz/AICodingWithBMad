@@ -66,8 +66,6 @@
     <Compile Include="Assets\Scripts\GameBoard\BoardVisualSettings.cs" />
     <Compile Include="Assets\Scripts\Animation\AnimationPerformanceMonitor.cs" />
     <Compile Include="Assets\Scripts\UI\TransitionManager.cs" />
-    <Compile Include="Assets\Scripts\Game\GameState\States\PlayingState.cs" />
-    <Compile Include="Assets\Scripts\Game\GameState\GameState.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Animation\AnimationManager.cs" />
     <Compile Include="Assets\Scripts\UI\UILayoutManager.cs" />
@@ -83,16 +81,13 @@
     <Compile Include="Assets\Scripts\UI\PauseVisualIndicator.cs" />
     <Compile Include="Assets\Scripts\Core\PlayerType.cs" />
     <Compile Include="Assets\Scripts\Animation\GameStateTransitionManager.cs" />
-    <Compile Include="Assets\Scripts\UI\ScreenManager.cs" />
     <Compile Include="Assets\Scripts\Core\InputHandler.cs" />
     <Compile Include="Assets\Scripts\UI\PauseButton.cs" />
     <Compile Include="Assets\Scripts\UI\VictoryBanner.cs" />
     <Compile Include="Assets\Scripts\UI\UIScaler.cs" />
     <Compile Include="Assets\Scripts\Animation\VictoryEffect.cs" />
     <Compile Include="Assets\Scripts\Piece\PiecePlacement.cs" />
-    <Compile Include="Assets\Scripts\Game\GameState\States\PausedState.cs" />
     <Compile Include="Assets\Scripts\Animation\PieceAnimation.cs" />
-    <Compile Include="Assets\Scripts\Game\GameState\States\MainMenuState.cs" />
     <Compile Include="Assets\Scripts\UI\TurnIndicator.cs" />
     <Compile Include="Assets\Scripts\Animation\AnimationSettings.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonAnimationManager.cs" />
@@ -102,10 +97,8 @@
     <Compile Include="Assets\Scripts\UI\UIStyleManager.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu\MainMenuScreen.cs" />
     <Compile Include="Assets\Scripts\GameBoard\GameBoardController.cs" />
-    <Compile Include="Assets\Scripts\Game\GameState\States\GameOverState.cs" />
     <Compile Include="Assets\Scripts\Animation\VictoryHighlightManager.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardRenderer.cs" />
-    <Compile Include="Assets\Scripts\UI\MainMenu\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\Managers\GameStateManager.cs" />
     <Compile Include="Assets\Scripts\Win\WinDetector.cs" />
     <Compile Include="Assets\Scripts\Core\GameSettingsModel.cs" />
