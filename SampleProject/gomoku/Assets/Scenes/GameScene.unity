@@ -185,30 +185,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000000000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onGameStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onGameEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  onPlayerWin:
-    m_PersistentCalls:
-      m_Calls: []
-  onGameReset:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &249254687
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,7 +519,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startButtonPrefab: {fileID: 100000, guid: 6c5a8236cfdde024fbcc7393aaab1a0f, type: 3}
+  pauseButtonPrefab: {fileID: 0}
   gameBoardPrefab: {fileID: 11400000, guid: df3cc2b0cd2fd6a4f849e85467cbe2d9, type: 3}
+  mainMenuSceneName: MainMenu
+  gameSceneName: GameScene
+  transitionDuration: 1
   startGameText: "\u5F00\u59CB\u6E38\u620F"
 --- !u!4 &1411960430
 Transform:
@@ -560,38 +540,6 @@ Transform:
   m_Children:
   - {fileID: 724622546}
   m_Father: {fileID: 249254691}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2000000000
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2000000001}
-  - component: {fileID: 11400000}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2000000001
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000000000}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2000000014
 GameObject:
@@ -715,5 +663,4 @@ SceneRoots:
   - {fileID: 7250814810932408184}
   - {fileID: 2000000015}
   - {fileID: 1026001266}
-  - {fileID: 2000000001}
   - {fileID: 249254691}
