@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using UnityEngine;
 using Gomoku.UI;
-using Gomoku.UI.MainMenu;
 
 namespace Gomoku.Tests.EditMode
 {
@@ -10,8 +9,6 @@ namespace Gomoku.Tests.EditMode
         private GameObject testGameObject;
         private ButtonHandler buttonHandler;
         private GameStateManager gameStateManager;
-        private GameObject mainMenuScreenObject;
-        private MainMenuScreen mainMenuScreen;
 
         [SetUp]
         public void SetUp()
@@ -23,10 +20,6 @@ namespace Gomoku.Tests.EditMode
             // Create ButtonHandler
             testGameObject = new GameObject("TestButtonHandler");
             buttonHandler = testGameObject.AddComponent<ButtonHandler>();
-
-            // Create MainMenuScreen
-            mainMenuScreenObject = new GameObject("MainMenuScreen");
-            mainMenuScreen = mainMenuScreenObject.AddComponent<MainMenuScreen>();
         }
 
         [TearDown]
@@ -35,10 +28,6 @@ namespace Gomoku.Tests.EditMode
             if (testGameObject != null)
             {
                 Object.DestroyImmediate(testGameObject);
-            }
-            if (mainMenuScreenObject != null)
-            {
-                Object.DestroyImmediate(mainMenuScreenObject);
             }
 
             var managerObject = GameObject.FindObjectOfType<GameStateManager>();
@@ -49,7 +38,7 @@ namespace Gomoku.Tests.EditMode
         }
 
         [Test]
-        public void OnStartButtonClicked_WithMainMenuScreen_SetsPlayingStateAndLoadsGameScene()
+        public void OnStartButtonClicked_SetsPlayingStateAndLogsMessage()
         {
             // Arrange
             gameStateManager.SetState(GameStateEnum.MainMenu);
@@ -62,7 +51,7 @@ namespace Gomoku.Tests.EditMode
         }
 
         [Test]
-        public void OnStartButton_ClicksSuccessfully_WithMainMenuScreen()
+        public void OnStartButton_ClicksSuccessfully()
         {
             // Arrange
             gameStateManager.SetState(GameStateEnum.MainMenu);
@@ -72,19 +61,18 @@ namespace Gomoku.Tests.EditMode
         }
 
         [Test]
-        public void OnStartButtonClicked_WithoutMainMenuScreen_UsesFallback()
+        public void OnStartButtonClicked_TriggersButtonClickEvent()
         {
             // Arrange
             gameStateManager.SetState(GameStateEnum.MainMenu);
-
-            // Destroy MainMenuScreen to test fallback
-            Object.DestroyImmediate(mainMenuScreenObject);
+            bool eventTriggered = false;
+            buttonHandler.OnButtonClick += (handler) => eventTriggered = true;
 
             // Act
             buttonHandler.OnStartButtonClicked();
 
-            // Assert - Should still work due to fallback logic
-            Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
+            // Assert
+            Assert.IsTrue(eventTriggered, "OnButtonClick event should be triggered");
         }
     }
 }
