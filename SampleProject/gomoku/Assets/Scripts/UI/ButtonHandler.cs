@@ -50,6 +50,21 @@ namespace Gomoku.UI
         public void OnStartButtonClicked()
         {
             Debug.Log("Start button clicked");
+
+            // Find MainMenuScreen and call StartGame
+            var mainMenuScreen = FindObjectOfType<Gomoku.UI.MainMenu.MainMenuScreen>();
+            if (mainMenuScreen != null)
+            {
+                mainMenuScreen.StartGame();
+            }
+            else
+            {
+                Debug.LogWarning("MainMenuScreen not found! Using fallback logic.");
+                // Fallback: Set game state and load scene directly
+                gameStateManager.SetState(GameStateEnum.Playing);
+                SceneLoader.LoadScene("GameScene");
+            }
+
             OnButtonClick?.Invoke(this);
         }
         
