@@ -121,12 +121,8 @@ namespace Gomoku.Audio
                 instance = this;
                 DontDestroyOnLoad(gameObject);
 
-                // Validate references
-                if (musicSource == null || sfxSource == null)
-                {
-                    Debug.LogError("AudioManager: Audio sources not assigned!");
-                    return;
-                }
+                // Ensure audio sources exist, create them if needed
+                EnsureAudioSourcesExist();
 
                 // Set up initial state
                 musicSource.loop = true;
@@ -150,6 +146,25 @@ namespace Gomoku.Audio
             else
             {
                 Destroy(gameObject);
+            }
+        }
+
+        private void EnsureAudioSourcesExist()
+        {
+            // Create music source if not assigned
+            if (musicSource == null)
+            {
+                Debug.Log("AudioManager: Creating music source");
+                musicSource = gameObject.AddComponent<AudioSource>();
+                musicSource.name = "MusicSource";
+            }
+
+            // Create SFX source if not assigned
+            if (sfxSource == null)
+            {
+                Debug.Log("AudioManager: Creating SFX source");
+                sfxSource = gameObject.AddComponent<AudioSource>();
+                sfxSource.name = "SFXSource";
             }
         }
 
