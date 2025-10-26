@@ -6,6 +6,7 @@ using System.Collections;
 using Gomoku;
 using Gomoku.UI;
 using Gomoku.Core;
+using Gomoku.Systems;
 
 namespace Gomoku.Tests.PlayMode
 {
@@ -16,7 +17,6 @@ namespace Gomoku.Tests.PlayMode
     public class GameFlowIntegrationTests
     {
         private GameStateManager gameStateManager;
-        private ScreenManager screenManager;
         private UIManager uiManager;
         private GameOverScreen gameOverScreen;
         private WinDetector winDetector;

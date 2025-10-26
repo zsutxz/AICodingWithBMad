@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using Gomoku;
 using Gomoku.Core;
 using Gomoku.UI;
+using Gomoku.Systems;
 
 /// <summary>
 /// WinDetectorIntegrationTests contains play mode integration tests for the WinDetector class.

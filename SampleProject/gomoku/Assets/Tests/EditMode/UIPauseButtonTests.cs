@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
-
 using Gomoku.UI;
+using Gomoku.Systems;
 
 
 namespace Gomoku.Tests.EditMode

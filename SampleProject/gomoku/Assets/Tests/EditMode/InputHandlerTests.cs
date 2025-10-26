@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 using Gomoku.Core;
+using Gomoku.Systems;
 
 namespace Gomoku.Tests.EditMode
 {

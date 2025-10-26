@@ -1,7 +1,6 @@
 // WinDetectorTests.cs
 // Unit tests for the WinDetector class
 // Tests horizontal, vertical, and diagonal win detection
-
 using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using Gomoku;
 using Gomoku.UI;
 using Gomoku.Core;
+using Gomoku.Systems;
 
 /// <summary>
 /// WinDetectorTests contains unit tests for the WinDetector class.
