@@ -37,7 +37,7 @@ namespace Gomoku.UI
 
         private GameBoardController m_gameBoardCtr;
         private ButtonHandler buttonHandler;
-        private GameStateManager gameStateManager;
+        private Gomoku.Systems.GameStateManager gameStateManager;
 
         // Singleton instance
         private static UIManager instance;
@@ -65,7 +65,7 @@ namespace Gomoku.UI
 
         private void InitializeUI()
         {
-            gameStateManager = GameStateManager.Instance;
+            gameStateManager = Gomoku.Systems.GameStateManager.Instance;
             
             // Create ButtonHandler for UI interactions
             GameObject handlerObject = new GameObject("ButtonHandler");

@@ -12,7 +12,7 @@ namespace Gomoku.UI
         [Header("Component References")]
         [SerializeField] private Button pauseButton;
         [SerializeField] private Image buttonIcon;
-        [SerializeField] private GameStateManager gameStateManager;
+        [SerializeField] private Gomoku.Systems.GameStateManager gameStateManager;
 
         [Header("Visual Settings")]
         [SerializeField] private Sprite pauseIcon;
@@ -53,7 +53,7 @@ namespace Gomoku.UI
                 buttonIcon = GetComponentInChildren<Image>();
 
             if (gameStateManager == null)
-                gameStateManager = FindObjectOfType<GameStateManager>();
+                gameStateManager = FindObjectOfType<Gomoku.Systems.GameStateManager>();
 
             // Store original scale
             originalScale = transform.localScale;
@@ -85,7 +85,7 @@ namespace Gomoku.UI
         {
             if (gameStateManager == null)
             {
-                Debug.LogError("GameStateManager reference not found for PauseButton");
+                Debug.LogError("Gomoku.Systems.GameStateManager reference not found for PauseButton");
                 return;
             }
 
@@ -98,7 +98,7 @@ namespace Gomoku.UI
             else
             {
                 // Pause game
-                gameStateManager.SetState(GameStateEnum.Paused);
+                gameStateManager.SetState(Gomoku.Systems.GameStateEnum.Paused);
                 isPaused = true;
             }
 

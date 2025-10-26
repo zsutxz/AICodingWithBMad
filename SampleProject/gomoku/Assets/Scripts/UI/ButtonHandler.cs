@@ -18,7 +18,7 @@ namespace Gomoku.UI
         [SerializeField] private float animationDuration = 0.2f;
 
         [Header("Game State References")]
-        private GameStateManager gameStateManager;
+        private Gomoku.Systems.GameStateManager gameStateManager;
         private SimpleAnimationSystem animationSystem;
 
         // Events for existing tests
@@ -55,7 +55,7 @@ namespace Gomoku.UI
         /// </summary>
         public void OnPauseButtonClicked()
         {
-            if (gameStateManager.IsInState(GameStateEnum.Playing))
+            if (gameStateManager.IsInState(Gomoku.Systems.GameStateEnum.Playing))
             {
                 gameStateManager.PauseGame();
             }
@@ -79,8 +79,8 @@ namespace Gomoku.UI
             {
                 Debug.LogWarning("MainMenuScreen not found! Using fallback logic.");
                 // Fallback: Set game state and load scene directly
-                gameStateManager.SetState(GameStateEnum.Playing);
-                SceneLoader.LoadScene("GameScene");
+                gameStateManager.SetState(Gomoku.Systems.GameStateEnum.Playing);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
             }
 
             OnButtonClick?.Invoke(this);
@@ -91,7 +91,7 @@ namespace Gomoku.UI
         /// </summary>
         public void OnResumeButtonClicked()
         {
-            if (gameStateManager.IsInState(GameStateEnum.Paused))
+            if (gameStateManager.IsInState(Gomoku.Systems.GameStateEnum.Paused))
             {
                 gameStateManager.ResumeGame();
             }

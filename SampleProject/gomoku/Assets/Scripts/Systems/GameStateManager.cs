@@ -12,12 +12,12 @@ namespace Gomoku.Systems
     }
 
     public class GameStateManager : MonoBehaviour
-{
-    private static GameStateManager instance;
-    public GameStateEnum CurrentState { get; private set; }
+    {
+        private static GameStateManager instance;
+        public GameStateEnum CurrentState { get; private set; }
 
-    // Events for state changes
-    public static event System.Action<GameStateEnum> OnGameStateChanged;
+        // Events for state changes
+        public static event System.Action<GameStateEnum> OnGameStateChanged;
 
     void Awake()
     {
@@ -25,7 +25,7 @@ namespace Gomoku.Systems
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            CurrentState = GameStateEnum.MainMenu;
+            CurrentState = Gomoku.Systems.GameStateEnum.MainMenu;
         }
         else
         {
@@ -47,7 +47,7 @@ namespace Gomoku.Systems
         }
     }
 
-    public void SetState(GameStateEnum newState)
+    public void SetState(Gomoku.Systems.GameStateEnum newState)
     {
         if (CurrentState != newState)
         {
@@ -59,9 +59,9 @@ namespace Gomoku.Systems
 
     public void ResumeGame()
     {
-        if (CurrentState == GameStateEnum.Paused)
+        if (CurrentState == Gomoku.Systems.GameStateEnum.Paused)
         {
-            SetState(GameStateEnum.Playing);
+            SetState(Gomoku.Systems.GameStateEnum.Playing);
             Time.timeScale = 1f;
             Debug.Log("Game resumed");
         }
@@ -70,11 +70,11 @@ namespace Gomoku.Systems
     public void ReturnToMainMenu()
     {
         Time.timeScale = 1f; // Ensure normal time scale
-        SetState(GameStateEnum.MainMenu);
+        SetState(Gomoku.Systems.GameStateEnum.MainMenu);
         Debug.Log("Returned to main menu");
     }
 
-    public GameStateEnum GetCurrentState()
+    public Gomoku.Systems.GameStateEnum GetCurrentState()
     {
        return CurrentState;
 
@@ -82,15 +82,15 @@ namespace Gomoku.Systems
 
     public void PauseGame()
     {
-        if (CurrentState == GameStateEnum.Playing)
+        if (CurrentState == Gomoku.Systems.GameStateEnum.Playing)
         {
-            SetState(GameStateEnum.Paused);
+            SetState(Gomoku.Systems.GameStateEnum.Paused);
             Time.timeScale = 0f;
             Debug.Log("Game paused");
         }
     }
 
-    public bool IsInState(GameStateEnum testState)
+    public bool IsInState(Gomoku.Systems.GameStateEnum testState)
     {
         return CurrentState == testState;
     }

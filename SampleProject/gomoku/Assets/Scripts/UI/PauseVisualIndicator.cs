@@ -17,13 +17,13 @@ namespace Gomoku.UI
         [SerializeField] private Image pauseOverlay;
         [SerializeField] private Text pauseText;
         
-        private GameStateManager gameStateManager;
+        private Gomoku.Systems.GameStateManager gameStateManager;
         private CanvasGroup canvasGroup;
-        private GameStateEnum lastState;
+        private Gomoku.Systems.GameStateEnum lastState;
         
         void Start()
         {
-            gameStateManager = GameStateManager.Instance;
+            gameStateManager = Gomoku.Systems.GameStateManager.Instance;
             lastState = gameStateManager.GetCurrentState();
             
             // Setup visual components if not assigned
@@ -35,7 +35,7 @@ namespace Gomoku.UI
         
         void Update()
         {
-            GameStateEnum currentState = gameStateManager.GetCurrentState();
+            Gomoku.Systems.GameStateEnum currentState = gameStateManager.GetCurrentState();
             
             if (currentState != lastState)
             {
@@ -111,11 +111,11 @@ namespace Gomoku.UI
             }
         }
         
-        private void UpdateVisualState(GameStateEnum state)
+        private void UpdateVisualState(Gomoku.Systems.GameStateEnum state)
         {
             switch (state)
             {
-                case GameStateEnum.Paused:
+                case Gomoku.Systems.GameStateEnum.Paused:
                     ShowPauseVisuals();
                     break;
                     

@@ -6,13 +6,13 @@ namespace Gomoku.UI.MainMenu
     {
         void Start()
         {
-            GameStateManager.Instance.SetState(GameStateEnum.MainMenu);
+            Gomoku.Systems.GameStateManager.Instance.SetState(Gomoku.Systems.GameStateEnum.MainMenu);
         }
 
         public void StartGame()
         {
-            GameStateManager.Instance.SetState(GameStateEnum.Playing);
-            SceneLoader.LoadScene("GameScene");
+            Gomoku.Systems.GameStateManager.Instance.SetState(Gomoku.Systems.GameStateEnum.Playing);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
         }
 
         public void OpenSettings()

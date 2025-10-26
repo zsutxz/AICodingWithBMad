@@ -9,13 +9,13 @@ namespace Gomoku.Game
     public class GameStateListener : MonoBehaviour
     {
         private UIManager uiManager;
-        private GameStateManager gameStateManager;
-        private GameStateEnum lastState;
+        private Gomoku.Systems.GameStateManager gameStateManager;
+        private Gomoku.Systems.GameStateEnum lastState;
         
         void Start()
         {
             uiManager = FindObjectOfType<UIManager>();
-            gameStateManager = GameStateManager.Instance;
+            gameStateManager = Gomoku.Systems.GameStateManager.Instance;
             lastState = gameStateManager.GetCurrentState();
             
             // Initial UI setup based on current state
@@ -24,7 +24,7 @@ namespace Gomoku.Game
         
         void Update()
         {
-            GameStateEnum currentState = gameStateManager.GetCurrentState();
+            Gomoku.Systems.GameStateEnum currentState = gameStateManager.GetCurrentState();
             
             // Check if state has changed
             if (currentState != lastState)
@@ -34,26 +34,26 @@ namespace Gomoku.Game
             }
         }
         
-        private void UpdateUIForState(GameStateEnum state)
+        private void UpdateUIForState(Gomoku.Systems.GameStateEnum state)
         {
             switch (state)
             {
-                case GameStateEnum.MainMenu:
+                case Gomoku.Systems.GameStateEnum.MainMenu:
                     uiManager?.ShowPauseButton(false);
                     uiManager?.HidePauseMenu();
                     break;
                     
-                case GameStateEnum.Playing:
+                case Gomoku.Systems.GameStateEnum.Playing:
                     uiManager?.ShowPauseButton(true);
                     uiManager?.HidePauseMenu();
                     break;
                     
-                case GameStateEnum.Paused:
+                case Gomoku.Systems.GameStateEnum.Paused:
                     uiManager?.ShowPauseButton(false);
                     uiManager?.ShowPauseMenu();
                     break;
                     
-                case GameStateEnum.GameOver:
+                case Gomoku.Systems.GameStateEnum.GameOver:
                     uiManager?.ShowPauseButton(false);
                     uiManager?.HidePauseMenu();
                     break;

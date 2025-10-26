@@ -7,11 +7,11 @@ namespace Gomoku.Core
     /// </summary>
     public class InputHandler : MonoBehaviour
     {
-        private GameStateManager gameStateManager;
+        private Gomoku.Systems.GameStateManager gameStateManager;
         
         void Start()
         {
-            gameStateManager = GameStateManager.Instance;
+            gameStateManager = Gomoku.Systems.GameStateManager.Instance;
         }
         
         void Update()
@@ -25,11 +25,11 @@ namespace Gomoku.Core
         
         public void HandlePauseInput()
         {
-            if (gameStateManager.IsInState(GameStateEnum.Playing))
+            if (gameStateManager.IsInState(Gomoku.Systems.GameStateEnum.Playing))
             {
                 gameStateManager.PauseGame();
             }
-            else if (gameStateManager.IsInState(GameStateEnum.Paused))
+            else if (gameStateManager.IsInState(Gomoku.Systems.GameStateEnum.Paused))
             {
                 gameStateManager.ResumeGame();
             }

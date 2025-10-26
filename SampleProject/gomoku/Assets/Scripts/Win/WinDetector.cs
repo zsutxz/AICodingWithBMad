@@ -21,7 +21,7 @@ public class WinDetector : MonoBehaviour
     [SerializeField] private PiecePlacement piecePlacement;
     
     // Reference to the game state manager to trigger state transitions when a win is detected
-    [SerializeField] private GameStateManager gameStateManager;
+    [SerializeField] private Gomoku.Systems.GameStateManager gameStateManager;
     
     // Unity Event that is triggered when a win is detected, passing the winning player
     [SerializeField] public UnityEvent<PlayerType> onWinDetected;
@@ -45,7 +45,7 @@ public class WinDetector : MonoBehaviour
         
         if (gameStateManager == null)
         {
-            Debug.LogError("GameStateManager reference not set in WinDetector");
+            Debug.LogError("Gomoku.Systems.GameStateManager reference not set in WinDetector");
         }
         
         if (onWinDetected == null)
@@ -133,7 +133,7 @@ public class WinDetector : MonoBehaviour
             onWinDetected?.Invoke(winner);
             
             // Transition to game over state
-            gameStateManager.SetState(GameStateEnum.GameOver);
+            gameStateManager.SetState(Gomoku.Systems.GameStateEnum.GameOver);
             
             return true;
         }
