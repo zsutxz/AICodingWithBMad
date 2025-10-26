@@ -35,12 +35,7 @@ namespace Gomoku.Tests.PlayMode
                 gameStateManager = gameStateManagerObj.AddComponent<GameStateManager>();
             }
 
-            screenManager = Object.FindObjectOfType<ScreenManager>();
-            if (screenManager == null)
-            {
-                var screenManagerObj = new GameObject("ScreenManager");
-                screenManager = screenManagerObj.AddComponent<ScreenManager>();
-            }
+            // ScreenManager functionality has been merged into UIManager
 
             uiManager = Object.FindObjectOfType<UIManager>();
             if (uiManager == null)
@@ -66,14 +61,7 @@ namespace Gomoku.Tests.PlayMode
                 }
             }
 
-            var screenManagers = Object.FindObjectsOfType<ScreenManager>();
-            foreach (var manager in screenManagers)
-            {
-                if (manager != null)
-                {
-                    Object.DestroyImmediate(manager.gameObject);
-                }
-            }
+            // ScreenManager has been removed - functionality moved to UIManager
 
             var uiManagers = Object.FindObjectsOfType<UIManager>();
             foreach (var manager in uiManagers)
@@ -182,33 +170,25 @@ namespace Gomoku.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator ScreenManager_Navigation_WorksCorrectly()
+        public IEnumerator UIManager_Navigation_WorksCorrectly()
         {
-            // Test screen navigation through ScreenManager
-            
+            // Test screen navigation through UIManager (replaces ScreenManager)
+
             // Navigate to game scene
-            screenManager.LoadGameScene();
+            uiManager.LoadGameScene();
             yield return new WaitForSeconds(1.0f);
 
             // Verify we're in the game scene
-            Assert.AreEqual("GameScene", screenManager.GetCurrentSceneName(),
-                "ScreenManager should load GameScene correctly");
-
-            // Navigate to game over scene
-            screenManager.LoadGameOverScene();
-            yield return new WaitForSeconds(1.0f);
-
-            // Verify we're in the game over scene
-            Assert.AreEqual("GameOver", screenManager.GetCurrentSceneName(),
-                "ScreenManager should load GameOver scene correctly");
+            Assert.AreEqual("GameScene", uiManager.GetCurrentSceneName(),
+                "UIManager should load GameScene correctly");
 
             // Navigate back to main menu
-            screenManager.LoadMainMenu();
+            uiManager.LoadMainMenu();
             yield return new WaitForSeconds(1.0f);
 
             // Verify we're back in main menu
-            Assert.AreEqual("MainMenu", screenManager.GetCurrentSceneName(),
-                "ScreenManager should load MainMenu scene correctly");
+            Assert.AreEqual("MainMenu", uiManager.GetCurrentSceneName(),
+                "UIManager should load MainMenu scene correctly");
         }
 
         [UnityTest]

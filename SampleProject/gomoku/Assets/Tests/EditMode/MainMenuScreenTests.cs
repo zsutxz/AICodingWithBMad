@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using Gomoku.Systems;
 using Gomoku.UI.MainMenu;
 using Gomoku.Audio;
+using Gomoku.UI;
 
 namespace Tests
 {
@@ -50,26 +51,12 @@ namespace Tests
         [Test]
         public void StartGame_ButtonTriggersSceneTransition()
         {
-            // Test that StartGame method triggers correct scene transition
-            string sceneToLoad = "";
-
-            // Override SceneLoader to capture the scene name
-            var originalSceneLoader = typeof(SceneLoader)
-                .GetMethod("LoadScene", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-
-            // Store the original method to restore later
-            var originalMethod = originalSceneLoader;
-
-            // Replace with our test version
-            originalSceneLoader = typeof(MainMenuScreenTests)
-                .GetMethod("TestLoadScene", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
+            // Test that StartGame method sets correct game state
             _mainMenuScreen.StartGame();
 
-            // Restore the original method
-            originalSceneLoader = originalMethod;
-
-            Assert.AreEqual("GameScene", sceneToLoad);
+            // Verify that game state is set to Playing
+            var currentState = Gomoku.Systems.GameStateManager.Instance.GetCurrentState();
+            Assert.AreEqual(Gomoku.Systems.GameStateEnum.Playing, currentState, "Should set game state to Playing when StartGame is called");
         }
 
         [Test]
@@ -119,11 +106,11 @@ namespace Tests
         }
 
         [Test]
-        public void SceneLoader_ProperlyInitialized()
+        public void UIManager_ProperlyInitialized()
         {
-            // Test that SceneLoader component exists and is properly configured
-            var sceneLoader = Object.FindObjectOfType<SceneLoader>();
-            Assert.IsNotNull(sceneLoader, "SceneLoader should be present in the scene");
+            // Test that UIManager component exists and is properly configured
+            var uiManager = Object.FindObjectOfType<UIManager>();
+            Assert.IsNotNull(uiManager, "UIManager should be present in the scene");
         }
 
         [Test]
