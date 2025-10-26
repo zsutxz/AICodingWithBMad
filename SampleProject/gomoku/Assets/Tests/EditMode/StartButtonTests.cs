@@ -7,7 +7,7 @@ namespace Gomoku.Tests.EditMode
     public class StartButtonTests
     {
         private GameObject testGameObject;
-        private ButtonHandler buttonHandler;
+        private Gomoku.UI.ButtonHandler buttonHandler;
         private GameStateManager gameStateManager;
 
         [SetUp]
@@ -19,7 +19,7 @@ namespace Gomoku.Tests.EditMode
 
             // Create ButtonHandler
             testGameObject = new GameObject("TestButtonHandler");
-            buttonHandler = testGameObject.AddComponent<ButtonHandler>();
+            buttonHandler = testGameObject.AddComponent<Gomoku.UI.ButtonHandler>();
         }
 
         [TearDown]
