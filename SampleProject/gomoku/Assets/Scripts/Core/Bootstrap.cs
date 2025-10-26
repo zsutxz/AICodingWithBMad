@@ -64,8 +64,11 @@ namespace Gomoku.Core
 
         private void EnsureUIManagerExists()
         {
-            // Check if UIManager already exists
-            var existingUIManager = Object.FindObjectOfType<UIManager>();
+            // First, clean up any UIManager instances that might be in the scene
+            UIManager.CleanupSceneUIManagers();
+
+            // Check if UIManager already exists (should be after cleanup)
+            var existingUIManager = UIManager.Instance;
             if (existingUIManager != null)
             {
                 Debug.Log("Bootstrap: UIManager already exists");

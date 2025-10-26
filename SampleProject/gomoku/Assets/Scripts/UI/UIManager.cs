@@ -43,12 +43,28 @@ namespace Gomoku.UI
         private static UIManager instance;
         public static UIManager Instance => instance;
 
+        /// <summary>
+        /// Clean up any UIManager instances in the current scene (useful for testing or debugging)
+        /// </summary>
+        public static void CleanupSceneUIManagers()
+        {
+            var sceneUIManagers = Object.FindObjectsOfType<UIManager>();
+            foreach (var uiManager in sceneUIManagers)
+            {
+                if (uiManager != instance)
+                {
+                    Debug.Log($"Cleaning up UIManager from GameObject '{uiManager.name}'");
+                    Object.DestroyImmediate(uiManager.gameObject);
+                }
+            }
+        }
+
         // Async operation for scene loading
         private AsyncOperation asyncOperation;
 
         private void Awake()
         {
-            // Singleton pattern implementation
+            // Enhanced singleton pattern implementation
             if (instance == null)
             {
                 instance = this;
@@ -58,8 +74,22 @@ namespace Gomoku.UI
             }
             else
             {
-                Destroy(gameObject);
-                Debug.LogWarning("Duplicate UIManager instance destroyed");
+                // Check if the existing instance is actually different from this one
+                if (instance != this)
+                {
+                    Debug.Log($"UIManager instance already exists. Destroying duplicate from GameObject '{gameObject.name}' in scene '{UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}'");
+
+                    // If this is from a scene, deactivate it immediately to prevent any conflicts
+                    gameObject.SetActive(false);
+
+                    // Destroy this duplicate instance
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    // This should not happen, but handle it gracefully
+                    Debug.LogWarning("UIManager singleton self-reference detected. This should not happen.");
+                }
             }
         }
 
