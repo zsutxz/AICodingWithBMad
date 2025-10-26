@@ -45,7 +45,9 @@
       "Bash(for file in Assets/Scripts/Game/GameState/States/GameOverState.cs Assets/Scripts/Game/GameState/States/MainMenuState.cs Assets/Scripts/Game/GameState/States/PausedState.cs Assets/Scripts/Game/GameState/States/PlayingState.cs Assets/Scripts/Managers/GameResetManager.cs Assets/Scripts/UI/UIGameStateIntegrator.cs Assets/Scripts/Win/WinDetector.cs)",
       "Bash(do echo \"=== $file ===\")",
       "Bash(head -10 \"$file\")",
-      "Bash(msbuild Gomoku.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /t:Build /verbosity:minimal)"
+      "Bash(msbuild Gomoku.sln /p:Configuration=Debug /p:Platform=\"Any CPU\" /t:Build /verbosity:minimal)",
+      "Bash(dotnet test:*)",
+      "Bash(dotnet build:*)"
     ],
     "deny": [],
     "ask": [],
