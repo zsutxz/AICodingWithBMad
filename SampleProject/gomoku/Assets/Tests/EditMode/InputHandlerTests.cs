@@ -1,13 +1,15 @@
 using NUnit.Framework;
 using UnityEngine;
-using Gomoku.UI;
+using UnityEngine.TestTools;
+using System.Collections;
+using Gomoku.Core;
 
 namespace Gomoku.Tests.EditMode
 {
-    public class ButtonHandlerTests
+    public class InputHandlerTests
     {
         private GameObject testGameObject;
-        private ButtonHandler buttonHandler;
+        private InputHandler inputHandler;
         private GameStateManager gameStateManager;
         
         [SetUp]
@@ -17,9 +19,9 @@ namespace Gomoku.Tests.EditMode
             GameObject managerGameObject = new GameObject();
             gameStateManager = managerGameObject.AddComponent<GameStateManager>();
             
-            // Create ButtonHandler
+            // Create InputHandler
             testGameObject = new GameObject();
-            buttonHandler = testGameObject.AddComponent<ButtonHandler>();
+            inputHandler = testGameObject.AddComponent<InputHandler>();
         }
         
         [TearDown]
@@ -38,13 +40,13 @@ namespace Gomoku.Tests.EditMode
         }
         
         [Test]
-        public void OnPauseButtonClicked_PausesGameInPlayingState()
+        public void InputHandler_PausesGameWhenESCPressedInPlayingState()
         {
             // Arrange
             gameStateManager.SetState(GameStateEnum.Playing);
             
             // Act
-            buttonHandler.OnPauseButtonClicked();
+            inputHandler.HandlePauseInput();
             
             // Assert
             Assert.AreEqual(GameStateEnum.Paused, gameStateManager.GetCurrentState());
@@ -52,27 +54,14 @@ namespace Gomoku.Tests.EditMode
         }
         
         [Test]
-        public void OnPauseButtonClicked_DoesNothingWhenNotPlaying()
-        {
-            // Arrange
-            gameStateManager.SetState(GameStateEnum.MainMenu);
-            
-            // Act
-            buttonHandler.OnPauseButtonClicked();
-            
-            // Assert
-            Assert.AreEqual(GameStateEnum.MainMenu, gameStateManager.GetCurrentState());
-        }
-        
-        [Test]
-        public void OnResumeButtonClicked_ResumesGameInPausedState()
+        public void InputHandler_ResumesGameWhenESCPressedInPausedState()
         {
             // Arrange
             gameStateManager.SetState(GameStateEnum.Paused);
             Time.timeScale = 0f;
             
             // Act
-            buttonHandler.OnResumeButtonClicked();
+            inputHandler.HandlePauseInput();
             
             // Assert
             Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
@@ -80,27 +69,14 @@ namespace Gomoku.Tests.EditMode
         }
         
         [Test]
-        public void OnResumeButtonClicked_DoesNothingWhenNotPaused()
+        public void InputHandler_DoesNothingWhenESCPressedInMainMenuState()
         {
             // Arrange
-            gameStateManager.SetState(GameStateEnum.Playing);
+            gameStateManager.SetState(GameStateEnum.MainMenu);
+            Time.timeScale = 1f;
             
             // Act
-            buttonHandler.OnResumeButtonClicked();
-            
-            // Assert
-            Assert.AreEqual(GameStateEnum.Playing, gameStateManager.GetCurrentState());
-        }
-        
-        [Test]
-        public void OnQuitButtonClicked_ReturnsToMainMenu()
-        {
-            // Arrange
-            gameStateManager.SetState(GameStateEnum.Paused);
-            Time.timeScale = 0f;
-            
-            // Act
-            buttonHandler.OnQuitButtonClicked();
+            inputHandler.HandlePauseInput();
             
             // Assert
             Assert.AreEqual(GameStateEnum.MainMenu, gameStateManager.GetCurrentState());
@@ -108,13 +84,18 @@ namespace Gomoku.Tests.EditMode
         }
         
         [Test]
-        public void OnStartButtonClicked_LogsMessage()
+        public void InputHandler_DoesNothingWhenESCPressedInGameOverState()
         {
-            // Arrange - This test just verifies the method doesn't crash
-            gameStateManager.SetState(GameStateEnum.MainMenu);
+            // Arrange
+            gameStateManager.SetState(GameStateEnum.GameOver);
+            Time.timeScale = 1f;
             
-            // Act & Assert - Should not throw an exception
-            Assert.DoesNotThrow(() => buttonHandler.OnStartButtonClicked());
+            // Act
+            inputHandler.HandlePauseInput();
+            
+            // Assert
+            Assert.AreEqual(GameStateEnum.GameOver, gameStateManager.GetCurrentState());
+            Assert.AreEqual(1f, Time.timeScale);
         }
     }
 }

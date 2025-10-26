@@ -49,12 +49,19 @@ public class GameStateManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        throw new NotImplementedException();
+        if (CurrentState == GameStateEnum.Paused)
+        {
+            SetState(GameStateEnum.Playing);
+            Time.timeScale = 1f;
+            Debug.Log("Game resumed");
+        }
     }
 
     public void ReturnToMainMenu()
     {
-        throw new NotImplementedException();
+        Time.timeScale = 1f; // Ensure normal time scale
+        SetState(GameStateEnum.MainMenu);
+        Debug.Log("Returned to main menu");
     }
 
     public GameStateEnum GetCurrentState()
@@ -65,11 +72,16 @@ public class GameStateManager : MonoBehaviour
 
     public void PauseGame()
     {
-        throw new NotImplementedException();
+        if (CurrentState == GameStateEnum.Playing)
+        {
+            SetState(GameStateEnum.Paused);
+            Time.timeScale = 0f;
+            Debug.Log("Game paused");
+        }
     }
 
     public bool IsInState(GameStateEnum testState)
     {
-        throw new NotImplementedException();
+        return CurrentState == testState;
     }
 }

@@ -313,7 +313,7 @@ namespace Gomoku.UI
                 {
                     if (button != null)
                     {
-                        Debug.Log($"  - {button.name}: {(button.IsAnimating ? "Animating" : "Idle")}");
+                        Debug.Log($"  - {button.name}: {(button.IsAnimatingMethod() ? "Animating" : "Idle")}");
                     }
                 }
             }
