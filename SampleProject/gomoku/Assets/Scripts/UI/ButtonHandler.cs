@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using Gomoku.Audio;
 
 namespace Gomoku.UI
 {
@@ -25,6 +26,11 @@ namespace Gomoku.UI
         [SerializeField] private Button button;
         [SerializeField] private Image buttonImage;
         [SerializeField] private TMPro.TextMeshProUGUI buttonText;
+        
+        [Header("Audio Settings")]
+        [SerializeField] private bool playAudioFeedback = true;
+        [SerializeField] private bool playHoverSound = true;
+        [SerializeField] private bool playClickSound = true;
         
         // Animation state
         private bool isAnimating = false;
@@ -97,6 +103,13 @@ namespace Gomoku.UI
             
             isHovered = true;
             StartAnimation(ButtonState.Hover);
+            
+            // Play hover sound
+            if (playAudioFeedback && playHoverSound)
+            {
+                AudioManager.Instance.PlayUIHoverSound();
+            }
+            
             OnButtonHover?.Invoke(this);
         }
         
@@ -141,6 +154,12 @@ namespace Gomoku.UI
         private void HandleButtonClick()
         {
             if (!button.interactable) return;
+            
+            // Play click sound
+            if (playAudioFeedback && playClickSound)
+            {
+                AudioManager.Instance.PlayUIClick();
+            }
             
             OnButtonClick?.Invoke(this);
             

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Gomoku;
 using Gomoku.Core;
+using Gomoku.Audio;
 using System;
 
 /// <summary>
@@ -24,6 +25,9 @@ public class WinDetector : MonoBehaviour
     
     // Unity Event that is triggered when a win is detected, passing the winning player
     [SerializeField] public UnityEvent<PlayerType> onWinDetected;
+    
+    [Header("Audio Settings")]
+    [SerializeField] private bool playVictorySound = true;
     
     // The player who won the game (None if no winner yet)
     private PlayerType winner;
@@ -118,6 +122,12 @@ public class WinDetector : MonoBehaviour
         {
             winner = lastPlayer;
             gameWon = true;
+            
+            // Play victory sound
+            if (playVictorySound)
+            {
+                AudioManager.Instance.PlayVictorySound();
+            }
             
             // Trigger the win event
             onWinDetected?.Invoke(winner);

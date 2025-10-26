@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Gomoku.UI;
 using Gomoku.Core;
+using Gomoku.Audio;
 
 namespace Gomoku
 {
@@ -21,9 +22,7 @@ namespace Gomoku
         [SerializeField] private bool enableVisualFeedback = true;
         
         [Header("Audio Settings")]
-        [SerializeField] private AudioSource audioSource;
-        [SerializeField] private AudioClip placementSound;
-        [SerializeField] private AudioClip invalidPlacementSound;
+        [SerializeField] private bool useAudioManager = true;
         
         // Game state
         private PlayerType[,] boardState;
@@ -80,13 +79,7 @@ namespace Gomoku
                 pieceContainer = container.transform;
             }
             
-            // Setup audio source
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-                audioSource.volume = 0.7f;
-            }
+            // Audio is now handled by AudioManager
         }
         
         /// <summary>
@@ -381,11 +374,11 @@ namespace Gomoku
         private void PlayPlacementFeedback(int x, int y, PlayerType playerType)
         {
             // Play placement sound
-            if (audioSource != null && placementSound != null)
+            if (useAudioManager)
             {
-                audioSource.PlayOneShot(placementSound);
+                AudioManager.Instance.PlayPiecePlacementSound();
             }
-            
+
             // Visual feedback
             if (enableVisualFeedback && intersectionDetector != null)
             {
@@ -402,17 +395,17 @@ namespace Gomoku
         private void PlayInvalidPlacementFeedback(int x, int y, PlayerType playerType)
         {
             // Play invalid sound
-            if (audioSource != null && invalidPlacementSound != null)
+            if (useAudioManager)
             {
-                audioSource.PlayOneShot(invalidPlacementSound);
+                AudioManager.Instance.PlayInvalidPlacementSound();
             }
-            
+
             // Visual feedback
             if (enableVisualFeedback && intersectionDetector != null)
             {
                 intersectionDetector.HighlightIntersection(x, y, false);
             }
-            
+
             // Notify listeners
             OnInvalidPlacement?.Invoke(new Vector2Int(x, y), playerType);
         }
