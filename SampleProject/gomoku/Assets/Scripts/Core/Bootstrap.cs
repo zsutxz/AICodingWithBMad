@@ -64,24 +64,51 @@ namespace Gomoku.Core
 
         private void EnsureUIManagerExists()
         {
-            // First, aggressively clean up any UIManager components in scenes
+            // Log current state before cleanup
+            Debug.Log($"Bootstrap: Starting UIManager setup. Current scene: '{UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}'");
+
+            // First, VERY aggressively clean up any UIManager components in scenes
             CleanupSceneUIManagers();
+
+            // Add a second cleanup pass after a brief delay to catch any UIManager components
+            // that might be instantiated during the scene loading process
+            StartCoroutine(SecondaryCleanup());
 
             // Check if UIManager already exists (should be after cleanup)
             var existingUIManager = UIManager.Instance;
             if (existingUIManager != null)
             {
-                Debug.Log("Bootstrap: UIManager already exists and properly initialized");
+                Debug.Log($"Bootstrap: UIManager already exists and properly initialized (GameObject: '{existingUIManager.gameObject.name}', Scene: '{GetSceneName(existingUIManager.gameObject)}')");
                 return;
             }
 
             // Create UIManager if it doesn't exist
             Debug.Log("Bootstrap: Creating UIManager singleton");
-            var uiManagerObject = new GameObject("UIManager");
+            var uiManagerObject = new GameObject("UIManager_Singleton");
             var uiManager = uiManagerObject.AddComponent<UIManager>();
 
             // Set it to not destroy on load so it persists across scenes
             DontDestroyOnLoad(uiManagerObject);
+
+            Debug.Log($"Bootstrap: UIManager singleton created successfully (GameObject: '{uiManagerObject.name}')");
+        }
+
+        private System.Collections.IEnumerator SecondaryCleanup()
+        {
+            // Wait for end of frame to catch any UIManager components that might be instantiated
+            yield return new WaitForEndOfFrame();
+
+            // Check again for any UIManager components that might have been created
+            var sceneUIManagers = Object.FindObjectsOfType<UIManager>();
+            foreach (var uiManager in sceneUIManagers)
+            {
+                if (uiManager != UIManager.Instance)
+                {
+                    Debug.LogWarning($"Bootstrap: Secondary cleanup found UIManager on GameObject '{uiManager.gameObject.name}' in scene '{GetSceneName(uiManager.gameObject)}'. Removing it.");
+                    uiManager.gameObject.SetActive(false);
+                    Object.DestroyImmediate(uiManager.gameObject);
+                }
+            }
         }
 
         /// <summary>

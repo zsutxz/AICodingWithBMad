@@ -30,10 +30,6 @@ namespace Gomoku.Core
         public static event System.Action<int, int> OnIntersectionClicked;
         public static event System.Action<int, int> OnValidIntersectionDetected;
 
-        // Win Detection Events
-        public static event System.Action<PlayerType> OnWinDetected;
-        public static event System.Action OnDrawDetected;
-
         // UI Events
         public static event System.Action<bool> OnPauseToggled;
         public static event System.Action<string> OnNotificationShown;

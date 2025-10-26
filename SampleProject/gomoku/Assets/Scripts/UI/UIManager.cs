@@ -82,13 +82,15 @@ namespace Gomoku.UI
 
         private void Awake()
         {
-            // Enhanced singleton pattern implementation
+            // Enhanced singleton pattern implementation with detailed debugging
+            Debug.Log($"UIManager: Awake() called for GameObject '{gameObject.name}' in scene '{GetSceneName(gameObject)}'. Current instance: {(instance != null ? instance.gameObject.name : "null")}");
+
             if (instance == null)
             {
                 instance = this;
                 DontDestroyOnLoad(gameObject);
                 InitializeUI();
-                Debug.Log("UIManager initialized successfully");
+                Debug.Log($"UIManager: Singleton established for GameObject '{gameObject.name}' in scene '{GetSceneName(gameObject)}'");
             }
             else
             {
@@ -96,7 +98,7 @@ namespace Gomoku.UI
                 if (instance != this)
                 {
                     // Log detailed information for debugging
-                    Debug.Log($"UIManager: Singleton conflict detected. " +
+                    Debug.LogWarning($"UIManager: Singleton conflict detected. " +
                               $"Existing: '{instance.gameObject.name}' (Scene: {GetSceneName(instance.gameObject)}) " +
                               $"Duplicate: '{gameObject.name}' (Scene: {GetSceneName(gameObject)})");
 

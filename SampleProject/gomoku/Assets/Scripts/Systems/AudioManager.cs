@@ -111,8 +111,6 @@ namespace Gomoku.Audio
         // Performance optimization: audio source cleanup coroutine
         private Coroutine cleanupCoroutine;
         
-        // Audio settings cache to avoid repeated PlayerPrefs access
-        private bool volumeSettingsLoaded = false;
 
         private void Awake()
         {

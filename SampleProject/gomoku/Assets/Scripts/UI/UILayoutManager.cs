@@ -15,7 +15,6 @@ namespace Gomoku.UI
 
         [Header("Layout Settings")]
         [SerializeField] private float screenMargin = 20f;
-        [SerializeField] private float elementMargin = 15f;
         [SerializeField] private Vector2 turnIndicatorPosition = new Vector2(0.05f, 0.95f); // Top-left
         [SerializeField] private Vector2 moveCounterPosition = new Vector2(0.05f, 0.05f); // Bottom-left
         [SerializeField] private Vector2 pauseButtonPosition = new Vector2(0.95f, 0.95f); // Top-right
