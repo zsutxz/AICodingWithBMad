@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Gomoku.Core;
+using System.Runtime.CompilerServices;
 
 namespace Gomoku
 {
@@ -360,15 +361,15 @@ namespace Gomoku
             {
                 // Create containers for grid lines and pieces
                 gridContainer = new GameObject("GridLines");
-                gridContainer.transform.position = new Vector3(boardOffset.x + BoardWidth/2, boardOffset.y + BoardHeight/2, 0);
-                gridContainer.transform.SetParent(this.transform);
-            }
+                gridContainer.transform.SetParent(transform,false);
+                gridContainer.transform.localPosition = new Vector2(-boardSize / 2 * cellSize , -boardSize / 2 * cellSize);
+              }
 
             if(piecesContainer==null)
             {
                 piecesContainer = new GameObject("Pieces");
-                piecesContainer.transform.localPosition = new Vector3(640, 360, 0);
-                piecesContainer.transform.SetParent(transform);
+                piecesContainer.transform.SetParent(transform, false);
+                piecesContainer.transform.localPosition = new Vector2(-boardSize / 2 * cellSize , -boardSize / 2 * cellSize);
             }
 
             // Initialize piece objects array
@@ -397,15 +398,15 @@ namespace Gomoku
             // Create horizontal lines
             for (int i = 0; i < boardSize; i++)
             {
-                float yPos = boardOffset.y + i * cellSize;
-                CreateGridLine(new Vector2(boardOffset.x, yPos), new Vector2(boardOffset.x + width, yPos));
+                float yPos = -boardSize/2 + i * cellSize;
+                CreateGridLine(new Vector2(-boardSize/2, yPos), new Vector2(-boardSize/2 + width, yPos));
             }
 
             // Create vertical lines
             for (int i = 0; i < boardSize; i++)
             {
-                float xPos = boardOffset.x + i * cellSize;
-                CreateGridLine(new Vector2(xPos, boardOffset.y), new Vector2(xPos, boardOffset.y + height));
+                float xPos = -boardSize/2 + i * cellSize;
+                CreateGridLine(new Vector2(xPos, -boardSize/2), new Vector2(xPos, -boardSize/2 + height));
             }
         }
 
@@ -491,26 +492,20 @@ namespace Gomoku
                 {
                     // Create a new piece
                     GameObject piece = Instantiate(piecePrefab != null ? piecePrefab : new GameObject("Piece"), piecesContainer.transform);
-                    RectTransform rectTransform = piece.GetComponent<RectTransform>();
 
-                    if (rectTransform == null)
-                    {
-                        rectTransform = piece.AddComponent<RectTransform>();
-                    }
-
-                    // Position the piece
+                    // Position the piece using Transform (world space)
                     float posX = x * cellSize;
                     float posY = y * cellSize;
-                    rectTransform.anchoredPosition = new Vector2(posX, posY);
-                    rectTransform.sizeDelta = new Vector2(pieceSize, pieceSize);
+                    piece.transform.localPosition = new Vector3(posX, posY, 0);
+                    piece.transform.localScale = new Vector3(pieceSize, pieceSize, 1);
 
-                    // Apply color based on piece type
-                    Image image = piece.GetComponent<Image>();
-                    if (image == null)
+                    // Apply color based on piece type using SpriteRenderer
+                    SpriteRenderer spriteRenderer = piece.GetComponent<SpriteRenderer>();
+                    if (spriteRenderer == null)
                     {
-                        image = piece.AddComponent<Image>();
+                        spriteRenderer = piece.AddComponent<SpriteRenderer>();
                     }
-                    image.color = pieceType == PlayerType.PlayerOne ? blackPieceColor : whitePieceColor;
+                    spriteRenderer.color = pieceType == PlayerType.PlayerOne ? blackPieceColor : whitePieceColor;
 
                     // Store reference
                     pieceObjects[x, y] = piece;
