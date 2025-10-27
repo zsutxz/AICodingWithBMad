@@ -64,10 +64,10 @@
     <Compile Include="Assets\Scripts\Win\WinCondition.cs" />
     <Compile Include="Assets\Scripts\GameBoard\DeveloperSettings.cs" />
     <Compile Include="Assets\Scripts\Core\Bootstrap.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\BoardVisualSettings.cs" />
-    <Compile Include="Assets\Scripts\Game\GameStateListener.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\PieceData.cs" />
     <Compile Include="Assets\Scripts\UI\UILayoutManager.cs" />
     <Compile Include="Assets\Scripts\GameBoard\GameBoardModel.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\TestPattern.cs" />
     <Compile Include="Assets\Scripts\Core\GameEvents.cs" />
     <Compile Include="Assets\Scripts\GameBoard\IntersectionDetector.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
@@ -81,7 +81,10 @@
     <Compile Include="Assets\Scripts\UI\VictoryBanner.cs" />
     <Compile Include="Assets\Scripts\UI\UIScaler.cs" />
     <Compile Include="Assets\Scripts\Piece\PiecePlacement.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\LineDirection.cs" />
+    <Compile Include="Assets\Scripts\UI\GameStateListener.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenuScreen.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\PieceGenerationExample.cs" />
     <Compile Include="Assets\Scripts\UI\TurnIndicator.cs" />
     <Compile Include="Assets\Scripts\Systems\AudioManager.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonHandler.cs" />

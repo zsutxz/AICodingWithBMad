@@ -1,7 +1,7 @@
 using UnityEngine;
 using Gomoku.UI;
 
-namespace Gomoku.Game
+namespace Gomoku.UI
 {
     /// <summary>
     /// Listens to game state changes and updates UI accordingly

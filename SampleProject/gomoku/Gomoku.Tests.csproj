@@ -79,7 +79,6 @@
     <Compile Include="Assets\Tests\EditMode\GameBoard\GameBoardTests.cs" />
     <Compile Include="Assets\Tests\EditMode\InputHandlerTests.cs" />
     <Compile Include="Assets\Tests\PlayMode\WinDetectorIntegrationTests.cs" />
-    <Compile Include="Assets\Tests\BoardRendererTest.cs" />
     <Compile Include="Assets\Tests\EditMode\UITurnIndicatorTests.cs" />
     <Compile Include="Assets\Tests\EditMode\AudioSettingsIntegrationTests.cs" />
     <Compile Include="Assets\Tests\EditMode\Piece\PiecePlacementTests.cs" />
