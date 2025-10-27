@@ -475,45 +475,6 @@ namespace Gomoku
         }
 
         /// <summary>
-        /// Places a piece on the board
-        /// </summary>
-        /// <param name="pieceType">The type of piece to place</param>
-        /// <param name="x">X coordinate on the board</param>
-        /// <param name="y">Y coordinate on the board</param>
-        public void PlacePiece(PlayerType pieceType, int x, int y)
-        {
-            if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
-            {
-                // Update the internal state
-                placedPieces[x, y] = pieceType;
-
-                // Create or update the piece UI element
-                if (pieceObjects[x, y] == null)
-                {
-                    // Create a new piece
-                    GameObject piece = Instantiate(piecePrefab != null ? piecePrefab : new GameObject("Piece"), piecesContainer.transform);
-
-                    // Position the piece using Transform (world space)
-                    float posX = x * cellSize;
-                    float posY = y * cellSize;
-                    piece.transform.localPosition = new Vector3(posX, posY, 0);
-                    piece.transform.localScale = new Vector3(pieceSize, pieceSize, 1);
-
-                    // Apply color based on piece type using SpriteRenderer
-                    SpriteRenderer spriteRenderer = piece.GetComponent<SpriteRenderer>();
-                    if (spriteRenderer == null)
-                    {
-                        spriteRenderer = piece.AddComponent<SpriteRenderer>();
-                    }
-                    spriteRenderer.color = pieceType == PlayerType.PlayerOne ? blackPieceColor : whitePieceColor;
-
-                    // Store reference
-                    pieceObjects[x, y] = piece;
-                }
-            }
-        }
-
-        /// <summary>
         /// Removes a piece from the board
         /// </summary>
         /// <param name="x">X coordinate on the board</param>

@@ -82,6 +82,9 @@ namespace Gomoku
             pieceType = type;
             boardPosition = boardPos;
 
+            // Update visual appearance
+            UpdatePieceVisual();
+
             // Set position
             if (animate)
             {
@@ -94,6 +97,24 @@ namespace Gomoku
             }
 
             Debug.Log($"{type} piece placed at board position ({boardPos.x}, {boardPos.y})");
+        }
+
+        /// <summary>
+        /// Updates the piece's visual appearance based on its type
+        /// </summary>
+        private void UpdatePieceVisual()
+        {
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                Color targetColor = pieceType == PlayerType.PlayerOne ? blackPieceColor : whitePieceColor;
+                spriteRenderer.color = targetColor;
+                Debug.Log($"Updated piece color to {targetColor} for piece type {pieceType}");
+            }
+            else
+            {
+                Debug.LogWarning("SpriteRenderer component not found on piece!");
+            }
         }
 
         /// <summary>

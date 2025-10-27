@@ -132,25 +132,6 @@ namespace Gomoku.UI
         }
 
         /// <summary>
-        /// Places a piece on the board at the specified coordinates
-        /// </summary>
-        /// <param name="pieceType">Type of piece to place</param>
-        /// <param name="x">X coordinate</param>
-        /// <param name="y">Y coordinate</param>
-        /// <returns>True if piece was successfully placed</returns>
-        public bool PlacePiece(PlayerType pieceType, int x, int y)
-        {
-            if (!isInitialized || !IsValidCoordinate(x, y))
-            {
-                return false;
-            }
-
-            // Update the renderer
-            boardRenderer.PlacePiece(pieceType, x, y);
-            return true;
-        }
-
-        /// <summary>
         /// Removes a piece from the board at the specified coordinates
         /// </summary>
         /// <param name="x">X coordinate</param>

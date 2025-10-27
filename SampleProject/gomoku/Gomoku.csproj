@@ -65,8 +65,8 @@
     <Compile Include="Assets\Scripts\GameBoard\DeveloperSettings.cs" />
     <Compile Include="Assets\Scripts\Core\Bootstrap.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardVisualSettings.cs" />
-    <Compile Include="Assets\Scripts\UI\UILayoutManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateListener.cs" />
+    <Compile Include="Assets\Scripts\UI\UILayoutManager.cs" />
     <Compile Include="Assets\Scripts\GameBoard\GameBoardModel.cs" />
     <Compile Include="Assets\Scripts\Core\GameEvents.cs" />
     <Compile Include="Assets\Scripts\GameBoard\IntersectionDetector.cs" />

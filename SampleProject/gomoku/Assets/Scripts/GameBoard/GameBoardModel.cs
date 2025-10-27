@@ -53,15 +53,6 @@ namespace Gomoku.GameBoard
             InitializeBoard();
             InitializeMoveHistory();
 
-            // Find or create the parent transform for pieces
-            piecesParent = transform.Find("Pieces");
-            if (piecesParent == null)
-            {
-                GameObject piecesObj = new GameObject("Pieces");
-                piecesObj.transform.SetParent(transform);
-                piecesParent = piecesObj.transform;
-            }
-
             Debug.Log($"GameBoardModel initialized with {boardSize}x{boardSize} board");
         }
 
@@ -130,49 +121,6 @@ namespace Gomoku.GameBoard
             }
 
             return boardState[x, y] == 0;
-        }
-
-        /// <summary>
-        /// Place a piece on the board at the specified position
-        /// </summary>
-        /// <param name="x">X coordinate of the position</param>
-        /// <param name="y">Y coordinate of the position</param>
-        /// <param name="player">The player placing the piece</param>
-        /// <returns>True if the piece was placed successfully, false otherwise</returns>
-        public bool PlacePiece(int x, int y, PlayerType player)
-        {
-            // Check if the position is within bounds and empty
-            if (x < 0 || x >= boardSize || y < 0 || y >= boardSize)
-            {
-                Debug.LogWarning($"Attempted to place piece at out-of-bounds position ({x}, {y})");
-                return false;
-            }
-
-            if (!IsPositionEmpty(x, y))
-            {
-                Debug.LogWarning($"Attempted to place piece at occupied position ({x}, {y})");
-                return false;
-            }
-
-            // Update the board state
-            boardState[x, y] = (int)player;
-
-            // Add the move to the history
-            moveHistory.Add(new BoardMove(x, y, player));
-
-            // Create the visual piece in the scene
-            if (piecePrefab != null && piecesParent != null)
-            {
-                Vector3 position = new Vector3(x, 0, y);
-                GameObject piece = Instantiate(piecePrefab, position, Quaternion.identity, piecesParent);
-                piece.name = $"Piece_{x}_{y}";
-
-                // The piece should handle its own color based on the player type
-                // This will be handled by the Piece component's SetupPiece method
-            }
-
-            Debug.Log($"Piece placed at ({x}, {y}) by {player}");
-            return true;
         }
 
         /// <summary>
