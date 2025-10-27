@@ -17,6 +17,8 @@ namespace Gomoku
         [Header("Visual Settings")]
         [SerializeField] private Color blackPieceColor = Color.black;
         [SerializeField] private Color whitePieceColor = Color.white;
+        [SerializeField] private float shadowOffset = 0.05f;
+        [SerializeField] private float shadowOpacity = 0.3f;
 
         // Board position
         private Vector2Int boardPosition;
@@ -104,16 +106,44 @@ namespace Gomoku
         /// </summary>
         private void UpdatePieceVisual()
         {
+            // Update main renderer
             SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
             {
                 Color targetColor = pieceType == PlayerType.PlayerOne ? blackPieceColor : whitePieceColor;
                 spriteRenderer.color = targetColor;
-                Debug.Log($"Updated piece color to {targetColor} for piece type {pieceType}");
             }
-            else
+
+            // Create shadow effect
+            CreateShadowEffect();
+
+            Debug.Log($"Updated piece visual for {pieceType} piece");
+        }
+
+        /// <summary>
+        /// Creates a shadow effect for the piece
+        /// </summary>
+        private void CreateShadowEffect()
+        {
+            // Check if shadow already exists
+            Transform shadowTransform = transform.Find("Shadow");
+            if (shadowTransform != null) return;
+
+            // Create shadow object
+            GameObject shadowObj = new GameObject("Shadow");
+            shadowObj.transform.SetParent(transform);
+            shadowObj.transform.localPosition = new Vector3(shadowOffset, -shadowOffset, 0.01f);
+            shadowObj.transform.localScale = Vector3.one;
+
+            // Add shadow renderer
+            SpriteRenderer shadowRenderer = shadowObj.AddComponent<SpriteRenderer>();
+            SpriteRenderer mainRenderer = GetComponent<SpriteRenderer>();
+
+            if (mainRenderer != null)
             {
-                Debug.LogWarning("SpriteRenderer component not found on piece!");
+                shadowRenderer.sprite = mainRenderer.sprite;
+                shadowRenderer.color = new Color(0f, 0f, 0f, shadowOpacity);
+                shadowRenderer.sortingOrder = mainRenderer.sortingOrder - 1;
             }
         }
 
@@ -140,8 +170,8 @@ namespace Gomoku
         {
             isAnimating = true;
 
-            // Start position (slightly above target for drop effect)
-            Vector3 startPosition = targetPosition + Vector3.up * 2f;
+            // Start position (higher for better drop effect)
+            Vector3 startPosition = targetPosition + Vector3.up * 3f;
             Vector3 startScale = Vector3.zero;
             Vector3 targetScale = Vector3.one;
 
@@ -149,16 +179,51 @@ namespace Gomoku
             transform.localScale = startScale;
 
             float elapsed = 0f;
+            float bounceHeight = 0.5f;
+            float bounceDuration = placementAnimationDuration * 0.3f;
+            float scaleDuration = placementAnimationDuration * 0.7f;
 
-            while (elapsed < placementAnimationDuration)
+            // Phase 1: Drop with bounce
+            while (elapsed < bounceDuration)
             {
                 elapsed += Time.deltaTime;
-                float t = elapsed / placementAnimationDuration;
-                float curveValue = placementCurve.Evaluate(t);
+                float t = elapsed / bounceDuration;
+                float dropCurve = placementCurve.Evaluate(Mathf.Min(t * 2f, 1f));
 
-                // Animate position and scale
-                transform.position = Vector3.Lerp(startPosition, targetPosition, curveValue);
-                transform.localScale = Vector3.Lerp(startScale, targetScale, curveValue);
+                // Animate position with slight overshoot for bounce
+                Vector3 currentPos = Vector3.Lerp(startPosition, targetPosition, dropCurve);
+
+                // Add bounce effect
+                if (t < 0.5f)
+                {
+                    currentPos.y += Mathf.Sin(t * Mathf.PI) * bounceHeight;
+                }
+
+                transform.position = currentPos;
+
+                // Scale up quickly at the start
+                float scaleT = Mathf.Min(t / 0.3f, 1f);
+                transform.localScale = Vector3.Lerp(startScale, targetScale * 1.2f, scaleT);
+
+                yield return null;
+            }
+
+            // Phase 2: Settle and finalize scale
+            float settleElapsed = 0f;
+            Vector3 settleStartPos = transform.position;
+            Vector3 settleStartScale = transform.localScale;
+
+            while (settleElapsed < scaleDuration)
+            {
+                settleElapsed += Time.deltaTime;
+                float settleT = settleElapsed / scaleDuration;
+                float settleCurve = 1f - Mathf.Pow(1f - settleT, 3f); // Ease out cubic
+
+                // Settle into final position
+                transform.position = Vector3.Lerp(settleStartPos, targetPosition, settleCurve);
+
+                // Scale down to final size
+                transform.localScale = Vector3.Lerp(settleStartScale, targetScale, settleCurve);
 
                 yield return null;
             }

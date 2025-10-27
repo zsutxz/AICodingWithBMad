@@ -7,7 +7,7 @@ namespace Gomoku
     /// <summary>
     /// Handles detection of clicks on board intersections and converts them to board coordinates
     /// </summary>
-    public class IntersectionDetector : MonoBehaviour, IPointerClickHandler
+    public class IntersectionDetector : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
     {
         [Header("Detection Settings")]
         [SerializeField] private float detectionRadius = 0.3f;
@@ -17,15 +17,24 @@ namespace Gomoku
         [SerializeField] private bool showDetectionDebug = false;
         [SerializeField] private Color validIntersectionColor = new Color(0f, 1f, 0f, 0.3f);
         [SerializeField] private Color invalidIntersectionColor = new Color(1f, 0f, 0f, 0.3f);
+        [SerializeField] private Color hoverColor = new Color(1f, 1f, 1f, 0.5f);
+        [SerializeField] private GameObject hoverIndicatorPrefab;
+        [SerializeField] private bool enableHoverPreview = true;
 
         private int boardSize;
         private float cellSize;
         private Vector2 boardOffset;
         private GameBoardController gameBoard;
+        private GameObject currentHoverIndicator;
+        private Vector2Int currentHoverPosition = new Vector2Int(-1, -1);
+        private bool isHovering = false;
 
         // Events
         public System.Action<int, int> OnIntersectionClicked;
         public System.Action<int, int> OnValidIntersectionDetected;
+        public System.Action<int, int> OnHoverStart;
+        public System.Action<int, int> OnHoverMove;
+        public System.Action OnHoverEnd;
 
         /// <summary>
         /// Initializes the intersection detector with board configuration
@@ -84,12 +93,146 @@ namespace Gomoku
             if (TryGetIntersectionFromWorldPosition(worldPosition, out int x, out int y))
             {
                 OnIntersectionClicked?.Invoke(x, y);
-                
+
                 if (showDetectionDebug)
                 {
                     Debug.Log($"Intersection clicked at ({x}, {y})");
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles pointer enter events
+        /// </summary>
+        /// <param name="eventData">Pointer event data</param>
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            isHovering = true;
+            UpdateHoverState(eventData);
+        }
+
+        /// <summary>
+        /// Handles pointer exit events
+        /// </summary>
+        /// <param name="eventData">Pointer event data</param>
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            isHovering = false;
+            HideHoverIndicator();
+            OnHoverEnd?.Invoke();
+        }
+
+        /// <summary>
+        /// Handles pointer move events
+        /// </summary>
+        /// <param name="eventData">Pointer event data</param>
+        public void OnPointerMove(PointerEventData eventData)
+        {
+            if (isHovering && enableHoverPreview)
+            {
+                UpdateHoverState(eventData);
+            }
+        }
+
+        /// <summary>
+        /// Updates the hover state based on current pointer position
+        /// </summary>
+        /// <param name="eventData">Pointer event data</param>
+        private void UpdateHoverState(PointerEventData eventData)
+        {
+            if (!enableHoverPreview) return;
+
+            Vector3 worldPosition = GetWorldPositionFromPointer(eventData);
+            if (TryGetIntersectionFromWorldPosition(worldPosition, out int x, out int y))
+            {
+                Vector2Int newPosition = new Vector2Int(x, y);
+
+                // Only update if position changed
+                if (currentHoverPosition != newPosition)
+                {
+                    currentHoverPosition = newPosition;
+                    ShowHoverIndicator(x, y);
+
+                    if (isHovering)
+                    {
+                        OnHoverMove?.Invoke(x, y);
+                    }
+                    else
+                    {
+                        OnHoverStart?.Invoke(x, y);
+                        isHovering = true;
+                    }
+                }
+            }
+            else
+            {
+                HideHoverIndicator();
+                if (isHovering)
+                {
+                    OnHoverEnd?.Invoke();
+                    isHovering = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shows hover indicator at specified position
+        /// </summary>
+        /// <param name="x">X coordinate</param>
+        /// <param name="y">Y coordinate</param>
+        private void ShowHoverIndicator(int x, int y)
+        {
+            if (!enableHoverPreview) return;
+
+            Vector3 position = GetIntersectionWorldPosition(x, y);
+
+            // Create or update hover indicator
+            if (currentHoverIndicator == null)
+            {
+                if (hoverIndicatorPrefab != null)
+                {
+                    currentHoverIndicator = Instantiate(hoverIndicatorPrefab, position, Quaternion.identity);
+                    currentHoverIndicator.transform.SetParent(transform);
+                }
+                else
+                {
+                    // Create a default sphere indicator if no prefab is assigned
+                    currentHoverIndicator = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    currentHoverIndicator.transform.position = position;
+                    currentHoverIndicator.transform.localScale = Vector3.one * cellSize * 0.8f;
+
+                    Renderer renderer = currentHoverIndicator.GetComponent<Renderer>();
+                    if (renderer != null)
+                    {
+                        renderer.material.color = hoverColor;
+                    }
+
+                    // Remove collider from indicator
+                    Collider collider = currentHoverIndicator.GetComponent<Collider>();
+                    if (collider != null)
+                    {
+                        DestroyImmediate(collider);
+                    }
+                }
+            }
+            else
+            {
+                currentHoverIndicator.transform.position = position;
+            }
+
+            currentHoverIndicator.SetActive(true);
+        }
+
+        /// <summary>
+        /// Hides the hover indicator
+        /// </summary>
+        private void HideHoverIndicator()
+        {
+            if (currentHoverIndicator != null)
+            {
+                currentHoverIndicator.SetActive(false);
+            }
+            currentHoverPosition = new Vector2Int(-1, -1);
         }
 
         /// <summary>
@@ -225,6 +368,30 @@ namespace Gomoku
         public void ToggleDebugVisualization(bool show)
         {
             showDetectionDebug = show;
+        }
+
+        /// <summary>
+        /// Enables or disables hover preview
+        /// </summary>
+        /// <param name="enable">Whether to enable hover preview</param>
+        public void SetHoverPreviewEnabled(bool enable)
+        {
+            enableHoverPreview = enable;
+            if (!enable)
+            {
+                HideHoverIndicator();
+            }
+        }
+
+        /// <summary>
+        /// Cleanup on destroy
+        /// </summary>
+        private void OnDestroy()
+        {
+            if (currentHoverIndicator != null)
+            {
+                DestroyImmediate(currentHoverIndicator);
+            }
         }
 
         #if UNITY_EDITOR

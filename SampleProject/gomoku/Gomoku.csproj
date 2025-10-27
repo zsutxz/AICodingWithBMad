@@ -71,6 +71,9 @@
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\Systems\GameStateManager.cs" />
     <Compile Include="Assets\Scripts\Piece\Piece.cs" />
+    <Compile Include="Assets\Scripts\Piece\PieceMaterialManager.cs" />
+    <Compile Include="Assets\Scripts\Piece\PiecePreviewManager.cs" />
+    <Compile Include="Assets\Scripts\Piece\PieceVisualController.cs" />
     <Compile Include="Assets\Scripts\Systems\TurnManager.cs" />
     <Compile Include="Assets\Scripts\UI\PauseVisualIndicator.cs" />
     <Compile Include="Assets\Scripts\Core\PlayerType.cs" />
