@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardSize: 15
   cellSize: 50
-  boardOffset: {x: -350, y: -350}
+  boardOffset: {x: 0, y: 0}
   boardRenderer: {fileID: 11400001}
   intersectionDetector: {fileID: 11400002}
 --- !u!114 &11400001

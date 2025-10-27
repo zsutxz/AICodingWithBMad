@@ -360,7 +360,7 @@ namespace Gomoku
             {
                 // Create containers for grid lines and pieces
                 gridContainer = new GameObject("GridLines");
-                gridContainer.transform.localPosition = new Vector3(boardOffset.x + BoardWidth/2, boardOffset.y + BoardHeight/2, 0);
+                gridContainer.transform.position = new Vector3(boardOffset.x + BoardWidth/2, boardOffset.y + BoardHeight/2, 0);
                 gridContainer.transform.SetParent(this.transform);
             }
 
