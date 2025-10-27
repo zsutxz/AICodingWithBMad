@@ -153,38 +153,6 @@ namespace Gomoku.UI
         }
 
         /// <summary>
-        /// Generates multiple pieces on the board for testing or setup purposes
-        /// </summary>
-        /// <param name="pieceData">Array of piece data containing coordinates and player types</param>
-        /// <returns>Number of successfully placed pieces</returns>
-        public int GeneratePieces(PieceData[] pieceData)
-        {
-            if (!isInitialized)
-            {
-                Debug.LogError("Cannot generate pieces: Board not initialized");
-                return 0;
-            }
-
-            if (pieceData == null || pieceData.Length == 0)
-            {
-                Debug.LogWarning("No piece data provided for generation");
-                return 0;
-            }
-
-            int successCount = 0;
-            foreach (var piece in pieceData)
-            {
-                if (PlacePiece(piece.X, piece.Y, piece.PlayerType))
-                {
-                    successCount++;
-                }
-            }
-
-            Debug.Log($"Generated {successCount}/{pieceData.Length} pieces on the board");
-            return successCount;
-        }
-
-        /// <summary>
         /// Generates a random piece on the board
         /// </summary>
         /// <param name="playerType">Type of player piece to place</param>
@@ -431,64 +399,6 @@ namespace Gomoku.UI
             Vector3 size = new Vector3(boardWidth, boardHeight, 0.1f);
 
             return new Bounds(center, size);
-        }
-
-        /// <summary>
-        /// Creates a sample board configuration for testing
-        /// </summary>
-        /// <param name="patternType">Type of pattern to create</param>
-        public void CreateTestBoard(TestPattern patternType = TestPattern.Basic)
-        {
-            if (!isInitialized)
-            {
-                Debug.LogError("Cannot create test board: Board not initialized");
-                return;
-            }
-
-            // Clear any existing pieces
-            ClearBoard();
-
-            switch (patternType)
-            {
-                case TestPattern.Basic:
-                    // Create a simple pattern with a few pieces
-                    PlacePiece(7, 7, PlayerType.PlayerOne);   // Center black piece
-                    PlacePiece(7, 8, PlayerType.PlayerTwo);   // White piece above
-                    PlacePiece(8, 7, PlayerType.PlayerTwo);   // White piece to the right
-                    PlacePiece(6, 7, PlayerType.PlayerTwo);   // White piece to the left
-                    break;
-
-                case TestPattern.LineTest:
-                    // Test winning lines
-                    GeneratePieceLine(5, 7, LineDirection.Horizontal, 5, PlayerType.PlayerOne);
-                    GeneratePieceLine(7, 5, LineDirection.Vertical, 4, PlayerType.PlayerTwo);
-                    break;
-
-                case TestPattern.DiagonalTest:
-                    // Test diagonal patterns
-                    GeneratePieceLine(5, 5, LineDirection.Diagonal, 4, PlayerType.PlayerOne);
-                    GeneratePieceLine(9, 5, LineDirection.AntiDiagonal, 3, PlayerType.PlayerTwo);
-                    break;
-
-                case TestPattern.Random:
-                    // Generate random pieces
-                    for (int i = 0; i < 10; i++)
-                    {
-                        PlayerType playerType = (i % 2 == 0) ? PlayerType.PlayerOne : PlayerType.PlayerTwo;
-                        GenerateRandomPiece(playerType, true);
-                    }
-                    break;
-
-                case TestPattern.FullLine:
-                    // Test near-winning scenarios
-                    GeneratePieceLine(3, 7, LineDirection.Horizontal, 4, PlayerType.PlayerOne);
-                    PlacePiece(8, 7, PlayerType.PlayerTwo);
-                    GeneratePieceLine(7, 3, LineDirection.Vertical, 4, PlayerType.PlayerOne);
-                    PlacePiece(7, 8, PlayerType.PlayerTwo);
-                    break;
-            }
-
-            Debug.Log($"Created test board with pattern: {patternType}");
         }
 
         /// <summary>
