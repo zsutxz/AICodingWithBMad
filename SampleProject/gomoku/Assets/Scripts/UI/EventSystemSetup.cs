@@ -19,10 +19,17 @@ namespace Gomoku.UI
 
         private void Start()
         {
+            Debug.Log("[EventSystemSetup] Start() called");
+
             if (setupOnStart)
             {
                 SetupEventSystem();
             }
+        }
+
+        private void Awake()
+        {
+            Debug.Log("[EventSystemSetup] Awake() called");
         }
 
         /// <summary>
