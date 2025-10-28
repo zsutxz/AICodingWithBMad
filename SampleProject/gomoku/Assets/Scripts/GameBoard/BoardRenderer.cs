@@ -29,7 +29,7 @@ namespace Gomoku
         private int boardSize;
         private float cellSize;
         private Vector2 boardOffset;
-
+        private Vector2 resolutions;
         /// <summary>
         /// Gets the total board width in world units
         /// </summary>
@@ -60,12 +60,12 @@ namespace Gomoku
         /// <param name="boardSize">Size of the board (15x15)</param>
         /// <param name="cellSize">Size of each cell in world units</param>
         /// <param name="boardOffset">Offset of the board in world units</param>
-        public void Initialize(int boardSize, float cellSize, Vector2 boardOffset)
+        public void Initialize(int boardSize, float cellSize, Vector2 boardOffset,Vector2 res)
         {
             this.boardSize = boardSize;
             this.cellSize = cellSize;
             this.boardOffset = boardOffset;
-
+            this.resolutions = res;
             // Initialize rendering resources
             CreateBackgroundMesh();
             CreateGridMesh();
@@ -362,14 +362,14 @@ namespace Gomoku
                 // Create containers for grid lines and pieces
                 gridContainer = new GameObject("GridLines");
                 gridContainer.transform.SetParent(transform,false);
-                gridContainer.transform.localPosition = new Vector2(-boardSize / 2 * cellSize , -boardSize / 2 * cellSize);
+                gridContainer.transform.localPosition = new Vector2(0 , 0);
               }
 
             if(piecesContainer==null)
             {
                 piecesContainer = new GameObject("Pieces");
                 piecesContainer.transform.SetParent(transform, false);
-                piecesContainer.transform.localPosition = new Vector2(-boardSize / 2 * cellSize , -boardSize / 2 * cellSize);
+                piecesContainer.transform.localPosition = new Vector2(0 , 0);
             }
 
             // Initialize piece objects array
@@ -398,15 +398,15 @@ namespace Gomoku
             // Create horizontal lines
             for (int i = 0; i < boardSize; i++)
             {
-                float yPos = -boardSize/2 + i * cellSize;
-                CreateGridLine(new Vector2(-boardSize/2, yPos), new Vector2(-boardSize/2 + width, yPos));
+                float yPos = boardOffset.y + i * cellSize;
+                CreateGridLine(new Vector2(boardOffset.x, yPos), new Vector2(boardOffset.x + width, yPos));
             }
 
             // Create vertical lines
             for (int i = 0; i < boardSize; i++)
             {
-                float xPos = -boardSize/2 + i * cellSize;
-                CreateGridLine(new Vector2(xPos, -boardSize/2), new Vector2(xPos, -boardSize/2 + height));
+                float xPos = boardOffset.x + i * cellSize;
+                CreateGridLine(new Vector2(xPos, boardOffset.y), new Vector2(xPos, boardOffset.y + height));
             }
         }
 
@@ -642,7 +642,7 @@ namespace Gomoku
             // Update visuals when properties change in the inspector
             if (Application.isPlaying && boardSize > 0)
             {
-                Initialize(boardSize, cellSize, boardOffset);
+                Initialize(boardSize, cellSize, boardOffset,resolutions);
             }
         }
         #endif

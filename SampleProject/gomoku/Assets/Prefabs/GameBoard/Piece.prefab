@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e983f4c3eec22a4bb0d4e96676af485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 0
+  pieceType: 1
   placementAnimationDuration: 0.2
   placementCurve:
     serializedVersion: 2
@@ -190,3 +190,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   blackPieceColor: {r: 0, g: 0, b: 0, a: 1}
   whitePieceColor: {r: 1, g: 1, b: 1, a: 1}
+  shadowOffset: 0.05
+  shadowOpacity: 0.3

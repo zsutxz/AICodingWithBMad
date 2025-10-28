@@ -14,6 +14,7 @@ namespace Gomoku.UI
         [SerializeField] private int boardSize = 0;
         [SerializeField] private float cellSize = 50;
         [SerializeField] private Vector2 boardOffset = new Vector2(0, 0);
+        public Vector2 screenResolutions = new Vector2(1280, 720);
 
         [Header("Components")]
         [SerializeField] private BoardRenderer boardRenderer;
@@ -73,10 +74,10 @@ namespace Gomoku.UI
                 Debug.LogError("GameBoardController: IntersectionDetector reference is not set");
                 return;
             }
-
+            screenResolutions=new Vector2(Screen.width,Screen.height);
             // Initialize components
-            boardRenderer.Initialize(boardSize, cellSize, boardOffset);
-            intersectionDetector.Initialize(boardSize, cellSize, boardOffset);
+            boardRenderer.Initialize(boardSize, cellSize, boardOffset, screenResolutions);
+            intersectionDetector.Initialize(boardSize, cellSize, boardOffset, screenResolutions);
 
             isInitialized = true;
             Debug.Log($"GameBoardController initialized with {boardSize}x{boardSize} board");
@@ -415,12 +416,12 @@ namespace Gomoku.UI
             // Initialize components
             if (boardRenderer != null)
             {
-                boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+                boardRenderer.Initialize(boardSize, cellSize, boardOffset, screenResolutions);
             }
 
             if (intersectionDetector != null)
             {
-                intersectionDetector.Initialize(boardSize, cellSize, boardOffset);
+                intersectionDetector.Initialize(boardSize, cellSize, boardOffset, screenResolutions);
             }
 
             isInitialized = true;

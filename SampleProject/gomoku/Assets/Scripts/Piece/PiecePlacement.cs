@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Gomoku.UI;
 using Gomoku.Core;
 using Gomoku.Audio;
+using Debug = UnityEngine.Debug;
 
 namespace Gomoku
 {
@@ -240,19 +241,27 @@ namespace Gomoku
         /// <param name="y">Y coordinate</param>
         private void HandleIntersectionClick(int x, int y)
         {
+            Debug.Log($"[PiecePlacement] HandleIntersectionClick called at ({x}, {y})");
+            Debug.Log($"[PiecePlacement] Game active: {gameActive}");
+            Debug.Log($"[PiecePlacement] TurnManager exists: {turnManager != null}");
+
             if (!gameActive)
             {
-                Debug.Log("Game is not active");
+                Debug.Log("[PiecePlacement] Game is not active - ignoring click");
                 return;
             }
-            
+
             if (turnManager == null)
             {
-                Debug.LogError("TurnManager is null");
+                Debug.LogError("[PiecePlacement] TurnManager is null - cannot place piece");
                 return;
             }
-            
-            TryPlacePiece(x, y, turnManager.CurrentPlayer);
+
+            PlayerType currentPlayer = turnManager.CurrentPlayer;
+            Debug.Log($"[PiecePlacement] Current player: {currentPlayer}");
+            Debug.Log($"[PiecePlacement] Attempting to place piece at ({x}, {y}) for {currentPlayer}");
+
+            TryPlacePiece(x, y, currentPlayer);
         }
         
         /// <summary>

@@ -1,6 +1,7 @@
 using Gomoku.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Debug = UnityEngine.Debug;
 
 namespace Gomoku
 {
@@ -24,10 +25,12 @@ namespace Gomoku
         private int boardSize;
         private float cellSize;
         private Vector2 boardOffset;
+        private Vector2 resolutions;
         private GameBoardController gameBoard;
         private GameObject currentHoverIndicator;
         private Vector2Int currentHoverPosition = new Vector2Int(-1, -1);
         private bool isHovering = false;
+
 
         // Events
         public System.Action<int, int> OnIntersectionClicked;
@@ -42,11 +45,12 @@ namespace Gomoku
         /// <param name="boardSize">Size of the board (15x15)</param>
         /// <param name="cellSize">Size of each cell in world units</param>
         /// <param name="boardOffset">Offset of the board in world units</param>
-        public void Initialize(int boardSize, float cellSize, Vector2 boardOffset)
+        public void Initialize(int boardSize, float cellSize, Vector2 boardOffset,Vector2 res)
         {
             this.boardSize = boardSize;
             this.cellSize = cellSize;
             this.boardOffset = boardOffset;
+            this.resolutions = res;
 
             // Get reference to parent GameBoard
             gameBoard = GetComponentInParent<GameBoardController>();
@@ -87,17 +91,32 @@ namespace Gomoku
         /// <param name="eventData">Pointer event data</param>
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button != PointerEventData.InputButton.Left) return;
+            Debug.Log($"[IntersectionDetector] OnPointerClick called - Button: {eventData.button}, Position: {eventData.position}");
+
+            if (eventData.button != PointerEventData.InputButton.Left)
+            {
+                Debug.Log($"[IntersectionDetector] Ignoring non-left click: {eventData.button}");
+                return;
+            }
 
             Vector3 worldPosition = GetWorldPositionFromPointer(eventData);
+            Debug.Log($"[IntersectionDetector] World position: {worldPosition}");
+
             if (TryGetIntersectionFromWorldPosition(worldPosition, out int x, out int y))
             {
+                Debug.Log($"[IntersectionDetector] Valid intersection found: ({x}, {y})");
+                Debug.Log($"[IntersectionDetector] Invoking OnIntersectionClicked event with {OnIntersectionClicked?.GetInvocationList().Length ?? 0} listeners");
+
                 OnIntersectionClicked?.Invoke(x, y);
 
                 if (showDetectionDebug)
                 {
                     Debug.Log($"Intersection clicked at ({x}, {y})");
                 }
+            }
+            else
+            {
+                Debug.Log($"[IntersectionDetector] No valid intersection found at world position {worldPosition}");
             }
         }
 
@@ -274,23 +293,26 @@ namespace Gomoku
             x = -1;
             y = -1;
 
+            //要计算当前点到左下点的距离，然后除以cellsize得到大概的坐标
             // Convert world position to approximate board coordinates
-            float approxX = (worldPosition.x - boardOffset.x) / cellSize;
-            float approxY = (worldPosition.y - boardOffset.y) / cellSize;
+            float approxX = (worldPosition.x -(resolutions.x / 2 + boardOffset.x)) / cellSize;
+            float approxY = (worldPosition.y -(resolutions.y / 2 + boardOffset.y)) / cellSize;
 
             // Round to nearest integer coordinates
             int candidateX = Mathf.RoundToInt(approxX);
             int candidateY = Mathf.RoundToInt(approxY);
+  
+            //Debug.Log("boardOffset candidateX:" + candidateX + ",candidateY:" + candidateY);
 
             // Check if coordinates are valid
             if (gameBoard != null && gameBoard.IsValidCoordinate(candidateX, candidateY))
             {
-                // Get the exact intersection position
-                Vector3 intersectionPosition = gameBoard.BoardToWorldPosition(candidateX, candidateY);
+                //// Get the exact intersection position
+                //Vector3 intersectionPosition = gameBoard.BoardToWorldPosition(candidateX, candidateY);
                 
-                // Check if the click is within the detection radius of the intersection
-                float distance = Vector3.Distance(worldPosition, intersectionPosition);
-                if (distance <= detectionRadius)
+                //// Check if the click is within the detection radius of the intersection
+                //float distance = Vector3.Distance(worldPosition, intersectionPosition);
+                //if (distance <= detectionRadius)
                 {
                     x = candidateX;
                     y = candidateY;

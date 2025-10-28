@@ -37,7 +37,7 @@ namespace Gomoku.Tests
             Vector2 boardOffset = Vector2.zero;
 
             // Act
-            boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+            boardRenderer.Initialize(boardSize, cellSize, boardOffset, new Vector2(1280, 720));
 
             // Assert
             // The initialization should complete without errors
@@ -56,7 +56,7 @@ namespace Gomoku.Tests
                 // Act & Assert
                 Assert.DoesNotThrow(() => 
                 {
-                    boardRenderer.Initialize(boardSize, 1.0f, Vector2.zero);
+                    boardRenderer.Initialize(boardSize, 1.0f, Vector2.zero, new Vector2(1280, 720));
                 }, $"BoardRenderer should handle board size {boardSize} without errors");
             }
         }
@@ -70,7 +70,7 @@ namespace Gomoku.Tests
             Vector2 boardOffset = Vector2.zero;
 
             // Act
-            boardRenderer.Initialize(boardSize, invalidCellSize, boardOffset);
+            boardRenderer.Initialize(boardSize, invalidCellSize, boardOffset, new Vector2(1280, 720));
 
             // Assert
             // The initialization should complete without errors
@@ -82,7 +82,7 @@ namespace Gomoku.Tests
         public void BoardRenderer_UpdateBackgroundColor_UpdatesBackgroundRenderer()
         {
             // Arrange
-            boardRenderer.Initialize(15, 1.0f, Vector2.zero);
+            boardRenderer.Initialize(15, 1.0f, Vector2.zero, new Vector2(1280, 720));
             Color newColor = new Color(0.9f, 0.8f, 0.7f, 1.0f);
 
             // Act
@@ -98,7 +98,7 @@ namespace Gomoku.Tests
         public void BoardRenderer_UpdateGridLineColor_UpdatesGridLines()
         {
             // Arrange
-            boardRenderer.Initialize(15, 1.0f, Vector2.zero);
+            boardRenderer.Initialize(15, 1.0f, Vector2.zero, new Vector2(1280, 720));
             Color newColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
 
             // Act
@@ -114,7 +114,7 @@ namespace Gomoku.Tests
         public void BoardRenderer_ToggleGridCoordinates_HandlesToggleCorrectly()
         {
             // Arrange
-            boardRenderer.Initialize(15, 1.0f, Vector2.zero);
+            boardRenderer.Initialize(15, 1.0f, Vector2.zero, new Vector2(1280, 720));
 
             // Act & Assert - Toggle on
             Assert.DoesNotThrow(() => 
@@ -133,12 +133,12 @@ namespace Gomoku.Tests
         public void BoardRenderer_MultipleInitializations_ClearsPreviousVisuals()
         {
             // Arrange
-            boardRenderer.Initialize(15, 1.0f, Vector2.zero);
+            boardRenderer.Initialize(15, 1.0f, Vector2.zero, new Vector2(1280, 720));
 
             // Act - Initialize with different parameters
             Assert.DoesNotThrow(() => 
             {
-                boardRenderer.Initialize(19, 0.8f, new Vector2(-5, -5));
+                boardRenderer.Initialize(19, 0.8f, new Vector2(-5, -5), new Vector2(1280, 720));
             }, "Multiple initializations should not throw");
 
             // Assert
@@ -158,7 +158,7 @@ namespace Gomoku.Tests
             // Act & Assert
             Assert.DoesNotThrow(() => 
             {
-                boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+                boardRenderer.Initialize(boardSize, cellSize, boardOffset, new Vector2(1280, 720));
             }, "BoardRenderer should handle null components gracefully");
         }
 
@@ -179,7 +179,7 @@ namespace Gomoku.Tests
                         // Act & Assert
                         Assert.DoesNotThrow(() => 
                         {
-                            boardRenderer.Initialize(size, cellSize, offset);
+                            boardRenderer.Initialize(size, cellSize, offset, new Vector2(1280, 720));
                         }, $"BoardRenderer should handle extreme values: size={size}, cellSize={cellSize}, offset={offset}");
                     }
                 }
@@ -195,7 +195,7 @@ namespace Gomoku.Tests
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                boardRenderer.Initialize(negativeSize, 1.0f, Vector2.zero);
+                boardRenderer.Initialize(negativeSize, 1.0f, Vector2.zero, new Vector2(1280, 720));
             }, "BoardRenderer should handle negative board size gracefully");
         }
 
@@ -208,7 +208,7 @@ namespace Gomoku.Tests
             Vector2 boardOffset = new Vector2(-7, -7);
 
             // Act
-            boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+            boardRenderer.Initialize(boardSize, cellSize, boardOffset, new Vector2(1280, 720));
 
             // Assert
             // Grid lines should be positioned within the board bounds
@@ -234,7 +234,7 @@ namespace Gomoku.Tests
             Vector2 boardOffset = new Vector2(5, 5);
 
             // Act
-            boardRenderer.Initialize(boardSize, cellSize, boardOffset);
+            boardRenderer.Initialize(boardSize, cellSize, boardOffset, new Vector2(1280, 720));
 
             // Assert
             // Grid lines should be positioned within the board bounds

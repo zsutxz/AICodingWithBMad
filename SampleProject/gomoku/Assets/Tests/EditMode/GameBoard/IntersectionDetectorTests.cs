@@ -47,7 +47,7 @@ namespace Gomoku.Tests
             Vector2 boardOffset = new Vector2(-7, -7);
 
             // Act
-            intersectionDetector.Initialize(boardSize, cellSize, boardOffset);
+            intersectionDetector.Initialize(boardSize, cellSize, boardOffset, new Vector2(1280, 720));
 
             // Assert
             // The initialization should complete without errors
@@ -58,7 +58,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_TryGetIntersectionFromWorldPosition_WithExactIntersection_ReturnsTrueAndCorrectCoordinates()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Test exact intersection positions
             Vector3[] testPositions = {
@@ -93,7 +93,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_TryGetIntersectionFromWorldPosition_WithNearIntersection_ReturnsTrueAndCorrectCoordinates()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Test positions near intersections (within detection radius)
             Vector3[] testPositions = {
@@ -128,7 +128,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_TryGetIntersectionFromWorldPosition_WithFarFromIntersection_ReturnsFalse()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Test positions far from any intersection
             Vector3[] testPositions = {
@@ -157,7 +157,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_TryGetIntersectionFromWorldPosition_WithInvalidBoardCoordinates_ReturnsFalse()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Test positions that would map to invalid board coordinates
             Vector3[] testPositions = {
@@ -183,7 +183,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_GetIntersectionWorldPosition_ReturnsCorrectPosition()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Test various coordinates
             int[,] testCoordinates = {
@@ -217,7 +217,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_UpdateDetectionRadius_UpdatesDetectionRange()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
             float newRadius = 0.5f;
 
             // Act
@@ -233,7 +233,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_ToggleDebugVisualization_HandlesToggleCorrectly()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Act & Assert - Toggle on
             Assert.DoesNotThrow(() => 
@@ -252,7 +252,7 @@ namespace Gomoku.Tests
         public void IntersectionDetector_HighlightIntersection_HandlesValidAndInvalidIntersections()
         {
             // Arrange
-            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            intersectionDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Test valid intersection
             Assert.DoesNotThrow(() => 
@@ -275,7 +275,7 @@ namespace Gomoku.Tests
             IntersectionDetector standaloneDetector = standaloneObject.AddComponent<IntersectionDetector>();
 
             // Act
-            standaloneDetector.Initialize(15, 1.0f, new Vector2(-7, -7));
+            standaloneDetector.Initialize(15, 1.0f, new Vector2(-7, -7), new Vector2(1280, 720));
 
             // Assert
             // The initialization should complete but log an error about missing GameBoard
@@ -306,7 +306,7 @@ namespace Gomoku.Tests
                         // Act & Assert
                         Assert.DoesNotThrow(() => 
                         {
-                            intersectionDetector.Initialize(size, cellSize, offset);
+                            intersectionDetector.Initialize(size, cellSize, offset , new Vector2(1280, 720));
                         }, $"IntersectionDetector should handle configuration: size={size}, cellSize={cellSize}, offset={offset}");
                     }
                 }

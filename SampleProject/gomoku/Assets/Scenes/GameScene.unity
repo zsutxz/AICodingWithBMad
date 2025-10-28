@@ -412,6 +412,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: df3cc2b0cd2fd6a4f849e85467cbe2d9, type: 3}
+      propertyPath: boardOffset.x
+      value: -350
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: df3cc2b0cd2fd6a4f849e85467cbe2d9, type: 3}
+      propertyPath: boardOffset.y
+      value: -350
+      objectReference: {fileID: 0}
     - target: {fileID: 1556121335435817478, guid: df3cc2b0cd2fd6a4f849e85467cbe2d9, type: 3}
       propertyPath: m_IsActive
       value: 1
