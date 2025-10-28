@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\UI\MainMenuScreen.cs" />
     <Compile Include="Assets\Scripts\UI\TurnIndicator.cs" />
     <Compile Include="Assets\Scripts\Piece\PiecePreviewManager.cs" />
+    <Compile Include="Assets\Scripts\Core\GameInitializer.cs" />
     <Compile Include="Assets\Scripts\Systems\AudioManager.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\UI\MoveCounter.cs" />
@@ -97,8 +98,10 @@
     <Compile Include="Assets\Scripts\Animation\SimpleAnimationSystem.cs" />
     <Compile Include="Assets\Scripts\GameBoard\GameBoardController.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BoardRenderer.cs" />
+    <Compile Include="Assets\Scripts\Debug\EventSubscriptionDebugger.cs" />
     <Compile Include="Assets\Scripts\Win\WinDetector.cs" />
     <Compile Include="Assets\Scripts\Core\GameSettingsModel.cs" />
+    <Compile Include="Assets\Scripts\Debug\RuntimeGameSetup.cs" />
     <Compile Include="Assets\Scripts\UI\GameOverScreen.cs" />
   </ItemGroup>
   <ItemGroup>

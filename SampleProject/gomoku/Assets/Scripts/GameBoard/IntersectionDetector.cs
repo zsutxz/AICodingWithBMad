@@ -121,7 +121,8 @@ namespace Gomoku
                 }
                 else
                 {
-                    Debug.LogWarning("[IntersectionDetector] No listeners attached to OnIntersectionClicked event! PiecePlacement may not be subscribed.");
+                    Debug.LogWarning("[IntersectionDetector] No listeners attached to OnIntersectionClicked event! Trying emergency direct call...");
+                    TryEmergencyDirectCall(x, y);
                 }
 
                 if (showDetectionDebug)
@@ -460,5 +461,43 @@ namespace Gomoku
             Gizmos.DrawWireCube(center, size);
         }
         #endif
+
+        /// <summary>
+        /// Emergency direct call to PiecePlacement when event subscription fails
+        /// </summary>
+        private void TryEmergencyDirectCall(int x, int y)
+        {
+            try
+            {
+                Debug.Log("[IntersectionDetector] Attempting emergency direct call to PiecePlacement...");
+
+                // Find PiecePlacement
+                var piecePlacement = FindObjectOfType<PiecePlacement>();
+                if (piecePlacement == null)
+                {
+                    Debug.LogError("[IntersectionDetector] PiecePlacement not found for emergency call!");
+                    return;
+                }
+
+                // Try to call HandleIntersectionClick directly using reflection
+                var handleMethod = typeof(PiecePlacement).GetMethod("HandleIntersectionClick",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+                if (handleMethod != null)
+                {
+                    Debug.Log($"[IntersectionDetector] Calling HandleIntersectionClick({x}, {y}) directly");
+                    handleMethod.Invoke(piecePlacement, new object[] { x, y });
+                    Debug.Log("[IntersectionDetector] Emergency direct call completed successfully");
+                }
+                else
+                {
+                    Debug.LogError("[IntersectionDetector] Could not find HandleIntersectionClick method!");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[IntersectionDetector] Emergency direct call failed: {e.Message}");
+            }
+        }
     }
 }
