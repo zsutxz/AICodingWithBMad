@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Gomoku.Core;
+using Gomoku;
 
 namespace Gomoku.UI
 {
@@ -13,6 +15,7 @@ namespace Gomoku.UI
         [SerializeField] private bool setupOnStart = true;
         [SerializeField] private bool addPhysics2DRaycaster = true;
         [SerializeField] private bool addGraphicRaycaster = true;
+        [SerializeField] private bool createGameManagers = true;
 
         private void Start()
         {
@@ -69,7 +72,66 @@ namespace Gomoku.UI
                 }
             }
 
+            // Create game management components if needed
+            if (createGameManagers)
+            {
+                SetupGameManagers();
+            }
+
             Debug.Log("EventSystem setup complete");
+        }
+
+        /// <summary>
+        /// Sets up required game management components
+        /// </summary>
+        private void SetupGameManagers()
+        {
+            Debug.Log("--- Setting up Game Managers ---");
+
+            // Check and create TurnManager if needed
+            TurnManager turnManager = FindObjectOfType<TurnManager>();
+            if (turnManager == null)
+            {
+                GameObject turnManagerGO = new GameObject("TurnManager");
+                turnManager = turnManagerGO.AddComponent<TurnManager>();
+                Debug.Log("TurnManager created automatically");
+            }
+            else
+            {
+                Debug.Log("TurnManager already exists");
+            }
+
+            // Check and create PiecePlacement if needed
+            PiecePlacement piecePlacement = FindObjectOfType<PiecePlacement>();
+            if (piecePlacement == null)
+            {
+                GameObject piecePlacementGO = new GameObject("PiecePlacement");
+                piecePlacement = piecePlacementGO.AddComponent<PiecePlacement>();
+                Debug.Log("PiecePlacement created automatically");
+            }
+            else
+            {
+                Debug.Log("PiecePlacement already exists");
+            }
+
+            // Check and create GameBoardController if needed
+            GameBoardController gameBoard = FindObjectOfType<GameBoardController>();
+            if (gameBoard == null)
+            {
+                Debug.LogWarning("GameBoardController not found! Please add it to the scene manually.");
+            }
+            else
+            {
+                Debug.Log("GameBoardController found");
+            }
+
+            // Force setup references for all PiecePlacement components
+            PiecePlacement[] allPiecePlacements = FindObjectsOfType<PiecePlacement>();
+            foreach (var pp in allPiecePlacements)
+            {
+                pp.SetupReferences();
+                Debug.Log("Force-called SetupReferences on PiecePlacement");
+            }
         }
 
         /// <summary>
@@ -83,11 +145,38 @@ namespace Gomoku.UI
             bool hasPhysics2DRaycaster = FindObjectOfType<Physics2DRaycaster>() != null;
             bool hasGraphicRaycaster = FindObjectOfType<GraphicRaycaster>() != null;
 
-            Debug.Log("=== EventSystem Validation ===");
+            // Check game managers
+            bool hasTurnManager = FindObjectOfType<TurnManager>() != null;
+            bool hasPiecePlacement = FindObjectOfType<PiecePlacement>() != null;
+            bool hasGameBoardController = FindObjectOfType<GameBoardController>() != null;
+
+            Debug.Log("=== Complete System Validation ===");
+            Debug.Log("--- Event System ---");
             Debug.Log($"EventSystem: {(hasEventSystem ? "✓" : "✗ MISSING")}");
             Debug.Log($"StandaloneInputModule: {(hasStandaloneInputModule ? "✓" : "✗ MISSING")}");
             Debug.Log($"Physics2DRaycaster: {(hasPhysics2DRaycaster ? "✓" : "✗ MISSING")}");
             Debug.Log($"GraphicRaycaster: {(hasGraphicRaycaster ? "✓" : "✗ MISSING")}");
+
+            Debug.Log("--- Game Managers ---");
+            Debug.Log($"TurnManager: {(hasTurnManager ? "✓" : "✗ MISSING")}");
+            Debug.Log($"PiecePlacement: {(hasPiecePlacement ? "✓" : "✗ MISSING")}");
+            Debug.Log($"GameBoardController: {(hasGameBoardController ? "✓" : "✗ MISSING")}");
+
+            // Check event subscription
+            if (hasPiecePlacement)
+            {
+                var intersectionDetector = FindObjectOfType<IntersectionDetector>();
+                if (intersectionDetector != null)
+                {
+                    int listenerCount = intersectionDetector.OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+                    Debug.Log($"Event listeners: {(listenerCount > 0 ? $"✓ {listenerCount} listeners" : "✗ NO LISTENERS")}");
+
+                    if (listenerCount == 0)
+                    {
+                        Debug.LogError("CRITICAL: PiecePlacement is not subscribed to IntersectionDetector events! Clicks will not work.");
+                    }
+                }
+            }
 
             if (!hasEventSystem || !hasStandaloneInputModule)
             {
@@ -97,6 +186,11 @@ namespace Gomoku.UI
             if (!hasPhysics2DRaycaster)
             {
                 Debug.LogWarning("Physics2DRaycaster missing! 2D collider clicks will not work.");
+            }
+
+            if (!hasTurnManager || !hasPiecePlacement || !hasGameBoardController)
+            {
+                Debug.LogWarning("Game management components missing! Game logic will not work properly.");
             }
         }
     }

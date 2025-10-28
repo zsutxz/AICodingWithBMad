@@ -86,7 +86,7 @@ namespace Gomoku
         /// <summary>
         /// Sets up component references
         /// </summary>
-        private void SetupReferences()
+        public void SetupReferences()
         {
             Debug.Log("[PiecePlacement] SetupReferences started");
 
