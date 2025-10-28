@@ -88,39 +88,97 @@ namespace Gomoku
         /// </summary>
         private void SetupReferences()
         {
+            Debug.Log("[PiecePlacement] SetupReferences started");
+
             // Auto-find components if not assigned
             if (gameBoard == null)
+            {
                 gameBoard = FindObjectOfType<GameBoardController>();
-            
+                Debug.Log($"[PiecePlacement] GameBoard found: {gameBoard != null}");
+            }
+
             if (turnManager == null)
+            {
                 turnManager = FindObjectOfType<TurnManager>();
-            
+                Debug.Log($"[PiecePlacement] TurnManager found: {turnManager != null}");
+            }
+
             if (intersectionDetector == null)
+            {
                 intersectionDetector = FindObjectOfType<IntersectionDetector>();
-            
+                Debug.Log($"[PiecePlacement] IntersectionDetector found: {intersectionDetector != null}");
+            }
+
             // Validate references
             if (gameBoard == null)
             {
                 Debug.LogError("GameBoard reference not found!");
                 return;
             }
-            
+
             if (turnManager == null)
             {
                 Debug.LogError("TurnManager reference not found!");
                 return;
             }
-            
+
             if (intersectionDetector == null)
             {
                 Debug.LogError("IntersectionDetector reference not found!");
                 return;
             }
-            
+
             // Subscribe to events
-            intersectionDetector.OnIntersectionClicked += HandleIntersectionClick;
-            
+            if (intersectionDetector != null)
+            {
+                int listenerCountBefore = intersectionDetector.OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+                Debug.Log($"[PiecePlacement] Event listener count before subscription: {listenerCountBefore}");
+
+                intersectionDetector.OnIntersectionClicked += HandleIntersectionClick;
+
+                int listenerCountAfter = intersectionDetector.OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+                Debug.Log($"[PiecePlacement] Event listener count after subscription: {listenerCountAfter}");
+
+                if (listenerCountAfter > listenerCountBefore)
+                {
+                    Debug.Log("[PiecePlacement] Successfully subscribed to OnIntersectionClicked event");
+                }
+                else
+                {
+                    Debug.LogError("[PiecePlacement] Failed to subscribe to OnIntersectionClicked event!");
+                }
+            }
+            else
+            {
+                Debug.LogError("[PiecePlacement] Cannot subscribe to events - IntersectionDetector is null!");
+            }
+
             Debug.Log("PiecePlacement references setup complete");
+        }
+
+        /// <summary>
+        /// Debug method to check event subscription status
+        /// </summary>
+        [ContextMenu("Check Event Subscription")]
+        public void CheckEventSubscription()
+        {
+            if (intersectionDetector != null)
+            {
+                int listenerCount = intersectionDetector.OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+                Debug.Log($"[PiecePlacement] Current OnIntersectionClicked listeners: {listenerCount}");
+
+                if (listenerCount == 0)
+                {
+                    Debug.LogWarning("[PiecePlacement] No event listeners found! Attempting to resubscribe...");
+                    intersectionDetector.OnIntersectionClicked += HandleIntersectionClick;
+                    listenerCount = intersectionDetector.OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+                    Debug.Log($"[PiecePlacement] Listener count after resubscription: {listenerCount}");
+                }
+            }
+            else
+            {
+                Debug.LogError("[PiecePlacement] IntersectionDetector is null!");
+            }
         }
         
         /// <summary>

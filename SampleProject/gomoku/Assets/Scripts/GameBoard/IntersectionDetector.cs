@@ -93,6 +93,10 @@ namespace Gomoku
         {
             Debug.Log($"[IntersectionDetector] OnPointerClick called - Button: {eventData.button}, Position: {eventData.position}");
 
+            // Check current listener count before processing
+            int listenerCount = OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+            Debug.Log($"[IntersectionDetector] Current event listeners: {listenerCount}");
+
             if (eventData.button != PointerEventData.InputButton.Left)
             {
                 Debug.Log($"[IntersectionDetector] Ignoring non-left click: {eventData.button}");
@@ -105,9 +109,20 @@ namespace Gomoku
             if (TryGetIntersectionFromWorldPosition(worldPosition, out int x, out int y))
             {
                 Debug.Log($"[IntersectionDetector] Valid intersection found: ({x}, {y})");
-                Debug.Log($"[IntersectionDetector] Invoking OnIntersectionClicked event with {OnIntersectionClicked?.GetInvocationList().Length ?? 0} listeners");
 
-                OnIntersectionClicked?.Invoke(x, y);
+                // Double-check listener count before invoking
+                listenerCount = OnIntersectionClicked?.GetInvocationList().Length ?? 0;
+                Debug.Log($"[IntersectionDetector] Invoking OnIntersectionClicked event with {listenerCount} listeners");
+
+                if (listenerCount > 0)
+                {
+                    OnIntersectionClicked?.Invoke(x, y);
+                    Debug.Log($"[IntersectionDetector] Event invoked successfully");
+                }
+                else
+                {
+                    Debug.LogWarning("[IntersectionDetector] No listeners attached to OnIntersectionClicked event! PiecePlacement may not be subscribed.");
+                }
 
                 if (showDetectionDebug)
                 {
@@ -293,7 +308,7 @@ namespace Gomoku
             x = -1;
             y = -1;
 
-            //Òª¼ÆËãµ±Ç°µãµ½×óÏÂµãµÄ¾àÀë£¬È»ºó³ýÒÔcellsizeµÃµ½´ó¸ÅµÄ×ø±ê
+            //Òªï¿½ï¿½ï¿½ãµ±Ç°ï¿½ãµ½ï¿½ï¿½ï¿½Âµï¿½Ä¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿½cellsizeï¿½Ãµï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½
             // Convert world position to approximate board coordinates
             float approxX = (worldPosition.x -(resolutions.x / 2 + boardOffset.x)) / cellSize;
             float approxY = (worldPosition.y -(resolutions.y / 2 + boardOffset.y)) / cellSize;
