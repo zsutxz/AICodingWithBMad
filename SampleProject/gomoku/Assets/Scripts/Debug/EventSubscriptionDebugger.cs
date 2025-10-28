@@ -1,5 +1,7 @@
 using UnityEngine;
 using Gomoku.Core;
+using Gomoku.UI;
+using Gomoku;
 
 namespace Gomoku.Diagnostics
 {
