@@ -209,8 +209,19 @@ namespace Gomoku.Diagnostics
             {
                 int listeners = detector.OnIntersectionClicked?.GetInvocationList().Length ?? 0;
                 GUILayout.Label($"Event Listeners: {listeners}");
-                Color statusColor = listeners > 0 ? Color.green : Color.red;
-                GUILayout.Label($"Click Detection: {(listeners > 0 ? "✓ WORKING" : "✗ BROKEN")}", statusColor);
+
+                if (listeners > 0)
+                {
+                    GUI.color = Color.green;
+                    GUILayout.Label("Click Detection: ✓ WORKING");
+                    GUI.color = Color.white;
+                }
+                else
+                {
+                    GUI.color = Color.red;
+                    GUILayout.Label("Click Detection: ✗ BROKEN");
+                    GUI.color = Color.white;
+                }
             }
 
             GUILayout.EndArea();
